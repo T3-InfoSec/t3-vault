@@ -15,39 +15,39 @@ void main()  async {
       expect(vault.decryptData(encrypted), words);  
      }); 
 
-    test('Check does register_vault functionality work as expected.', () async {
+    test('Check does registerVault functionality work as expected.', () async {
       
-      expect(await vault.register_vault(words,3),  true); 
-      expect(await vault.register_vault(words,15), false);  
-      expect(await vault.register_vault("aa",2),   false);   
-      expect(await vault.register_vault(words,-2), false);  
+      expect(await vault.registerVault(words,3),  true); 
+      expect(await vault.registerVault(words,15), false);  
+      expect(await vault.registerVault("aa",2),   false);   
+      expect(await vault.registerVault(words,-2), false);  
      }); 
 
-     test('Check does restore_vault function work correctly.', () async {  
-      expect(await vault.restore_vault(words), true);
-      expect(await vault.restore_vault(words+"1"), false);  
+     test('Check does restoreVault function work correctly.', () async {  
+      expect(await vault.restoreVault(words), true);
+      expect(await vault.restoreVault(words+"1"), false);  
      }); 
 
-     test('Check does lock_vault function work correctly.', () async {  
-      expect(await vault.lock_vault(words), true);
-      expect(await vault.lock_vault(words+"1"), false);  
+     test('Check does lockVault function work correctly.', () async {  
+      expect(await vault.lockVault(words), true);
+      expect(await vault.lockVault(words+"1"), false);  
      }); 
 
 
-     test('Check does unlock_vault function work correctly.', () async {  
-      expect(await vault.unlock_vault(words), true);
-      expect(await vault.unlock_vault(words+"1"), false);  
+     test('Check does unlockVault function work correctly.', () async {  
+      expect(await vault.unlockVault(words), true);
+      expect(await vault.unlockVault(words+"1"), false);  
      }); 
 
  
     test('Check does all functionalities work together.', () async { 
       String words = "great wall 2";
-      expect(await vault.register_vault(words,6), true);
-      expect(await vault.register_vault(words,6), false);
-      expect(await vault.lock_vault(words),       true);
-      expect(await vault.restore_vault(words),    false);
-      expect(await vault.unlock_vault(words),     true);
-      expect(await vault.restore_vault(words),    true); 
+      expect(await vault.registerVault(words,6), true);
+      expect(await vault.registerVault(words,6), false);
+      expect(await vault.lockVault(words),       true);
+      expect(await vault.restoreVault(words),    false);
+      expect(await vault.unlockVault(words),     true);
+      expect(await vault.restoreVault(words),    true); 
      }); 
 
 
