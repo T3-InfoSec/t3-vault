@@ -1,0 +1,19 @@
+name: vault
+description: A starting point for Dart libraries or applications.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.3.4
+
+# Add regular dependencies here.
+dependencies:
+  encrypt: ^5.0.3
+  flutter_secure_storage: ^9.2.2
+  flutter_test:
+    sdk: flutter
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0

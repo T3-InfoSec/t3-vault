@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:GreatWall/knowledge/vault.dart';
+import 'package:vault/vault.dart';
 
 void main()  async {
   String words = "great wall";
@@ -39,6 +39,18 @@ void main()  async {
       expect(await vault.unlockVault(words+"1"), false);  
      }); 
 
+     test('Check does deleteVault function work correctly.', () async {  
+      expect(await vault.deleteVault(words), true);
+      /// can't delete deleted vault
+      expect(await vault.deleteVault(words), false);
+
+      String words_ = "great wall 222";
+      expect(await vault.registerVault(words_,6), true);
+
+      ///can't access vault 
+      expect(await vault.deleteVault(words_+"ABCD"), false); 
+     }); 
+
  
     test('Check does all functionalities work together.', () async { 
       String words = "great wall 2";
@@ -50,7 +62,11 @@ void main()  async {
       expect(await vault.restoreVault(words),    true); 
      }); 
 
-
+     
 
  
+
+ 
+
+
 }
