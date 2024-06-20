@@ -1,6 +1,3 @@
-// TODO: Put public facing types in this file.
-
-/// Checks if you are awesome. Spoiler: you are.
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart';
 
@@ -16,40 +13,48 @@ class Vault {
   final key = Key.fromUtf8('7Ks2Xp9Qr4Tz6Wy3Uv8Tw5Sx1Pq2Rz43'); 
   final iv = IV.fromUtf8('G9a3e1d2c5b6F4h7');  
 
+
+  /// Vault constructor
   Vault() {}
  
   String encryptData(String text) {
-    ///Encrypts data from given text.
+    /// Encrypts data from given text.
     ///
-    ///[text] (String) : Words to be encrypted.
+    /// The [encryptData] method  Encrypts data from given [text].
     ///
-    ///Returns:
-    ///String - Encrypted data.
+    /// - Parameters:
+    ///   - [text]: Words to be encrypted.
+    ///
+    /// - Returns: Encrypted data.
     final e = Encrypter(AES(key, mode: AESMode.cbc));
     final encryptedData = e.encrypt(text, iv: iv);
     return encryptedData.base64;
   }
  
   String decryptData(String text) {
-    ///Decrypts data from given text.
+    /// Dencrypts data from given text.
     ///
-    ///[text] (String) : Words to be decrypted.
+    /// The [decryptData] method  Encrypts data from given [text].
     ///
-    ///Returns:
-    ///String - Decrypted data.
+    /// - Parameters:
+    ///   - [text]: Words to be decrypted.
+    ///
+    /// - Returns: Decrypted data.
      final e = Encrypter(AES(key, mode: AESMode.cbc));
     final decryptedData = e.decrypt(Encrypted.fromBase64(text), iv: iv);
     return decryptedData;
   } 
 
   Future<bool> restoreVault(String words) async{
-    ///Restores vault based on set of words.
+    /// Restores vault based on set of words.
     ///
-    ///[words] (String) : Words used to restore vault (password).
+    /// The [restoreVault] method restores vault based on [words].
     ///
-    ///Returns:
-    ///bool - Returns True if vault is unlocked with provided set of words.
-    ///       Returns False if:
+    /// - Parameters:
+    ///   - [text]: Words used to restore vault (password).
+    ///
+    /// - Returns:  Returns True if vault is unlocked with provided set of words.
+    ///             Returns False if:
     ///                         - vault is not found with provided set of words
     ///                         - vault is locked
     var encryptedData = await secureStorage.read(key: words); 
@@ -72,30 +77,33 @@ class Vault {
   }
 
   Future<bool> registerVault(String words, int timeLock) async {
-    ///Registers vault based on set of words.
+    /// Registers vault based on set of words.
     ///By default vault is not locked so 'U' is hardcoded as Unlocked.
-    ///[words] (String) : Words used to register vault (password).
     ///
-    ///Returns:
-    ///bool - Returns True if vault is created.
-    ///       Returns False when:
+    /// The [registerVault] method registers vault based on [words].
+    ///
+    /// - Parameters:
+    ///   - [text]: Words used to register vault (password).
+    ///
+    /// - Returns:  Returns True if vault is created.
+    ///             Returns False when:
     ///                         - vault is not created
     ///                         - when time lock is too big or too small
     ///                         - when vault is already registered with set of words
-    ///                         - when input words are too short
+    ///                         - when input words are too short 
     if (timeLock<0 || timeLock > 50){
-      ///"Time lock can't be lover than 0 or higher than 50 hours."
+      //"Time lock can't be lover than 0 or higher than 50 hours."
       return false; 
     }
     if (words.length<5){ 
-    ///Words are too short.
+    //Words are too short.
       return false;
     }
     
-    /// check is vault already registered with unique set of words
+    // check is vault already registered with unique set of words
     var tryAccessingVault = await secureStorage.read(key: words);
     if (tryAccessingVault  != null){
-      ///Vault is already registered for unique set of words.
+      //Vault is already registered for unique set of words.
       return false;
     }
 
@@ -106,20 +114,23 @@ class Vault {
 
 
   Future<bool> lockVault(String words) async {
-    ///Locks the vault.
-    ///By default vault is not locked so 'U' is hardcoded as Unlocked.
-    ///When volt is not locked then 'L' is present. 
+    /// Locks the vault.
+    /// By default vault is not locked so 'U' is hardcoded as Unlocked.
+    /// When volt is not locked then 'L' is present. 
     ///
-    ///[words] (String) : Words used to access vault (password).
+    /// The [lockVault] method registers locks the vault by 
+    /// accessing the vault with [words].
     ///
-    ///Returns:
-    ///bool - Returns True if vault is successfully locked.
-    ///       Returns False when:
-    ///                         - vault with provided set of words is not found
+    /// - Parameters:
+    ///   - [text]: Words used to access vault (password).
+    ///
+    /// - Returns:  Returns True if vault is successfully locked.
+    ///             Returns False when:
+    ///                         - vault with provided set of words is not found 
     
     var tryAccessingVault = await secureStorage.read(key: words);
     if (tryAccessingVault  == null){
-      ///Vault can't be accessed by this set of words.
+      //Vault can't be accessed by this set of words.
       return false;
     }
 
@@ -129,20 +140,23 @@ class Vault {
   }
 
   Future<bool> unlockVault(String words) async {
-    ///Unlocks the vault.
-    ///By default vault is not locked so 'U' is hardcoded as Unlocked.
-    ///When volt is not locked then 'L' is present. 
+    /// Unlocks the vault.
+    /// By default vault is not locked so 'U' is hardcoded as Unlocked.
+    /// When volt is not locked then 'L' is present. 
     ///
-    ///[words] (String) : Words used to access vault (password).
+    /// The [unlockVault] method registers unlocks the vault by 
+    /// accessing the vault with [words].
     ///
-    ///Returns:
-    ///bool - Returns True if vault is successfully unlocked.
-    ///       Returns False when:
-    ///                         - vault with provided set of words is not found
+    /// - Parameters:
+    ///   - [text]: Words used to access vault (password).
+    ///
+    /// - Returns:  Returns True if vault is successfully unlocked.
+    ///             Returns False when:
+    ///                         - vault with provided set of words is not found 
     
     var tryAccessingVault = await secureStorage.read(key: words);
     if (tryAccessingVault  == null){
-      ///Vault can't be accessed by this set of words.
+      //Vault can't be accessed by this set of words.
       return false;
     }
 
@@ -152,20 +166,23 @@ class Vault {
   }
 
   Future<bool> deleteVault(String words) async {
-    ///Deletes existing vault, if the vault is unlocked. 
+    /// Deletes existing vault, if the vault is unlocked. 
     ///
-    ///[words] (String) : Words used to access vault (password).
+    /// The [deleteVault] method registers deletes the vault which
+    /// is accessed by [words].
     ///
-    ///Returns:
-    ///bool - Returns True if vault is successfully deleted.
-    ///       Returns False when:
+    /// - Parameters:
+    ///   - [text]: Words used to access vault (password).
+    ///
+    /// - Returns:  Returns True if vault is successfully deleted.
+    ///             Returns False when:
     ///                         - vault with provided set of words is not found
-    ///                         - vault exists, but it's locked  
+    ///                         - vault exists, but it's locked   
      
     var encryptedData = await secureStorage.read(key: words); 
      
     if (encryptedData == null){
-       ///Vault can't be accessed by this set of words.
+       //Vault can't be accessed by this set of words.
       return false;
     }
     var decryptedData = decryptData(encryptedData);
@@ -179,7 +196,7 @@ class Vault {
       return true;
     }
     else {
-      /// Vault exists but it's locked.
+      // Vault exists but it's locked.
       return false;
     } 
   }
