@@ -1,13 +1,15 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:encrypt/encrypt.dart';
 
+
+/// Class provides abstraction of Vault using flutter_secureStorage with
+/// following functionalities:
+///  - log in ([restoreVault]) 
+///  - register new vault ([registerVault]) 
+///  - [lockVault] and [unlockVault]  
+///  - delete existing vault ([deleteVault])
 class Vault { 
-  /// Class provides abstraction of Vault using flutter_secureStorage with
-  /// following functionalities:
-  ///  - log in ([restoreVault]) 
-  ///  - register new vault ([registerVault]) 
-  ///  - [lockVault] and [unlockVault]  
-  ///  - delete existing vault ([deleteVault])
+  
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage(); 
   
   //used to encrypt and decrypt data
