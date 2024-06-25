@@ -20,7 +20,7 @@ void main() async {
   /// true
   /// false
   /// true
-  /// sleep of 79 secs
+  /// sleep of 70 secs
   /// true
   /// false
   /// true
