@@ -3,7 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:memorization_assistant_flutter/memorization_deck_activity.dart';
 
 void main() {
-  testWidgets('MemorizationDeckActivity has a title and displays elements correctly', (WidgetTester tester) async {
+  testWidgets(
+      'MemorizationDeckActivity has a title and displays elements correctly',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: MemorizationDeckActivity(),
@@ -17,41 +19,37 @@ void main() {
     expect(find.byType(ElevatedButton), findsOneWidget);
     expect(find.text('Try protocol'), findsOneWidget);
 
-    expect(find.text('L0 Q Lorem Ipsum'), findsNWidgets(3));
-    expect(find.text('R1: adipiscing elit\nR2: sed eiusmod\nR3: laboris nisi ut\nR4: aliquip'), findsNWidgets(3));
+    expect(find.textContaining('L'), findsNWidgets(6));
+    expect(find.text('Next review:\nyyyy-mm-dd'), findsNWidgets(6));
   });
 
-  testWidgets('MemorizationDeckActivity has three cards with different colors', (WidgetTester tester) async {
+  testWidgets('MemorizationDeckActivity has cards with the correct color',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: MemorizationDeckActivity(),
       ),
     );
 
-    // Find all card containers
-    final cardContainers = tester.widgetList<Container>(find.byType(Container)).where((container) {
-      return container.decoration is BoxDecoration;
+    final cardContainers =
+        tester.widgetList<Container>(find.byType(Container)).where((container) {
+      final decoration = container.decoration as BoxDecoration?;
+      return decoration != null && decoration.color == const Color(0xFF4A6FA5);
     }).toList();
 
-    expect(cardContainers.length, 4); // 3 cards + 1 main container
-
-    final cardColors = cardContainers.map((container) {
-      final decoration = container.decoration as BoxDecoration;
-      return decoration.color;
-    }).toList();
-
-    expect(cardColors, containsAll([const Color(0xFF5DB075), const Color(0xFFFFD166), const Color(0xFFFF6961)]));
+    expect(cardContainers.length, 6);
   });
 
-  testWidgets('MemorizationDeckActivity horizontal scroll works', (WidgetTester tester) async {
+  testWidgets('MemorizationDeckActivity horizontal scroll works',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: MemorizationDeckActivity(),
       ),
     );
 
-    final cardContainerFinder = find.byWidgetPredicate((widget) =>
-      widget is Container && widget.decoration is BoxDecoration);
+    final cardContainerFinder = find.byWidgetPredicate(
+        (widget) => widget is Container && widget.decoration is BoxDecoration);
 
     final scrollableFinder = find.descendant(
       of: cardContainerFinder,
@@ -64,7 +62,8 @@ void main() {
     expect(scrollable.scrollDirection, Axis.horizontal);
   });
 
-  testWidgets('MemorizationDeckActivity button press works', (WidgetTester tester) async {
+  testWidgets('MemorizationDeckActivity button press works',
+      (WidgetTester tester) async {
     bool buttonPressed = false;
 
     await tester.pumpWidget(
@@ -80,7 +79,6 @@ void main() {
       ),
     );
 
-    // Verify that the button press changes the state
     await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
 

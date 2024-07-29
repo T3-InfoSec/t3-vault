@@ -18,7 +18,8 @@ class MemorizationDeckActivity extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                width: 400,
+                //width: 400,
+                width: MediaQuery.of(context).size.width * 0.9,
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF5F5F5),
@@ -36,20 +37,17 @@ class MemorizationDeckActivity extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: <Widget>[
-                          _buildCard(
-                              'L0 Q Lorem Ipsum',
-                              'R1: adipiscing elit\nR2: sed eiusmod\nR3: laboris nisi ut\nR4: aliquip',
-                              const Color(0xFF5DB075)),
+                          _buildCard('L0', 'Next review:\nyyyy-mm-dd'),
                           const SizedBox(width: 10),
-                          _buildCard(
-                              'L0 Q Lorem Ipsum',
-                              'R1: adipiscing elit\nR2: sed eiusmod\nR3: laboris nisi ut\nR4: aliquip',
-                              const Color(0xFFFFD166)),
+                          _buildCard('L1', 'Next review:\nyyyy-mm-dd'),
                           const SizedBox(width: 10),
-                          _buildCard(
-                              'L0 Q Lorem Ipsum',
-                              'R1: adipiscing elit\nR2: sed eiusmod\nR3: laboris nisi ut\nR4: aliquip',
-                              const Color(0xFFFF6961)),
+                          _buildCard('L2', 'Next review:\nyyyy-mm-dd'),
+                          const SizedBox(width: 10),
+                          _buildCard('L3', 'Next review:\nyyyy-mm-dd'),
+                          const SizedBox(width: 10),
+                          _buildCard('L4', 'Next review:\nyyyy-mm-dd'),
+                          const SizedBox(width: 10),
+                          _buildCard('L5', 'Next review:\nyyyy-mm-dd'),
                         ],
                       ),
                     ),
@@ -75,12 +73,13 @@ class MemorizationDeckActivity extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(String title, String content, Color backgroundColor) {
+  Widget _buildCard(String title, String content) {
     return Container(
-      width: 150,
+      width: 200,
+      height: 150,
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: const Color(0xFF4A6FA5),
         borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
@@ -95,10 +94,15 @@ class MemorizationDeckActivity extends StatelessWidget {
         children: <Widget>[
           Text(
             title,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white),
           ),
           const SizedBox(height: 5),
-          Text(content),
+          Text(
+            content,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white),
+          ),
         ],
       ),
     );
