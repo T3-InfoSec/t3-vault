@@ -30,6 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  memory_assistant:
+    git:
+      url: https://github.com/T3-InfoSec/t3-memassist.git
+      ref: migrate_main_logic
+  intl: ^0.19.0
 
 
   # The following adds the Cupertino Icons font to your application.
