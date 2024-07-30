@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:intl/intl.dart';
+
+import 'package:memorization_assistant_flutter/card_details_activity.dart';
 import 'package:memory_assistant/memory_assistant.dart';
 
 class MemorizationDeckActivity extends StatelessWidget {
@@ -61,7 +64,6 @@ class MemorizationDeckActivity extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                //width: 400,
                 width: MediaQuery.of(context).size.width * 0.9,
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -80,13 +82,25 @@ class MemorizationDeckActivity extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: memoCards.asMap().entries.map((entry) {
-                          int index = entry.key;
+                          int nodeNumber = entry.key;
                           MemoCard memoCard = entry.value;
-                          return Row(
-                            children: [
-                              _buildCard('L$index', memoCard),
-                              const SizedBox(width: 10),
-                            ],
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CardDetailsActivity(
+                                      nodeNumber: nodeNumber,
+                                      memoCard: memoCard),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                _buildCard('L$nodeNumber', memoCard),
+                                const SizedBox(width: 10),
+                              ],
+                            ),
                           );
                         }).toList(),
                       ),
