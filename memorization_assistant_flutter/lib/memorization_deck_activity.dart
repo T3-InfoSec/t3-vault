@@ -5,11 +5,19 @@ import 'package:intl/intl.dart';
 import 'package:memorization_assistant_flutter/card_details_activity.dart';
 import 'package:memory_assistant/memory_assistant.dart';
 
+/// A widget that represents the main activity for showing memory cards 
+/// in the Memorization Deck.
+///
+/// The [MemorizationDeckActivity] class is a stateless widget that displays a 
+/// collection of memory cards, which users can interact with to review their 
+/// tacit knowledge protocol.
 class MemorizationDeckActivity extends StatelessWidget {
   const MemorizationDeckActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // The following variables are harcoded memory cards to be used until the greatwall protocol flow is developed.
+    // TODO Gets the memory cards from the protocol.
     Map<String, dynamic> knowledgeTree = {
       "firstLevel": [
         "48c52a27aed9c85e69925c4132d71dabfbb4f89500931fbdc62393f8d87a41d0",

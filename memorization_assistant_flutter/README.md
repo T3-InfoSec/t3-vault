@@ -1,10 +1,10 @@
 # memorization assistant flutter
 
-Memorization Assistant Flutter package
+This package is a Flutter application that helps users memorize their tacit knowledge protocol through memory cards that need to be reviewed periodically.
 
 ## Description
 
-This project is a Flutter application that helps users memorize their tacit knowledge protocol through memory cards that need to be reviewed periodically. The project leverages the logic of the `memorization_assistant_dart` library, which can be found [here](https://github.com/T3-InfoSec/t3-memassist). As it helps to memorize a specific flow, this package depends on this flow.
+The project leverages the logic of the `memorization_assistant_dart` library, which can be found [here](https://github.com/T3-InfoSec/t3-memassist). As it helps to memorize a specific flow, this package depends on this flow.
 
 ## Features
 

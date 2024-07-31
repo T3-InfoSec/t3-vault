@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:memory_assistant/memory_assistant.dart';
 
+/// A widget that displays the detailed view of a specific memory card.
+///
+/// The [CardDetailsActivity] class is a stateless widget that shows the 
+/// details of a selected memory card, including its state and due date.
 class CardDetailsActivity extends StatelessWidget {
   final int nodeNumber;
   final MemoCard memoCard;
 
+  /// Creates a detailed view of a memory card.
+  ///
+  /// Constructor requires two parameters: 
+  /// [nodeNumber] to identify the position of the card in the knowledge 
+  /// tree and [memoCard] to provide the card's data.
   const CardDetailsActivity({
     super.key,
     required this.nodeNumber,
