@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:memorization_assistant_flutter/card_details_activity.dart';
 import 'package:memorization_assistant_flutter/memorization_deck_activity.dart';
 
 void main() {
@@ -16,11 +17,18 @@ void main() {
 
     expect(find.text('My Cards'), findsOneWidget);
 
+    expect(find.textContaining('L'), findsNWidgets(10));
+    expect(find.textContaining('Next review:\n'), findsNWidgets(10));
+    
     expect(find.byType(ElevatedButton), findsOneWidget);
     expect(find.text('Try protocol'), findsOneWidget);
+    await tester.tap(find.text('Try protocol'));
+    await tester.pump();
 
-    expect(find.textContaining('L'), findsNWidgets(6));
-    expect(find.text('Next review:\nyyyy-mm-dd'), findsNWidgets(6));
+    await tester.tap(find.byType(GestureDetector).first);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CardDetailsActivity), findsOneWidget);
   });
 
   testWidgets('MemorizationDeckActivity has cards with the correct color',
@@ -37,7 +45,7 @@ void main() {
       return decoration != null && decoration.color == const Color(0xFF4A6FA5);
     }).toList();
 
-    expect(cardContainers.length, 6);
+    expect(cardContainers.length, 10);
   });
 
   testWidgets('MemorizationDeckActivity horizontal scroll works',
