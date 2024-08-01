@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
-
 import 'package:memorization_assistant_flutter/card_details_activity.dart';
+import 'package:memorization_assistant_flutter/utils/memo_card_utils.dart';
 import 'package:memory_assistant/memory_assistant.dart';
 
 /// A widget that represents the main activity for showing memory cards 
@@ -161,18 +160,12 @@ class MemorizationDeckActivity extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Next review:\n${_formatDueDate(memoCard.due)}',
+            'Next review:\n${MemoCardUtils.formatDueDate(memoCard.due)}',
             style: const TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
       ),
     );
-  }
-
-  String _formatDueDate(DateTime? dueDate) {
-    if (dueDate == null) return 'Not scheduled';
-
-    return DateFormat('yyyy-MM-dd HH:mm').format(dueDate.toLocal());
   }
 }

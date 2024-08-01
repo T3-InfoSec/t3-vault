@@ -25,7 +25,7 @@ void main() {
     expect(find.text('Greatwall TKBA Protocol'), findsOneWidget);
 
     expect(find.text('Memorization Card L1 Details'), findsOneWidget);
-    expect(find.text('State: ${testMemoCard.state}'), findsOneWidget);
+    expect(find.text('State: new'), findsOneWidget);
     expect(find.textContaining('Due: '), findsOneWidget);
   });
 

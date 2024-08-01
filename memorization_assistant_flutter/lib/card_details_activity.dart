@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import 'package:memorization_assistant_flutter/utils/memo_card_utils.dart';
 import 'package:memory_assistant/memory_assistant.dart';
 
 /// A widget that displays the detailed view of a specific memory card.
@@ -50,11 +51,11 @@ class CardDetailsActivity extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    'State: ${memoCard.state}',
+                    'State: ${MemoCardUtils.mapStatusToLabel(memoCard.state)}',
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text(
-                    'Due: ${_formatDueDate(memoCard.due)}',
+                    'Due: ${MemoCardUtils.formatDueDate(memoCard.due)}',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -78,10 +79,5 @@ class CardDetailsActivity extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _formatDueDate(DateTime? dueDate) {
-    if (dueDate == null) return 'Not scheduled';
-    return DateFormat('yyyy-MM-dd HH:mm').format(dueDate.toLocal());
   }
 }
