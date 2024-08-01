@@ -123,7 +123,9 @@ class MemorizationDeckActivity extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF70A8FF),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO go to greatwall protocol
+                  },
                   child: const Text('Try protocol'),
                 ),
               ),

@@ -70,7 +70,7 @@ class CardDetailsActivity extends StatelessWidget {
                   backgroundColor: const Color(0xFF70A8FF),
                 ),
                 onPressed: () {
-                  // TODO Redirect to greatwall protocol
+                  // TODO go to greatwall protocol
                 },
                 child: const Text('Try protocol'),
               ),

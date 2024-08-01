@@ -11,36 +11,81 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Greatwall',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const HomeScreen(), // Mock home to test
+      home: const HomeActivity(),
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeActivity extends StatelessWidget {
+  const HomeActivity({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: const Text('Greatwall TKBA protocol'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MemorizationDeckActivity(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              width: 300, 
+              height: 300,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
               ),
-            );
-          },
-          child: const Text('Go to Memorization Deck Activity'),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(25),
+                child: Image.asset(
+                  'assets/images/welcome_app_icon.jpeg',
+                  fit: BoxFit.cover, 
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            SizedBox(
+              width: 250,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF70A8FF),
+                ),
+                onPressed: () {
+                  // TODO go to greatwall protocol
+                },
+                child: const Text('Deriving your hash'),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            SizedBox(
+              width: 250,
+              height: 50,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF70A8FF),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MemorizationDeckActivity(),
+                    ),
+                  );
+                },
+                child: const Text('Practice on your derivation'),
+              ),
+            ),
+          ],
         ),
       ),
     );
