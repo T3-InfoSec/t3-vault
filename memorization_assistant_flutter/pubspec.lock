@@ -160,7 +160,7 @@ packages:
     description:
       path: "."
       ref: migrate_main_logic
-      resolved-ref: a7755f3d554981b1f7d4bca0562acd65b5f7d643
+      resolved-ref: "58ce429f4bd5fcaea564e2d88c5d9212b8eefe3b"
       url: "https://github.com/T3-InfoSec/t3-memassist.git"
     source: git
     version: "0.1.0-dev"

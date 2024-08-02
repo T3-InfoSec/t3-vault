@@ -17,33 +17,26 @@ class MemorizationDeckActivity extends StatelessWidget {
   Widget build(BuildContext context) {
     // The following variables are harcoded memory cards to be used until the greatwall protocol flow is developed.
     // TODO Gets the memory cards from the protocol.
-    Map<String, dynamic> knowledgeTree = {
-      "firstLevel": [
-        "48c52a27aed9c85e69925c4132d71dabfbb4f89500931fbdc62393f8d87a41d0",
-        "e4194aaba55b31863701448601059117380743180332343aa31f28036177380a"
-      ],
-      "secondLevel": {
-        "option1": [
-          "3af2c496544250ce6e5d81718a71d7444da8354c22e1a532f1e2716796d4dfd1",
-          "6cb26a11ea79cb18e9a468f9950050fefc9d3303d918dbcef1f9cb1180024c70"
-        ],
-        "option2": [
-          "a37f389f59d9aeebe792e69c274386be7b627f689a96e804f10b22d98caa2ef1",
-          "5c10776f6eaa9fae4e77b136fe2b6ed4de3e7a3dcee0f26fd1c737c390a72693"
-        ],
-      }
-    };
-
-    MemoCard level1MemoCard = MemoCard(knowledgeTree);
-    MemoCard level2MemoCard = MemoCard(knowledgeTree);
-    MemoCard level3MemoCard = MemoCard(knowledgeTree);
-    MemoCard level4MemoCard = MemoCard(knowledgeTree);
-    MemoCard level5MemoCard = MemoCard(knowledgeTree);
-    MemoCard level6MemoCard = MemoCard(knowledgeTree);
-    MemoCard level7MemoCard = MemoCard(knowledgeTree);
-    MemoCard level8MemoCard = MemoCard(knowledgeTree);
-    MemoCard level9MemoCard = MemoCard(knowledgeTree);
-    MemoCard level10MemoCard = MemoCard(knowledgeTree);
+    MemoCard level1MemoCard = MemoCard();
+    level1MemoCard.rateCard("easy");
+    MemoCard level2MemoCard = MemoCard();
+    level2MemoCard.rateCard("easy");
+    MemoCard level3MemoCard = MemoCard();
+    level3MemoCard.rateCard("easy");
+    MemoCard level4MemoCard = MemoCard();
+    level4MemoCard.rateCard("good");
+    MemoCard level5MemoCard = MemoCard();
+    level5MemoCard.rateCard("good");
+    MemoCard level6MemoCard = MemoCard();
+    level6MemoCard.rateCard("good");
+    MemoCard level7MemoCard = MemoCard();
+    level7MemoCard.rateCard("hard");
+    MemoCard level8MemoCard = MemoCard();
+    level8MemoCard.rateCard("hard");
+    MemoCard level9MemoCard = MemoCard();
+    level9MemoCard.rateCard("hard");
+    MemoCard level10MemoCard = MemoCard();
+    level10MemoCard.rateCard("again");
 
     List<MemoCard> memoCards = [
       level1MemoCard,
