@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:greatwall_protocol_flutter/knowledge_types_activity.dart';
+import 'package:memorization_assistant_flutter/memorization_deck_activity.dart';
 
 void main() {
   runApp(const MyApp());
@@ -94,7 +95,12 @@ class HomeActivity extends StatelessWidget {
                   backgroundColor: const Color(0xFF70A8FF),
                 ),
                 onPressed: () {
-                  // TODO go to memorization assistant
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MemorizationDeckActivity(),
+                    ),
+                  );
                 },
                 child: const Text('Practice on your derivation'),
               ),
