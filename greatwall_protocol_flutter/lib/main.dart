@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:greatwall_protocol_flutter/knowledge_types_activity.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -58,7 +60,12 @@ class HomeActivity extends StatelessWidget {
                   backgroundColor: const Color(0xFF70A8FF),
                 ),
                 onPressed: () {
-                  // TODO go to greatwall protocol
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const KnowledgeTypesActivity(),
+                    ),
+                  );
                 },
                 child: const Text('Deriving your hash'),
               ),
