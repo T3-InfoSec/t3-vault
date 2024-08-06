@@ -13,7 +13,6 @@ void main() {
 
     expect(find.text('Greatwall TKBA Protocol'), findsOneWidget);
 
-    // Verify that there are four buttons, each with the text from knowledgeTypes.
     final List<String> knowledgeTypes = ["Hashviz", "Formosa", "Fractal", "Voice"];
     for (String type in knowledgeTypes) {
       expect(find.text(type), findsOneWidget);
