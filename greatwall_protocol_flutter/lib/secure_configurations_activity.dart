@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+
 import 'package:greatwall_protocol_flutter/knowledge_types_activity.dart';
 
+/// A widget that allows users to configure security preferences for the Greatwall TKBA protocol.
+///
+/// The [SecureConfigActivity] class provides a user interface for configuring 
+/// security-related preferences. Currently, it includes options to toggle 
+/// outsourced computation and check an encryption key password. The interface 
+/// will be expanded in the future to include additional security settings.
 class SecureConfigActivity extends StatefulWidget {
   const SecureConfigActivity({super.key});
 
@@ -106,6 +113,11 @@ class SecureConfigActivityState extends State<SecureConfigActivity> {
     );
   }
 
+  /// Checks if the entered password matches the actual user password.
+  ///
+  /// The [_checkPassword] method compares the [inputPassword] provided by the 
+  /// user with the actual [password]. It displays an alert dialog indicating 
+  /// whether the password is correct or incorrect.
   void _checkPassword(BuildContext context, String inputPassword, String password) {
     final isPasswordCorrect = inputPassword == password;
 
