@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:greatwall_protocol_flutter/knowledge_types_activity.dart';
+import 'package:greatwall_protocol_flutter/secure_configurations_activity.dart';
 import 'package:memorization_assistant_flutter/memorization_deck_activity.dart';
 
 void main() {
@@ -77,7 +77,7 @@ class HomeActivity extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const KnowledgeTypesActivity(),
+                      builder: (context) => const SecureConfigActivity(),
                     ),
                   );
                 },
