@@ -24,8 +24,7 @@ The project leverages the logic of the `memorization_assistant_dart` library, wh
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/memorization_assistant_flutter.git
-    cd memorization_assistant_flutter
+    git clone https://github.com/T3-InfoSec/t3-vault.git
     ```
 
 2. Get the dependencies:
@@ -58,7 +57,7 @@ The project leverages the logic of the `memorization_assistant_dart` library, wh
 
 For more details on the `memorization_assistant_dart` library and the supporting flow, please refer to their respective documentation. Contributions are welcome! Please see our [contributing guidelines](CONTRIBUTING.md) for more information on how to get involved.
 
-If you encounter any issues or have any questions, please [open an issue](https://github.com/yourusername/memorization_assistant_flutter/issues) on GitHub. We aim to respond to all queries within 48 hours.
+If you encounter any issues or have any questions, please [open an issue](https://github.com/T3-InfoSec/t3-vault/issues) on GitHub. We aim to respond to all queries within 48 hours.
 
 ## Resources
 
