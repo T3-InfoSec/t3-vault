@@ -14,10 +14,16 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  intl: ^0.19.0
+  memory_assistant:
+    git:
+      url: https://github.com/T3-InfoSec/t3-memassist.git
+      ref: migrate_main_logic
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.4
 
   flutter_lints: ^4.0.0
 
