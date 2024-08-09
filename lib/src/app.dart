@@ -12,7 +12,7 @@ import 'features/sample/sample_item_list_view.dart';
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
 
-  T3Vault({
+  const T3Vault({
     super.key,
     required this.settingsController,
   });
