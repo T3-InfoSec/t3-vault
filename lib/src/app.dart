@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
 
 import 'core/settings/settings_controller.dart';
 import 'core/settings/settings_view.dart';
@@ -11,7 +12,7 @@ import 'features/sample/sample_item_list_view.dart';
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
 
-  const T3Vault({
+  T3Vault({
     super.key,
     required this.settingsController,
   });
@@ -25,7 +26,7 @@ class T3Vault extends StatelessWidget {
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
-        return MaterialApp(
+        return MaterialApp.router(
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
           // returns to the app after it has been killed while running in the
@@ -62,22 +63,49 @@ class T3Vault extends StatelessWidget {
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.
-          onGenerateRoute: (RouteSettings routeSettings) {
-            return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
-                  case SampleItemListView.routeName:
-                  default:
-                    return const SampleItemListView();
-                }
-              },
-            );
-          },
+          routerConfig: GoRouter(
+            restorationScopeId: 'router',
+            routes: <RouteBase>[
+              GoRoute(
+                path: SampleItemListView.routeName,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return const MaterialPage(
+                    // If the user leaves and returns to the app after it has
+                    // been killed while running in the background, the
+                    // navigation stack is restored.
+                    restorationId: 'router.list',
+                    child: SampleItemListView(),
+                  );
+                },
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: SampleItemDetailsView.routeName,
+                    pageBuilder: (BuildContext context, GoRouterState state) {
+                      return const MaterialPage(
+                        // If the user leaves and returns to the app after it
+                        // has been killed while running in the background, the
+                        // navigation stack is restored.
+                        restorationId: 'router.list.details',
+                        child: SampleItemDetailsView(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: SettingsView.routeName,
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return MaterialPage(
+                     // If the user leaves and returns to the app after it has
+                     // been killed while running in the background, the
+                     // navigation stack is restored.
+                    restorationId: 'router.settings',
+                    child: SettingsView(controller: settingsController),
+                  );
+                },
+              ),
+            ],
+          ),
         );
       },
     );

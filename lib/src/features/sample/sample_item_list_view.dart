@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/settings/settings_view.dart';
 import 'sample_item.dart';
@@ -24,10 +25,8 @@ class SampleItemListView extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              // Navigate to the settings page. If the user leaves and returns
-              // to the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(context, SettingsView.routeName);
+              // Navigate to the settings page.
+              context.go(SettingsView.routeName);
             },
           ),
         ],
@@ -55,13 +54,8 @@ class SampleItemListView extends StatelessWidget {
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
             ),
             onTap: () {
-              // Navigate to the details page. If the user leaves and returns to
-              // the app after it has been killed while running in the
-              // background, the navigation stack is restored.
-              Navigator.restorablePushNamed(
-                context,
-                SampleItemDetailsView.routeName,
-              );
+              // Navigate to the details page.
+              context.go('/${SampleItemDetailsView.routeName}');
             }
           );
         },
