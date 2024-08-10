@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'core/settings/settings_controller.dart';
-import 'core/settings/settings_view.dart';
+import 'core/settings/domain/usecases/settings_controller.dart';
+import 'core/settings/presentation/pages/settings_page.dart';
 import 'features/sample/sample_item_details_view.dart';
 import 'features/sample/sample_item_list_view.dart';
 
@@ -67,8 +67,8 @@ class T3Vault extends StatelessWidget {
               settings: routeSettings,
               builder: (BuildContext context) {
                 switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
+                  case SettingsPage.routeName:
+                    return SettingsPage(controller: settingsController);
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
                   case SampleItemListView.routeName:
