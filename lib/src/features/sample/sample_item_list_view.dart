@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/settings/settings_view.dart';
+import '../../core/settings/presentation/pages/settings_page.dart';
 import 'sample_item.dart';
 import 'sample_item_details_view.dart';
 
@@ -26,7 +26,7 @@ class SampleItemListView extends StatelessWidget {
             icon: const Icon(Icons.settings),
             onPressed: () {
               // Navigate to the settings page.
-              context.go(SettingsView.routeName);
+              context.go(SettingsPage.routeName);
             },
           ),
         ],

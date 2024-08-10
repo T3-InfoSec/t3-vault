@@ -3,8 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import 'core/settings/settings_controller.dart';
-import 'core/settings/settings_view.dart';
+import 'core/settings/domain/usecases/settings_controller.dart';
+import 'core/settings/presentation/pages/settings_page.dart';
 import 'features/sample/sample_item_details_view.dart';
 import 'features/sample/sample_item_list_view.dart';
 
@@ -93,14 +93,14 @@ class T3Vault extends StatelessWidget {
                 ],
               ),
               GoRoute(
-                path: SettingsView.routeName,
+                path: SettingsPage.routeName,
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   return MaterialPage(
                      // If the user leaves and returns to the app after it has
                      // been killed while running in the background, the
                      // navigation stack is restored.
                     restorationId: 'router.settings',
-                    child: SettingsView(controller: settingsController),
+                    child: SettingsPage(controller: settingsController),
                   );
                 },
               ),
