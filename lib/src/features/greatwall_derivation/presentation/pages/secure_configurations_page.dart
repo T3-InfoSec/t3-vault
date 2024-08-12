@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/password_text_field_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/toggle_switch_widget.dart';
 
 /// NOTE: This class is not part of the MVP and is currently disabled. 
@@ -52,24 +53,7 @@ class SecureConfigPageState extends State<SecureConfigPage> {
             const SizedBox(height: 30),
             const Text('Check encryption key:'),
             const SizedBox(height: 20),
-            Center(
-              child: Container(
-                width: 306,
-                height: 130,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFD9D9D9),
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                child: TextField(
-                  controller: _controller,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(16.0),
-                  ),
-                  maxLines: null,
-                ),
-              ),
-            ),
+            PasswordTextField(controller: _controller),
             const SizedBox(height: 30),
             CustomElevatedButton(
               text: 'Check password',
