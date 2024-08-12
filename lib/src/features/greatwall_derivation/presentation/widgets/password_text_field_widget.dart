@@ -24,7 +24,10 @@ class PasswordTextField extends StatelessWidget {
           decoration: const InputDecoration(
             border: InputBorder.none,
             contentPadding: EdgeInsets.all(16.0),
+            hintText: 'Password',
+            hintStyle: TextStyle(color: Colors.black),
           ),
+          style: const TextStyle(color: Colors.black),
           maxLines: null,
         ),
       ),

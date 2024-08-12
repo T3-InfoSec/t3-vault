@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 /// A dropdown button that allows users to select a theme.
@@ -18,7 +17,10 @@ class ThemeDropdownButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: selectedTheme,
-      hint: const Text('Choose Theme'),
+      hint: const Text(
+        'Choose Theme',
+        style:  TextStyle(color: Color(0xFF70A8FF)),
+      ),
       icon: const Icon(Icons.arrow_downward),
       elevation: 16,
       style: const TextStyle(color: Color(0xFF70A8FF)),
