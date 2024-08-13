@@ -7,7 +7,7 @@ import 'sample_item_details_view.dart';
 
 /// Displays a list of SampleItems.
 class SampleItemListView extends StatelessWidget {
-  static const routeName = '/';
+  static const routeName = 'sampleItemListView';
 
   final List<SampleItem> items;
 
@@ -26,7 +26,7 @@ class SampleItemListView extends StatelessWidget {
             icon: const Icon(Icons.settings),
             onPressed: () {
               // Navigate to the settings page.
-              context.go(SettingsPage.routeName);
+              context.go('/${SettingsPage.routeName}');
             },
           ),
         ],
@@ -55,8 +55,10 @@ class SampleItemListView extends StatelessWidget {
             ),
             onTap: () {
               // Navigate to the details page.
-              context.go('/${SampleItemDetailsView.routeName}');
-            }
+              context.go(
+                '/sampleItemListView/${SampleItemDetailsView.routeName}',
+              );
+            },
           );
         },
       ),
