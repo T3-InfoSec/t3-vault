@@ -88,11 +88,9 @@ packages:
   great_wall:
     dependency: "direct main"
     description:
-      path: "."
-      ref: dart_migration_and_initialization
-      resolved-ref: "34784f71a1b9b1fa9d3bcf034a19c55db068dfff"
-      url: "https://github.com/T3-InfoSec/great-wall-dart.git"
-    source: git
+      path: "../../dart/great-wall-dart"
+      relative: true
+    source: path
     version: "0.1.0-dev"
   hashlib:
     dependency: transitive

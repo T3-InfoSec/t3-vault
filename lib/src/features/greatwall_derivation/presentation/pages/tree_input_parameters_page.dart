@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:great_wall/great_wall.dart';
+
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_text_field_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/password_text_field_widget.dart';
@@ -64,7 +66,30 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
             CustomElevatedButton(
                 text: 'Derive',
                 onPressed: () {
-                  // TODO
+                  GreatWall greatWall = GreatWall(
+                      treeArity: int.tryParse(_arityController.text) ?? 0,
+                      treeDepth: int.tryParse(_depthController.text) ?? 0,
+                      timeLockPuzzleParam:
+                          int.tryParse(_tlpController.text) ?? 0);
+                  greatWall.seed0 = _passwordController.text;
+
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('result'),
+                        content: Text('KA: ${greatWall.derivationHashResult}'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
                 }),
           ],
         ),
