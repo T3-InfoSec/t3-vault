@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:great_wall/great_wall.dart';
-
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_text_field_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/password_text_field_widget.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/theme_dropdown_button_widget.dart';
-
-/// A page that allows users to configure tree input parameters for the derivation process.
-///
-/// The [TreeInputsParametersPage] class includes a dropdown to select a theme and several buttons
-/// to configure TLP, tree depth, and tree arity. It also includes a password field and a
-/// final "Derive" button.
 
 class TreeInputsParametersPage extends StatefulWidget {
   const TreeInputsParametersPage({super.key});
@@ -28,7 +19,6 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
   final TextEditingController _arityController = TextEditingController();
 
   String? _selectedTheme;
-
   final List<String> _themes = ["BIP39", "medieval fantasy", "sci-fi"];
 
   @override
@@ -39,7 +29,7 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
         title: const Text('Tree Input Parameters'),
         backgroundColor: const Color(0xFF70A8FF),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,14 +64,7 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
             CustomElevatedButton(
                 text: 'Derive',
                 onPressed: () {
-                  GreatWall greatWall = GreatWall(
-                      timeLockPuzzleParam:
-                          int.tryParse(_tlpController.text) ?? 0,
-                      treeDepth: int.tryParse(_depthController.text) ?? 0,
-                      treeArity: int.tryParse(_arityController.text) ?? 0);
-
-                  greatWall.seed0 = _passwordController.text;
-                  // TODO: Go to derivation process with greatwall object.
+                  // TODO
                 }),
           ],
         ),
