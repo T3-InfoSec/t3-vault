@@ -62,8 +62,8 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
               controller: _arityController,
             ),
             const SizedBox(height: 30),
-            PasswordTextField(controller: _passwordController),
-            const SizedBox(height: 80),
+            PasswordTextField(controller: _passwordController, hintText: "password"),
+            const SizedBox(height: 30),
             CustomElevatedButton(
                 text: 'Derive',
                 onPressed: () {

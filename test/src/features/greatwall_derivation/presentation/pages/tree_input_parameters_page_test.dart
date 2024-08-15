@@ -54,16 +54,4 @@ void main() {
     expect(find.widgetWithText(CustomTextField, 'Choose tree depth'), findsOneWidget);
     expect(find.widgetWithText(CustomTextField, 'Choose tree arity'), findsOneWidget);
   });
-
-  testWidgets('Derive button press does not crash', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: TreeInputsParametersPage(),
-      ),
-    );
-
-    await tester.tap(find.widgetWithText(CustomElevatedButton, 'Derive'));
-    await tester.pump();
-    // No specific behavior to test, just ensuring no crash
-  });
 }

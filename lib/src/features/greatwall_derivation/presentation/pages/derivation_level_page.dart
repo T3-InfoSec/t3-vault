@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
 
 class DerivationLevelPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class DerivationLevelPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Greatwall TKBA Protocol'),
+        title: const Text('Derivation Level'),
         backgroundColor: const Color(0xFF70A8FF),
       ),
       body: Center(
@@ -39,7 +40,8 @@ class DerivationLevelPage extends StatelessWidget {
                   CustomElevatedButton(
                     text: type,
                     onPressed: () {
-                      // TODO: Implement functionality for each button
+                      context.go(
+                        '/derivation_result'); // TODO: Implement functionality for each button
                     },
                   ),
                   const SizedBox(height: 20),

@@ -22,7 +22,7 @@ void main() {
       ];
 
       // Assert
-      expect(find.text('Greatwall TKBA Protocol'), findsOneWidget);
+      expect(find.text('Derivation Level'), findsOneWidget);
       expect(find.text('Level 0 of 1:'), findsOneWidget);
       for (final arityIndex in arityIndexes) {
         expect(find.text(arityIndex), findsOneWidget);

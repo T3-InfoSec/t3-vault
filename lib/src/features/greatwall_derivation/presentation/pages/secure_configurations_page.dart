@@ -53,7 +53,7 @@ class SecureConfigPageState extends State<SecureConfigPage> {
             const SizedBox(height: 30),
             const Text('Check encryption key:'),
             const SizedBox(height: 20),
-            PasswordTextField(controller: _controller),
+            PasswordTextField(controller: _controller, hintText: "password"),
             const SizedBox(height: 30),
             CustomElevatedButton(
               text: 'Check password',
