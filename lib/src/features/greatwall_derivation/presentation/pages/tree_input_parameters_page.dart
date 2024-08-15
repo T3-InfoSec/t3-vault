@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
@@ -72,24 +73,7 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
                       timeLockPuzzleParam:
                           int.tryParse(_tlpController.text) ?? 0);
                   greatWall.seed0 = _passwordController.text;
-
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('result'),
-                        content: Text('KA: ${greatWall.derivationHashResult}'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  context.go('/derivation_level');
                 }),
           ],
         ),

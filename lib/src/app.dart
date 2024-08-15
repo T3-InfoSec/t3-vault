@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/home_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
@@ -124,6 +125,12 @@ class T3Vault extends StatelessWidget {
                 path: '/tree_input_parameters',
                 builder: (BuildContext context, GoRouterState state) {
                   return const TreeInputsParametersPage();
+                },
+              ),
+              GoRoute(
+                path: '/derivation_level',
+                builder: (BuildContext context, GoRouterState state) {
+                  return const DerivationLevelPage();
                 },
               ),
             ],

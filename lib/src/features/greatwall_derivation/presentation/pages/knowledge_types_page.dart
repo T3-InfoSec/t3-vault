@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
 
 class KnowledgeTypesPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class KnowledgeTypesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Lista temporalmente codificada de tipos de conocimiento
+    // Temporarily hardcoded list of knowledge types
     final List<String> knowledgeTypes = [
       "Hashviz",
       "Formosa",
@@ -31,7 +32,8 @@ class KnowledgeTypesPage extends StatelessWidget {
                 CustomElevatedButton(
                   text: type,
                   onPressed: () {
-                    context.go('/tree_input_parameters');  // TODO: Implement functionality for each button
+                    context.go(
+                        '/tree_input_parameters'); // TODO: Implement functionality for each button
                   },
                 ),
                 const SizedBox(height: 20),
