@@ -9,7 +9,7 @@ import '../../../settings/domain/usecases/settings_controller.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key, required this.controller});
 
-  static const routeName = '/settings';
+  static const routeName = 'settings';
 
   final SettingsController controller;
 
