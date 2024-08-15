@@ -3,10 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/home_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
 
@@ -194,6 +192,59 @@ class T3Vault extends StatelessWidget {
                                 restorationId: 'router.root.settings',
                                 child: SettingsPage(
                                     controller: settingsController),
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: KnowledgeTypesPage.routeName,
+                            pageBuilder:
+                                (BuildContext context, GoRouterState state) {
+                              return const MaterialPage(
+                                // If the user leaves and returns to the app after it has
+                                // been killed while running in the background, the
+                                // navigation stack is restored.
+                                restorationId: 'router.root.knowledge_types',
+                                child: KnowledgeTypesPage(),
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: TreeInputParametersPage.routeName,
+                            pageBuilder:
+                                (BuildContext context, GoRouterState state) {
+                              return const MaterialPage(
+                                // If the user leaves and returns to the app after it has
+                                // been killed while running in the background, the
+                                // navigation stack is restored.
+                                restorationId:
+                                    'router.root.tree_input_parameters',
+                                child: TreeInputParametersPage(),
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: DerivationLevelPage.routeName,
+                            pageBuilder:
+                                (BuildContext context, GoRouterState state) {
+                              return const MaterialPage(
+                                // If the user leaves and returns to the app after it has
+                                // been killed while running in the background, the
+                                // navigation stack is restored.
+                                restorationId: 'router.root.derivation_level',
+                                child: DerivationLevelPage(),
+                              );
+                            },
+                          ),
+                          GoRoute(
+                            path: DerivationResultPage.routeName,
+                            pageBuilder:
+                                (BuildContext context, GoRouterState state) {
+                              return const MaterialPage(
+                                // If the user leaves and returns to the app after it has
+                                // been killed while running in the background, the
+                                // navigation stack is restored.
+                                restorationId: 'router.root.derivation_result',
+                                child: DerivationResultPage(),
                               );
                             },
                           ),

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
+import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
+import '../../../../core/settings/presentation/pages/settings_page.dart';
 
 class KnowledgeTypesPage extends StatelessWidget {
-  const KnowledgeTypesPage({super.key});
+  static const routeName = 'knowledge_types';
+
+  const KnowledgeTypesPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,26 +23,37 @@ class KnowledgeTypesPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Greatwall TKBA Protocol'),
-        backgroundColor: const Color(0xFF70A8FF),
+        title: const Text('T3-Vault'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go(HomePage.routeName);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            // iconSize: 300,
+            onPressed: () {
+              context.go('/${SettingsPage.routeName}');
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: knowledgeTypes.map((type) {
             return Column(
               children: [
-                CustomElevatedButton(
-                  text: type,
+                ElevatedButton(
                   onPressed: () {
-                    context.go(
-                        '/tree_input_parameters'); // TODO: Implement functionality for each button
+                    context.go('/${TreeInputParametersPage.routeName}');
                   },
+                  child: Text(type),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
               ],
             );
           }).toList(),

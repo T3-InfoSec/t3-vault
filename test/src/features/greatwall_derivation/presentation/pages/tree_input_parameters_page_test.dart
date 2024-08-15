@@ -12,7 +12,7 @@ void main() {
   testWidgets('Displays the correct title in AppBar', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: TreeInputsParametersPage(),
+        home: TreeInputParametersPage(),
       ),
     );
 
@@ -22,7 +22,7 @@ void main() {
   testWidgets('Displays all widgets correctly', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: TreeInputsParametersPage(),
+        home: TreeInputParametersPage(),
       ),
     );
 
@@ -35,7 +35,7 @@ void main() {
   testWidgets('Initial theme dropdown value is null', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: TreeInputsParametersPage(),
+        home: TreeInputParametersPage(),
       ),
     );
 
@@ -46,7 +46,7 @@ void main() {
   testWidgets('Text fields have correct hint text', (WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: TreeInputsParametersPage(),
+        home: TreeInputParametersPage(),
       ),
     );
 

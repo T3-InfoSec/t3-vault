@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
+
+import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
   const DerivationLevelPage({super.key});
+
+  static const routeName = 'derivation_level';
 
   @override
   Widget build(BuildContext context) {
@@ -16,38 +21,43 @@ class DerivationLevelPage extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Derivation Level'),
-        backgroundColor: const Color(0xFF70A8FF),
+        title: const Text('T3-Vault'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/${TreeInputParametersPage.routeName}');
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            // iconSize: 300,
+            onPressed: () {
+              context.go('/${SettingsPage.routeName}');
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Level 0 of 1:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ...arityIndexes.map((type) {
+            const Text('Level 0 of 1:'),
+            const SizedBox(height: 10),
+            ...arityIndexes.map((index) {
               return Column(
                 children: [
-                  CustomElevatedButton(
-                    text: type,
+                  ElevatedButton(
                     onPressed: () {
-                      context.go(
-                        '/derivation_result'); // TODO: Implement functionality for each button
+                      context.go('/${DerivationResultPage.routeName}');
                     },
+                    child: Text(index),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                 ],
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

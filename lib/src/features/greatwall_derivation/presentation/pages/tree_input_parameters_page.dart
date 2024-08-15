@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:great_wall/great_wall.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_elevated_button_widget.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/custom_text_field_widget.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/password_text_field_widget.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/theme_dropdown_button_widget.dart';
+import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
-class TreeInputsParametersPage extends StatefulWidget {
-  const TreeInputsParametersPage({super.key});
+class TreeInputParametersPage extends StatefulWidget {
+  const TreeInputParametersPage({super.key});
+
+  static const routeName = 'tree_input_parameters';
 
   @override
-  TreeInputsParametersPageState createState() =>
-      TreeInputsParametersPageState();
+  TreeInputParametersPageState createState() => TreeInputParametersPageState();
 }
 
-class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
+class TreeInputParametersPageState extends State<TreeInputParametersPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _tlpController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
@@ -27,54 +26,79 @@ class TreeInputsParametersPageState extends State<TreeInputsParametersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Tree Input Parameters'),
-        backgroundColor: const Color(0xFF70A8FF),
+        title: const Text('T3-Vault'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/${KnowledgeTypesPage.routeName}');
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            // iconSize: 300,
+            onPressed: () {
+              context.go('/${SettingsPage.routeName}');
+            },
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ThemeDropdownButton(
-              selectedTheme: _selectedTheme,
-              themes: _themes,
+            DropdownButton<String>(
+              value: _selectedTheme,
+              hint: const Text('Select Theme'),
+              items: _themes.map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
               onChanged: (String? value) {
                 setState(() {
                   _selectedTheme = value;
                 });
               },
             ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              hintText: 'Choose TLP',
+            const SizedBox(height: 10),
+            TextField(
               controller: _tlpController,
+              decoration: const InputDecoration(
+                hintText: 'Choose TLP',
+              ),
             ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              hintText: 'Choose tree depth',
+            const SizedBox(height: 10),
+            TextField(
               controller: _depthController,
+              decoration: const InputDecoration(
+                hintText: 'Choose tree depth',
+              ),
             ),
-            const SizedBox(height: 20),
-            CustomTextField(
-              hintText: 'Choose tree arity',
+            const SizedBox(height: 10),
+            TextField(
               controller: _arityController,
+              decoration: const InputDecoration(
+                hintText: 'Choose tree arity',
+              ),
             ),
-            const SizedBox(height: 30),
-            PasswordTextField(controller: _passwordController, hintText: "password"),
-            const SizedBox(height: 30),
-            CustomElevatedButton(
-                text: 'Derive',
-                onPressed: () {
-                  GreatWall greatWall = GreatWall(
-                      treeArity: int.tryParse(_arityController.text) ?? 0,
-                      treeDepth: int.tryParse(_depthController.text) ?? 0,
-                      timeLockPuzzleParam:
-                          int.tryParse(_tlpController.text) ?? 0);
-                  greatWall.seed0 = _passwordController.text;
-                  context.go('/derivation_level');
-                }),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                hintText: 'Password',
+              ),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                context.go('/${DerivationLevelPage.routeName}');
+              },
+              child: const Text('Derive'),
+            ),
           ],
         ),
       ),
