@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
 import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
 
 import '../../../../core/settings/presentation/pages/settings_page.dart';
@@ -49,7 +49,7 @@ class KnowledgeTypesPage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/${TreeInputParametersPage.routeName}');
+                    context.go('/${TreeInputsPage.routeName}');
                   },
                   child: Text(type),
                 ),

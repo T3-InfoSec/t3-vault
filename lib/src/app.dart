@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_input_parameters_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
 
 import 'core/settings/domain/usecases/settings_controller.dart';
 import 'core/settings/presentation/pages/settings_page.dart';
@@ -209,7 +209,7 @@ class T3Vault extends StatelessWidget {
                             },
                           ),
                           GoRoute(
-                            path: TreeInputParametersPage.routeName,
+                            path: TreeInputsPage.routeName,
                             pageBuilder:
                                 (BuildContext context, GoRouterState state) {
                               return const MaterialPage(
@@ -218,7 +218,7 @@ class T3Vault extends StatelessWidget {
                                 // navigation stack is restored.
                                 restorationId:
                                     'router.root.tree_input_parameters',
-                                child: TreeInputParametersPage(),
+                                child: TreeInputsPage(),
                               );
                             },
                           ),

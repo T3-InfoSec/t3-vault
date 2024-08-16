@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
 /// NOTE: This class is not part of the MVP and is currently disabled.
 /// In the future, it may be revisited to add configuration and validation of derivation parameters.
