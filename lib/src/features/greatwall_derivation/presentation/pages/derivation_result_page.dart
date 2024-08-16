@@ -1,68 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
-import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
-class DerivationResultPage extends StatefulWidget {
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
+import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
+import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+
+class DerivationResultPage extends StatelessWidget {
   const DerivationResultPage({super.key});
 
   static const routeName = 'derivation_result';
 
   @override
-  DerivationResultPageState createState() => DerivationResultPageState();
-}
-
-class DerivationResultPageState extends State<DerivationResultPage> {
-  // Temporarily Hardcoded result
-  final String kaResult =
-      "3bd62811a6386e35ab18ea341c9b9766dc7b7ee3b84049e6f71ca33f6e552b0cb652a42846b44131018394727ee49beb239f79570369bdda4b8092640b1976ed9fdd3be0878c01f91f2ee28667f5d510dc7fe19136257441eed5e40eafcca552bc05373f1fa05c4b73f3286dc9d1733fc49b45df1dbc9a5216cfdd0848b7177b";
-
-  late final TextEditingController _resultController;
-
-  @override
-  void initState() {
-    super.initState();
-    _resultController = TextEditingController(text: kaResult);
-  }
-
-  @override
-  void dispose() {
-    _resultController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('T3-Vault'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            // iconSize: 300,
+    return BlocProvider(
+      create: (context) => GreatWallBloc()..add(LoadResult()),
+      child: Scaffold(
+                appBar: AppBar(
+          title: const Text('T3-Vault'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              context.go('/${SettingsPage.routeName}');
+              context.go('/${TreeInputsPage.routeName}'); // TODO: re-initialize the protocol derivation process.
             },
           ),
-        ],
-      ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 10),
-            const Text('KA Result:'),
-            const SizedBox(height: 10),
-            TextField(controller: _resultController),
-            const SizedBox(height: 10),
-            ElevatedButton(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
               onPressed: () {
-                context.go(HomePage.routeName);
+                context.go('/${SettingsPage.routeName}');
               },
-              child: const Text('Reset'),
             ),
           ],
+        ),
+        body: Center(
+          child: BlocBuilder<GreatWallBloc, GreatWallState>(
+            builder: (context, state) {
+              if (state is GreatWallFinished) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 10),
+                    const Text('KA Result:'),
+                    const SizedBox(height: 10),
+                    TextField(
+                      controller: TextEditingController(text: state.derivationHashResult),
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        // context.read<GreatWallBloc>().add(Restart()); // TODO: re-initialize the protocol derivation process.
+                        context.go(HomePage.routeName);
+                      },
+                      child: const Text('Reset'),
+                    ),
+                  ],
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
       ),
     );

@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/tree_inputs/tree_inputs_bloc.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
 import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/tree_inputs/tree_inputs_event.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/tree_inputs/tree_inputs_state.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/confirmation_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
 class TreeInputsPage extends StatelessWidget {
-  const TreeInputsPage({super.key});
+  TreeInputsPage({super.key});
 
-  static const routeName = 'tree_input_parameters';
+  static const routeName = 'tree_inputs';
+
+  final TextEditingController _arityController = TextEditingController();
+  final TextEditingController _depthController = TextEditingController();
+  final TextEditingController _timeLockController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,76 +40,82 @@ class TreeInputsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocProvider(
-        create: (context) => TreeInputsBloc(),
-        child: Center(
-          child: BlocBuilder<TreeInputsBloc, TreeInputsState>(
+      body: Column(
+        children: [
+          BlocBuilder<GreatWallBloc, GreatWallState>(
             builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  DropdownButton<String>(
-                    value: state.selectedTheme,
-                    hint: const Text('Select Theme'),
-                    items: ["BIP39", "medieval fantasy", "sci-fi"].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      context.read<TreeInputsBloc>().add(ThemeChanged(value));
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    onChanged: (value) {
-                      context.read<TreeInputsBloc>().add(TlpChanged(value));
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Choose TLP',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    onChanged: (value) {
-                      context.read<TreeInputsBloc>().add(DepthChanged(value));
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Choose tree depth',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    onChanged: (value) {
-                      context.read<TreeInputsBloc>().add(ArityChanged(value));
-                    },
-                    decoration: const InputDecoration(
-                      hintText: 'Choose tree arity',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    onChanged: (value) {
-                      context.read<TreeInputsBloc>().add(PasswordChanged(value));
-                    },
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      hintText: 'Password',
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/${DerivationLevelPage.routeName}');
-                    },
-                    child: const Text('Derive'),
-                  ),
-                ],
+              String? selectedOption;
+
+              if (state is GreatWallFormosaThemeState) {
+                selectedOption = state.selectedOption;
+              }
+
+              return DropdownButton<String>(
+                value: selectedOption,
+                hint: const Text('Select Theme'),
+                items:
+                    ["BIP39", "medieval fantasy", "sci-fi"].map((String value) { // TODO: Get Themes from t3-formosa-dart component
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    context
+                        .read<GreatWallBloc>()
+                        .add(GreatWallFormosaThemeSelected(newValue));
+                  }
+                },
               );
             },
           ),
-        ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _arityController,
+            decoration: const InputDecoration(labelText: 'Tree Arity'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _depthController,
+            decoration: const InputDecoration(labelText: 'Tree Depth'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _timeLockController,
+            decoration:
+                const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _passwordController,
+            // obscureText: true, TODO: Review this
+            decoration: const InputDecoration(hintText: 'Password'),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              final arity = int.parse(_arityController.text);
+              final depth = int.parse(_depthController.text);
+              final timeLock = int.parse(_timeLockController.text);
+
+              context.read<GreatWallBloc>().add(
+                    InitializeGreatWall(
+                      treeArity: arity,
+                      treeDepth: depth,
+                      timeLockPuzzleParam: timeLock,
+                      seed: _passwordController.text,
+                    ),
+                  );
+
+              context.go('/${ConfirmationPage.routeName}');
+            },
+            child: const Text('Start Derivation'),
+          ),
+        ],
       ),
     );
   }
