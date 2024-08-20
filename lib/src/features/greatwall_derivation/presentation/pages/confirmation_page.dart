@@ -15,7 +15,7 @@ class ConfirmationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('Confirmation'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -40,23 +40,30 @@ class ConfirmationPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ListTile(
-                    title: const Text('Tacit Knowledge'),
-                    subtitle: Text(state.tacitKnowledge),
+                  const Text(
+                    'Tacit Knowledge',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  ListTile(
-                    title: const Text('Tree Arity'),
-                    subtitle: Text('${state.treeArity}'),
+                  Text(state.tacitKnowledge),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Tree Arity',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  ListTile(
-                    title: const Text('Tree Depth'),
-                    subtitle: Text('${state.treeDepth}'),
+                  Text('${state.treeArity}'),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Tree Depth',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  ListTile(
-                    title: const Text('Password'),
-                    subtitle: Text(state.seed),
+                  Text('${state.treeDepth}'),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Password',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10),
+                  const Text('****'),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       context.read<GreatWallBloc>().add(StartDerivation());
