@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_formosa/formosa.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
@@ -24,7 +25,7 @@ class TreeInputsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('Input Parameters'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -54,10 +55,10 @@ class TreeInputsPage extends StatelessWidget {
                 value: selectedOption,
                 hint: const Text('Select Theme'),
                 items:
-                    ["BIP39", "medieval fantasy", "sci-fi"].map((String value) { // TODO: Get Themes from t3-formosa-dart component
+                     FormosaTheme.values.map((FormosaTheme theme) {
                   return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                    value: theme.label,
+                    child: Text(theme.label),
                   );
                 }).toList(),
                 onChanged: (newValue) {

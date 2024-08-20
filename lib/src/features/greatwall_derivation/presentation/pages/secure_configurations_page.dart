@@ -29,11 +29,10 @@ class SecureConfigPageState extends State<SecureConfigPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('Secure Configurations'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            // iconSize: 300,
             onPressed: () {
               context.go('/${SettingsPage.routeName}');
             },

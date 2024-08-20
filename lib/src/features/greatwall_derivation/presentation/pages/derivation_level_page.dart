@@ -18,7 +18,7 @@ class DerivationLevelPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('GreatWall Derivation Level'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -46,7 +46,7 @@ class DerivationLevelPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   ...state.knowledgeValues.asMap().entries.map((entry) {
                     int index = entry.key;
-                    String value = entry.value;
+                    dynamic value = entry.value;
                     return Column(
                       children: [
                         ElevatedButton(

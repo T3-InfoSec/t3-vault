@@ -24,7 +24,7 @@ class KnowledgeTypesPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('Tacit Knowledge Types'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

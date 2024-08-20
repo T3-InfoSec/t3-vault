@@ -18,7 +18,7 @@ class DerivationResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: const Text('GreatWall Derivation Result'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

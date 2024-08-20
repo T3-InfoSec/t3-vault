@@ -39,7 +39,7 @@ class GreatWallLoading extends GreatWallState {}
 
 class GreatWallDeriving extends GreatWallState {
   final int currentLevel;
-  final List<String> knowledgePalettes;
+  final List<dynamic> knowledgePalettes;
 
   GreatWallDeriving({
     required this.currentLevel,
@@ -52,7 +52,7 @@ class GreatWallDeriving extends GreatWallState {
 
 class GreatWallLoadedArityIndexes extends GreatWallState {
   final int currentLevel;
-  final List<String> knowledgeValues;
+  final List<dynamic> knowledgeValues;
   final int treeDepth;
 
   GreatWallLoadedArityIndexes({
