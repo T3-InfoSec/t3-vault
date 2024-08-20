@@ -19,11 +19,11 @@ dependencies:
     sdk: flutter
   go_router: ^14.2.3
   great_wall:
-#    git:
-#      url: https://github.com/T3-InfoSec/great-wall-dart.git
-#      ref: dart_migration_and_initialization
-# This local path configuration is intended for development and testing purposes only. 
-# Once the development phase is complete, it's recommended to switch to the GitHub repository version of this package.
+ #   git:
+ #     url: https://github.com/T3-InfoSec/great-wall-dart.git
+ #     ref: formosa_integration
+ # This local path configuration is intended for development and testing purposes only. 
+ # Once the development phase is complete, it's recommended to switch to the GitHub repository version of this package.
     path: ../../dart/great-wall-dart 
 dev_dependencies:
   flutter_test:
