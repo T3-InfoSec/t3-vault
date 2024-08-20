@@ -92,7 +92,7 @@ class TreeInputsPage extends StatelessWidget {
           const SizedBox(height: 10),
           TextField(
             controller: _passwordController,
-            // obscureText: true, TODO: Review this
+            obscureText: true, // TODO: obscure number of digits too
             decoration: const InputDecoration(hintText: 'Password'),
           ),
           const SizedBox(height: 10),

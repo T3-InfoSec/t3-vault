@@ -52,17 +52,17 @@ class GreatWallDeriving extends GreatWallState {
 
 class GreatWallLoadedArityIndexes extends GreatWallState {
   final int currentLevel;
-  final List<String> arityIndexes;
+  final List<String> knowledgeValues;
   final int treeDepth;
 
   GreatWallLoadedArityIndexes({
     required this.currentLevel,
-    required this.arityIndexes,
+    required this.knowledgeValues,
     required this.treeDepth,
   });
 
   @override
-  List<Object> get props => [currentLevel, arityIndexes, treeDepth];
+  List<Object> get props => [currentLevel, knowledgeValues, treeDepth];
 }
 
 class GreatWallFinished extends GreatWallState {

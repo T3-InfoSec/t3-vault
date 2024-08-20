@@ -26,6 +26,7 @@ class ConfirmationPage extends StatelessWidget {
       body: BlocConsumer<GreatWallBloc, GreatWallState>(
         listener: (context, state) {
           if (state is GreatWallDeriving) {
+            context.read<GreatWallBloc>().add(LoadArityIndexes());
             context.go('/${DerivationLevelPage.routeName}');
           }
         },

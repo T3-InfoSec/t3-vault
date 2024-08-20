@@ -7,7 +7,6 @@ import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/gre
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
 import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
@@ -17,63 +16,68 @@ class DerivationLevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GreatWallBloc()..add(LoadArityIndexes()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('T3-Vault'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.go('/${TreeInputsPage.routeName}'); // TODO: re-initialize the protocol derivation process.
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                context.go('/${SettingsPage.routeName}');
-              },
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('T3-Vault'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go(
+                '/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
+          },
         ),
-        body: Center(
-          child: BlocBuilder<GreatWallBloc, GreatWallState>(
-            builder: (context, state) {
-              if (state is GreatWallLoadedArityIndexes) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text('Level ${state.currentLevel} of ${state.treeDepth}:'),
-                    const SizedBox(height: 10),
-                    ...state.arityIndexes.map((index) {
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<GreatWallBloc>().add(MakeTacitDerivation(int.parse(index)));
-                              if (state.currentLevel < state.treeDepth) {
-                                context.read<GreatWallBloc>().add(AdvanceToNextLevel());
-                                context.go(DerivationLevelPage.routeName);
-                              } else {
-                                context.read<GreatWallBloc>().add(FinishDerivation());
-                                context.go(DerivationResultPage.routeName);
-                              }
-                            },
-                            child: Text(index),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    }),
-                  ],
-                );
-              } else {
-                print(state.toString());
-                return const Center(child: Text('Loading or no data available.'));
-              }
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              context.go('/${SettingsPage.routeName}');
             },
           ),
+        ],
+      ),
+      body: Center(
+        child: BlocBuilder<GreatWallBloc, GreatWallState>(
+          builder: (context, state) {
+            if (state is GreatWallLoadedArityIndexes) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Level ${state.currentLevel} of ${state.treeDepth}:'),
+                  const SizedBox(height: 10),
+                  ...state.knowledgeValues.asMap().entries.map((entry) {
+                    int index = entry.key;
+                    String value = entry.value;
+                    return Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read<GreatWallBloc>()
+                                .add(MakeTacitDerivation(index));
+                            if (state.currentLevel < state.treeDepth) {
+                              context
+                                  .read<GreatWallBloc>()
+                                  .add(AdvanceToNextLevel());
+                              context.go("/${DerivationLevelPage.routeName}");
+                            } else {
+                              context
+                                  .read<GreatWallBloc>()
+                                  .add(FinishDerivation());
+                              context.go("/${DerivationResultPage.routeName}");
+                            }
+                          },
+                          child: Text(value),
+                        ),
+                        const SizedBox(height: 10),
+                      ],
+                    );
+                  }),
+                ],
+              );
+            } else {
+              return const Center(child: Text('Loading or no level data available.'));
+            }
+          },
         ),
       ),
     );

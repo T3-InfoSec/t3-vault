@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
@@ -17,54 +16,54 @@ class DerivationResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GreatWallBloc()..add(LoadResult()),
-      child: Scaffold(
-                appBar: AppBar(
-          title: const Text('T3-Vault'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              context.go('/${TreeInputsPage.routeName}'); // TODO: re-initialize the protocol derivation process.
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                context.go('/${SettingsPage.routeName}');
-              },
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('T3-Vault'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go(
+                '/${TreeInputsPage.routeName}'); // TODO: re-initialize the protocol derivation process.
+          },
         ),
-        body: Center(
-          child: BlocBuilder<GreatWallBloc, GreatWallState>(
-            builder: (context, state) {
-              if (state is GreatWallFinished) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 10),
-                    const Text('KA Result:'),
-                    const SizedBox(height: 10),
-                    TextField(
-                      controller: TextEditingController(text: state.derivationHashResult),
-                      readOnly: true,
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        // context.read<GreatWallBloc>().add(Restart()); // TODO: re-initialize the protocol derivation process.
-                        context.go(HomePage.routeName);
-                      },
-                      child: const Text('Reset'),
-                    ),
-                  ],
-                );
-              }
-              return const Center(child: CircularProgressIndicator());
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              context.go('/${SettingsPage.routeName}');
             },
           ),
+        ],
+      ),
+      body: Center(
+        child: BlocBuilder<GreatWallBloc, GreatWallState>(
+          builder: (context, state) {
+            if (state is GreatWallFinished) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10),
+                  const Text('KA Result:'),
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller:
+                        TextEditingController(text: state.derivationHashResult),
+                    readOnly: true,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      // context.read<GreatWallBloc>().add(Restart()); // TODO: re-initialize the protocol derivation process.
+                      context.go(HomePage.routeName);
+                    },
+                    child: const Text('Reset'),
+                  ),
+                ],
+              );
+            }
+            return const Center(
+                child: CircularProgressIndicator());
+          },
         ),
       ),
     );

@@ -7,7 +7,7 @@ import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/gre
 
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
-  int _currentLevel = 0;
+  int _currentLevel = 1;
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallFormosaThemeSelected>(_onThemeSelected);
@@ -45,9 +45,12 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     ));
   }
 
-  Future<void> _onStartDerivation(StartDerivation event, Emitter<GreatWallState> emit) async {
+  Future<void> _onStartDerivation(
+      StartDerivation event, Emitter<GreatWallState> emit) async {
     emit(GreatWallLoading());
-    await Future.delayed(const Duration(seconds: 3)); // TODO: modify [startDerivation()] to return Future so we can await.
+    await Future.delayed(const Duration(
+        seconds:
+            5)); // TODO: modify [startDerivation()] to return Future so we can await.
 
     if (_greatWall != null) {
       _greatWall!.startDerivation();
@@ -60,11 +63,12 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onLoadArityIndexes(LoadArityIndexes event, Emitter<GreatWallState> emit) {
+  void _onLoadArityIndexes(
+      LoadArityIndexes event, Emitter<GreatWallState> emit) {
     if (_greatWall != null) {
       emit(GreatWallLoadedArityIndexes(
         currentLevel: _currentLevel,
-        arityIndexes: _greatWall!.currentLevelKnowledgePalettes
+        knowledgeValues: _greatWall!.currentLevelKnowledgePalettes
             .map((e) => e.toString())
             .toList(),
         treeDepth: _greatWall!.treeDepth,
@@ -92,7 +96,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       _currentLevel++;
       emit(GreatWallLoadedArityIndexes(
         currentLevel: _currentLevel,
-        arityIndexes: _greatWall!.currentLevelKnowledgePalettes
+        knowledgeValues: _greatWall!.currentLevelKnowledgePalettes
             .map((e) => e.toString())
             .toList(),
         treeDepth: _greatWall!.treeDepth,
@@ -106,7 +110,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       _currentLevel--;
       emit(GreatWallLoadedArityIndexes(
         currentLevel: _currentLevel,
-        arityIndexes: _greatWall!.currentLevelKnowledgePalettes
+        knowledgeValues: _greatWall!.currentLevelKnowledgePalettes
             .map((e) => e.toString())
             .toList(),
         treeDepth: _greatWall!.treeDepth,
@@ -114,10 +118,13 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onFinishDerivation(
-      FinishDerivation event, Emitter<GreatWallState> emit) {
+  Future<void> _onFinishDerivation(
+      FinishDerivation event, Emitter<GreatWallState> emit) async {
     if (_greatWall != null) {
-      _greatWall!.finishDerivation();
+      _greatWall!.finishDerivation(); // TODO: modify [finishDerivation()] to return Future so we can await.
+      await Future.delayed(const Duration(
+        seconds:
+            5)); 
 
       emit(GreatWallFinished(_greatWall!.derivationHashResult!.toString()));
     }
