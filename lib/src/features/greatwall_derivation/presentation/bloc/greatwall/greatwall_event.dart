@@ -49,5 +49,3 @@ class AdvanceToNextLevel extends GreatWallEvent {}
 class GoBackToPreviousLevel extends GreatWallEvent {}
 
 class FinishDerivation extends GreatWallEvent {}
-
-class LoadResult extends GreatWallEvent {}

@@ -66,7 +66,7 @@ class DerivationLevelPage extends StatelessWidget {
                               context.go("/${DerivationResultPage.routeName}");
                             }
                           },
-                          child: Text(value),
+                          child: Text(value.knowledge),
                         ),
                         const SizedBox(height: 10),
                       ],
