@@ -2,15 +2,13 @@ import 'package:equatable/equatable.dart';
 
 sealed class MemoCardRatingEvent extends Equatable {
   const MemoCardRatingEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
-final class MemoCardRatedAgain extends MemoCardRatingEvent {}
+final class MemoCardRatingPressed extends MemoCardRatingEvent {
+  final String rating;
 
-final class MemoCardRatedHard extends MemoCardRatingEvent {}
+  const MemoCardRatingPressed({required this.rating});
 
-final class MemoCardRatedGood extends MemoCardRatingEvent {}
-
-final class MemoCardRatedEasy extends MemoCardRatingEvent {}
+  @override
+  List<Object?> get props => [rating];
+}

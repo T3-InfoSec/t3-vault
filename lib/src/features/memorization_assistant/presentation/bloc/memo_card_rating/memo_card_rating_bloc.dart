@@ -4,31 +4,28 @@ import 'bloc.dart';
 
 class MemoCardRatingBloc
     extends Bloc<MemoCardRatingEvent, MemoCardRatingState> {
-  MemoCardRatingBloc() : super(MemoCardRatingStateGood()) {
-    on<MemoCardRatedAgain>(_onMemoCardRatingEvent);
-    on<MemoCardRatedHard>(_onMemoCardRatingEvent);
-    on<MemoCardRatedGood>(_onMemoCardRatingEvent);
-    on<MemoCardRatedEasy>(_onMemoCardRatingEvent);
+  MemoCardRatingBloc() : super(MemoCardRatedAgain()) {
+    on<MemoCardRatingPressed>(_onMemoCardRatingEvent);
   }
 
   Future<void> _onMemoCardRatingEvent(
-    MemoCardRatingEvent event,
+    MemoCardRatingPressed event,
     Emitter<MemoCardRatingState> emit,
   ) async {
-    if (event is MemoCardRatedAgain) {
-      return emit(MemoCardRatingStateAgain());
+    if (event.rating == 'Again') {
+      return emit(MemoCardRatedAgain());
     }
 
-    if (event is MemoCardRatedHard) {
-      return emit(MemoCardRatingStateHard());
+    if (event.rating == 'Hard') {
+      return emit(MemoCardRatedHard());
     }
 
-    if (event is MemoCardRatedGood) {
-      return emit(MemoCardRatingStateGood());
+    if (event.rating == 'Good') {
+      return emit(MemoCardRatedGood());
     }
 
-    if (event is MemoCardRatedEasy) {
-      return emit(MemoCardRatingStateEasy());
+    if (event.rating == 'Easy') {
+      return emit(MemoCardRatedEasy());
     }
   }
 }

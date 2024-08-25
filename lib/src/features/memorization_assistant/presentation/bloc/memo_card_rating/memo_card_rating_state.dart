@@ -1,16 +1,11 @@
-import 'package:equatable/equatable.dart';
-
-sealed class MemoCardRatingState extends Equatable {
+sealed class MemoCardRatingState {
   const MemoCardRatingState();
-
-  @override
-  List<Object?> get props => [];
 }
 
-final class MemoCardRatingStateAgain extends MemoCardRatingState {}
+final class MemoCardRatedAgain extends MemoCardRatingState {}
 
-final class MemoCardRatingStateHard extends MemoCardRatingState {}
+final class MemoCardRatedHard extends MemoCardRatingState {}
 
-final class MemoCardRatingStateGood extends MemoCardRatingState {}
+final class MemoCardRatedGood extends MemoCardRatingState {}
 
-final class MemoCardRatingStateEasy extends MemoCardRatingState {}
+final class MemoCardRatedEasy extends MemoCardRatingState {}
