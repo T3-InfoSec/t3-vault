@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/settings/presentation/pages/settings_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../bloc/bloc.dart';
 
 /// Displays a list of SampleItems.
