@@ -4,8 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import 'core/settings/domain/usecases/settings_controller.dart';
-import 'core/settings/presentation/pages/settings_page.dart';
+import 'common/settings/domain/usecases/settings_controller.dart';
+import 'common/settings/presentation/pages/settings_page.dart';
 import 'features/greatwall_derivation/presentation/bloc/bloc.dart';
 import 'features/greatwall_derivation/presentation/pages/confirmation_page.dart';
 import 'features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
