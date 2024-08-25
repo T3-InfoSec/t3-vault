@@ -1,10 +1,8 @@
 name: t3_vault
 description: The T3 Vault cross platform application.
-
-# Prevent accidental publishing to pub.dev.
-publish_to: 'none'
-
 version: 0.1.0-dev
+homepage: https://t3infosecurity.com
+publish_to: 'none'
 
 environment:
   sdk: '>=3.4.4 <4.0.0'
