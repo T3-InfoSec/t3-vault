@@ -5,8 +5,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
-import 'core/settings/domain/usecases/settings_controller.dart';
-import 'core/settings/presentation/pages/settings_page.dart';
+import 'common/settings/domain/usecases/settings_controller.dart';
+import 'common/settings/presentation/pages/settings_page.dart';
 import 'features/landing/presentation/bloc/bloc.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
