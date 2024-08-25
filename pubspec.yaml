@@ -18,6 +18,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   go_router: ^14.2.3
+  t3_memassist:
+    git:
+      url: https://github.com/T3-InfoSec/t3-memassist.git
+      ref: migrate_main_logic
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_memassist/memory_assistant.dart';
 
 import 'core/settings/domain/usecases/settings_controller.dart';
 import 'core/settings/presentation/pages/settings_page.dart';
@@ -11,6 +12,8 @@ import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
 import 'features/landing/presentation/pages/splash_page.dart';
+import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
+import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'features/sample/sample_item_details_view.dart';
 import 'features/sample/sample_item_list_view.dart';
 
@@ -147,6 +150,43 @@ class T3Vault extends StatelessWidget {
                                   restorationId:
                                       'router.root.agreement.content',
                                   child: PolicyPage(),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        GoRoute(
+                          path: MemoCardsPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              // If the user leaves and returns to the app after it has
+                              // been killed while running in the background, the
+                              // navigation stack is restored.
+                              restorationId: 'router.root.memoCards',
+                              child: MemoCardsPage(),
+                            );
+                          },
+                          routes: <RouteBase>[
+                            GoRoute(
+                              path:
+                                  '${MemoCardDetailsPage.routeName}/:levelNumber',
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                final levelNumber = int.parse(
+                                    state.pathParameters['levelNumber']!);
+                                final memoCard = state.extra as MemoCard;
+
+                                return MaterialPage(
+                                  // If the user leaves and returns to the app after it
+                                  // has been killed while running in the background, the
+                                  // navigation stack is restored.
+                                  restorationId:
+                                      'router.root.memoCards.details',
+                                  child: MemoCardDetailsPage(
+                                    levelNumber: levelNumber,
+                                    memoCard: memoCard,
+                                  ),
                                 );
                               },
                             ),
