@@ -170,11 +170,11 @@ class T3Vault extends StatelessWidget {
                           routes: <RouteBase>[
                             GoRoute(
                               path:
-                                  '${MemoCardDetailsPage.routeName}/:levelNumber',
+                                  '${MemoCardDetailsPage.routeName}/:cardName',
                               pageBuilder:
                                   (BuildContext context, GoRouterState state) {
-                                final levelNumber = int.parse(
-                                    state.pathParameters['levelNumber']!);
+                                final cardName = int.parse(
+                                    state.pathParameters['cardName']!);
                                 final memoCard = state.extra as MemoCard;
 
                                 return MaterialPage(
@@ -184,7 +184,7 @@ class T3Vault extends StatelessWidget {
                                   restorationId:
                                       'router.root.memoCards.details',
                                   child: MemoCardDetailsPage(
-                                    levelNumber: levelNumber,
+                                    cardName: cardName,
                                     memoCard: memoCard,
                                   ),
                                 );

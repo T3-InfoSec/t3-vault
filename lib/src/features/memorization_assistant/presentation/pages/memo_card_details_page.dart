@@ -12,16 +12,16 @@ import 'memo_cards_page.dart';
 class MemoCardDetailsPage extends StatelessWidget {
   static const routeName = 'memo_card_details';
 
-  final int levelNumber;
+  final int cardName;
   final MemoCard memoCard;
 
   /// Creates a detailed view of a memory card.
   ///
-  /// [levelNumber] identify the position of the card in the knowledge
+  /// [cardName] identify the position of the card in the knowledge
   /// tree and [memoCard] to provide the card's data.
   const MemoCardDetailsPage({
     super.key,
-    required this.levelNumber,
+    required this.cardName,
     required this.memoCard,
   });
 
@@ -67,7 +67,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       fontWeight: themeData.textTheme.titleLarge!.fontWeight,
                       color: themeData.colorScheme.onPrimary,
                     ),
-                    'L$levelNumber Card Details',
+                    'L$cardName Card Details',
                   ),
                   const SizedBox(height: 10),
                   Text(
