@@ -27,6 +27,8 @@ class MemoCardDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Card Details'),
@@ -53,21 +55,36 @@ class MemoCardDetailsPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.9,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: const Color(0xFF4A6FA5),
+                color: themeData.colorScheme.primary,
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    'Memorization Card L$levelNumber Details',
+                    style: TextStyle(
+                      fontSize: themeData.textTheme.titleLarge!.fontSize,
+                      fontWeight: themeData.textTheme.titleLarge!.fontWeight,
+                      color: themeData.colorScheme.onPrimary,
+                    ),
+                    'L$levelNumber Card Details',
                   ),
                   const SizedBox(height: 10),
                   Text(
+                    style: TextStyle(
+                      fontSize: themeData.textTheme.bodySmall!.fontSize,
+                      fontWeight: themeData.textTheme.bodySmall!.fontWeight,
+                      color: themeData.colorScheme.onPrimary,
+                    ),
                     'State: ${memoCard.state}',
                   ),
                   Text(
-                    'Due: ${memoCard.due}',
+                    style: TextStyle(
+                      fontSize: themeData.textTheme.bodySmall!.fontSize,
+                      fontWeight: themeData.textTheme.bodySmall!.fontWeight,
+                      color: themeData.colorScheme.onPrimary,
+                    ),
+                    'Due: ${memoCard.due.toLocal()}',
                   ),
                 ],
               ),

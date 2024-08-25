@@ -18,7 +18,8 @@ class MemoCardsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<MemoCard> memoCards = _createMemoCards();
+    final ThemeData themeData = Theme.of(context);
+    final List<MemoCard> memoCards = _createMemoCards();
 
     return Scaffold(
       appBar: AppBar(
@@ -43,8 +44,6 @@ class MemoCardsPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text('My Cards'),
-              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Wrap(
@@ -64,7 +63,37 @@ class MemoCardsPage extends StatelessWidget {
                             extra: memoCard,
                           );
                         },
-                        child: _buildCard('L$levelNumber', memoCard),
+                        child: Container(
+                          width: 200,
+                          height: 150,
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            color: themeData.colorScheme.primary,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                style: TextStyle(
+                                  fontSize: themeData.textTheme.titleLarge!.fontSize,
+                                  fontWeight: themeData.textTheme.titleLarge!.fontWeight,
+                                  color: themeData.colorScheme.onPrimary,
+                                ),
+                                'L$levelNumber',
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                style: TextStyle(
+                                  fontSize: themeData.textTheme.bodySmall!.fontSize,
+                                  fontWeight: themeData.textTheme.bodySmall!.fontWeight,
+                                  color: themeData.colorScheme.onPrimary,
+                                ),
+                                'Next review:\n${memoCard.due.toLocal()}',
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     },
                   ).toList(),
@@ -73,28 +102,6 @@ class MemoCardsPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildCard(String title, MemoCard memoCard) {
-    return Container(
-      width: 200,
-      height: 150,
-      padding: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: const Color(0xFF4A6FA5),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(title),
-          const SizedBox(height: 5),
-          Text(
-            'Next review:\n${memoCard.due.toLocal()}',
-          ),
-        ],
       ),
     );
   }
