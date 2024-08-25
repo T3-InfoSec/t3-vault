@@ -41,65 +41,60 @@ class MemoCardsPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Wrap(
-                  spacing: 5.0,
-                  runSpacing: 5.0,
-                  direction: Axis.horizontal,
-                  alignment: WrapAlignment.center,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: memoCards.asMap().entries.map(
-                    (entry) {
-                      int levelNumber = entry.key;
-                      MemoCard memoCard = entry.value;
-                      return GestureDetector(
-                        onTap: () {
-                          context.go(
-                            '/$routeName/${MemoCardDetailsPage.routeName}/$levelNumber',
-                            extra: memoCard,
-                          );
-                        },
-                        child: Container(
-                          width: 200,
-                          height: 150,
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            color: themeData.colorScheme.primary,
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                style: TextStyle(
-                                  fontSize: themeData.textTheme.titleLarge!.fontSize,
-                                  fontWeight: themeData.textTheme.titleLarge!.fontWeight,
-                                  color: themeData.colorScheme.onPrimary,
-                                ),
-                                'L$levelNumber',
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                style: TextStyle(
-                                  fontSize: themeData.textTheme.bodySmall!.fontSize,
-                                  fontWeight: themeData.textTheme.bodySmall!.fontWeight,
-                                  color: themeData.colorScheme.onPrimary,
-                                ),
-                                'Next review:\n${memoCard.due.toLocal()}',
-                              ),
-                            ],
-                          ),
-                        ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Wrap(
+              spacing: 5.0,
+              runSpacing: 5.0,
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: memoCards.asMap().entries.map(
+                (entry) {
+                  int levelNumber = entry.key;
+                  MemoCard memoCard = entry.value;
+                  return GestureDetector(
+                    onTap: () {
+                      context.go(
+                        '/$routeName/${MemoCardDetailsPage.routeName}/$levelNumber',
+                        extra: memoCard,
                       );
                     },
-                  ).toList(),
-                ),
-              ),
-            ],
+                    child: Container(
+                      width: 200,
+                      height: 150,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: themeData.colorScheme.primary,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            style: TextStyle(
+                              fontSize: themeData.textTheme.titleLarge!.fontSize,
+                              fontWeight: themeData.textTheme.titleLarge!.fontWeight,
+                              color: themeData.colorScheme.onPrimary,
+                            ),
+                            'L$levelNumber',
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            style: TextStyle(
+                              fontSize: themeData.textTheme.bodySmall!.fontSize,
+                              fontWeight: themeData.textTheme.bodySmall!.fontWeight,
+                              color: themeData.colorScheme.onPrimary,
+                            ),
+                            'Next review:\n${memoCard.due.toLocal()}',
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
           ),
         ),
       ),
