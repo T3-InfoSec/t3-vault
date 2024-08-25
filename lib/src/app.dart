@@ -4,16 +4,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/confirmation_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
-
 import 'core/settings/domain/usecases/settings_controller.dart';
 import 'core/settings/presentation/pages/settings_page.dart';
-import 'features/landing/presentation/bloc/bloc.dart';
 import 'features/greatwall_derivation/presentation/bloc/bloc.dart';
+import 'features/greatwall_derivation/presentation/pages/confirmation_page.dart';
+import 'features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
+import 'features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
+import 'features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
+import 'features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
+import 'features/landing/presentation/bloc/bloc.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
@@ -37,22 +36,30 @@ class T3Vault extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<AgreementBloc>(
-              create: (context) => AgreementBloc(),
-            ),
             BlocProvider<InitializingServicesBloc>(
-              create: (context) => InitializingServicesBloc(),
+              create: (BuildContext context) => InitializingServicesBloc(),
             ),
-            BlocProvider<GreatWallBloc>(
-              create: (context) => GreatWallBloc(),
+            BlocProvider<AgreementBloc>(
+              create: (BuildContext context) => AgreementBloc(),
             ),
+                        BlocProvider<GreatWallBloc>(
+              create: (context) => GreatWallBloc(),)
           ],
           child: Builder(
             builder: (context) {
               final agreementState = context.watch<AgreementBloc>().state;
 
               return MaterialApp.router(
+
+                // Providing a restorationScopeId allows the Navigator built by the
+                // MaterialApp to restore the navigation stack when a user leaves and
+                // returns to the app after it has been killed while running in the
+                // background.
                 restorationScopeId: 'T3Vault',
+
+                // Provide the generated AppLocalizations to the MaterialApp. This
+                // allows descendant Widgets to display the correct translations
+                // depending on the user's locale.
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -62,8 +69,18 @@ class T3Vault extends StatelessWidget {
                 supportedLocales: const [
                   Locale('en', ''), // English, no country code
                 ],
+
+                // Use AppLocalizations to configure the correct application title
+                // depending on the user's locale.
+                //
+                // The appTitle is defined in .arb files found in the localization
+                // directory.
                 onGenerateTitle: (BuildContext context) =>
                     AppLocalizations.of(context)!.appTitle,
+
+                // Define a light and dark color theme. Then, read the user's
+                // preferred ThemeMode (light, dark, or system default) from the
+                // SettingsController to display the correct theme.
                 theme: ThemeData(
                   useMaterial3: true,
                   colorScheme: ColorScheme.fromSeed(
@@ -72,6 +89,9 @@ class T3Vault extends StatelessWidget {
                 ),
                 darkTheme: ThemeData.dark(),
                 themeMode: settingsController.themeMode,
+
+                // Define a function to handle named routes in order to support
+                // Flutter web url navigation and deep linking.
                 routerConfig: GoRouter(
                   restorationScopeId: 'router',
                   routes: <RouteBase>[
@@ -79,6 +99,9 @@ class T3Vault extends StatelessWidget {
                       path: HomePage.routeName,
                       pageBuilder: (BuildContext context, GoRouterState state) {
                         return const MaterialPage(
+                          // If the user leaves and returns to the app after it has
+                          // been killed while running in the background, the
+                          // navigation stack is restored.
                           restorationId: 'router.root',
                           child: HomePage(),
                         );
@@ -96,7 +119,8 @@ class T3Vault extends StatelessWidget {
                       routes: <RouteBase>[
                         GoRoute(
                           path: SplashPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               child: SplashPage(),
                             );
@@ -104,8 +128,12 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: AgreementPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
+                              // If the user leaves and returns to the app after it has
+                              // been killed while running in the background, the
+                              // navigation stack is restored.
                               restorationId: 'router.root.agreement',
                               child: AgreementPage(),
                             );
@@ -113,9 +141,16 @@ class T3Vault extends StatelessWidget {
                           routes: <RouteBase>[
                             GoRoute(
                               path: PolicyPage.routeName,
-                              pageBuilder: (BuildContext context, GoRouterState state) {
+                              pageBuilder: (
+                                BuildContext context,
+                                GoRouterState state,
+                              ) {
                                 return const MaterialPage(
-                                  restorationId: 'router.root.agreement.content',
+                                  // If the user leaves and returns to the app after it has
+                                  // been killed while running in the background, the
+                                  // navigation stack is restored.
+                                  restorationId:
+                                      'router.root.agreement.content',
                                   child: PolicyPage(),
                                 );
                               },
@@ -124,8 +159,12 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: SampleItemListView.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
+                              // If the user leaves and returns to the app after it has
+                              // been killed while running in the background, the
+                              // navigation stack is restored.
                               restorationId: 'router.root.sampleItemListView',
                               child: SampleItemListView(),
                             );
@@ -133,9 +172,14 @@ class T3Vault extends StatelessWidget {
                           routes: <RouteBase>[
                             GoRoute(
                               path: SampleItemDetailsView.routeName,
-                              pageBuilder: (BuildContext context, GoRouterState state) {
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
                                 return const MaterialPage(
-                                  restorationId: 'router.root.sampleItemListView.details',
+                                  // If the user leaves and returns to the app after it
+                                  // has been killed while running in the background, the
+                                  // navigation stack is restored.
+                                  restorationId:
+                                      'router.root.sampleItemListView.details',
                                   child: SampleItemDetailsView(),
                                 );
                               },
