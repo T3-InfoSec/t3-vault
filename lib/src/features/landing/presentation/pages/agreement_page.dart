@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/bloc.dart';
+import '../blocs/blocs.dart';
 
 /// Displays a list of SampleItems.
 class AgreementPage extends StatelessWidget {
