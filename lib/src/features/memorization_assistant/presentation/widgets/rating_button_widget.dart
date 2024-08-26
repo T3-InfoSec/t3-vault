@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
-import '../bloc/blocs.dart';
+import '../blocs/blocs.dart';
 
 class RatingButton extends StatelessWidget {
   final MemoCard memoCard;

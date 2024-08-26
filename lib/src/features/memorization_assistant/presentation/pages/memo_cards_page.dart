@@ -5,7 +5,7 @@ import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../landing/presentation/pages/home_page.dart';
-import '../bloc/blocs.dart';
+import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 import 'memo_card_details_page.dart';
 

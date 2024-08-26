@@ -12,7 +12,7 @@ import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
 import 'features/landing/presentation/pages/splash_page.dart';
-import 'features/memorization_assistant/presentation/bloc/memo_card_rating/bloc.dart';
+import 'features/memorization_assistant/presentation/blocs/memo_card_rating/bloc.dart';
 import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'features/sample/sample_item_details_view.dart';

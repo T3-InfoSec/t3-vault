@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../bloc/blocs.dart';
+import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 import 'memo_cards_page.dart';
 
