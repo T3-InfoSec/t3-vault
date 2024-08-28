@@ -46,19 +46,19 @@ class MemoCardsPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-              builder: (context, state) {
-                if (state.memoCardCollection.isEmpty) {
+              builder: (context, memoCardSetState) {
+                if (memoCardSetState.memoCardCollection.isEmpty) {
                   return const Text('No Memorization Card Yet!');
                 }
                 return BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
-                  builder: (context, _) {
+                  builder: (context, ratingState) {
                     return Wrap(
                       spacing: 5.0,
                       runSpacing: 5.0,
                       direction: Axis.horizontal,
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      children: state.memoCardCollection.asMap().entries.map(
+                      children: memoCardSetState.memoCardCollection.asMap().entries.map(
                         (entry) {
                           int levelNumber = entry.key;
                           MemoCard memoCard = entry.value;
