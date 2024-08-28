@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
-
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
-import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../../../landing/presentation/pages/home_page.dart';
+import '../blocs/greatwall/greatwall_bloc.dart';
+import '../blocs/greatwall/greatwall_state.dart';
+import 'tree_inputs_page.dart';
 
 class DerivationResultPage extends StatelessWidget {
-  const DerivationResultPage({super.key});
-
   static const routeName = 'derivation_result';
+
+  const DerivationResultPage({super.key});
 
   @override
   Widget build(BuildContext context) {

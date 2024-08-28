@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
-import 'package:t3_vault/src/features/landing/presentation/pages/home_page.dart';
 
-import '../../../../core/settings/presentation/pages/settings_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../../../landing/presentation/pages/home_page.dart';
+import 'tree_inputs_page.dart';
 
 class KnowledgeTypesPage extends StatelessWidget {
   static const routeName = 'knowledge_types';

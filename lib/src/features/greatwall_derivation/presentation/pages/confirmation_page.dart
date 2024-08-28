@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/bloc.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
+import '../blocs/blocs.dart';
+import 'derivation_level_page.dart';
+import 'tree_inputs_page.dart';
 
 class ConfirmationPage extends StatelessWidget {
-  const ConfirmationPage({super.key});
-
   static const routeName = 'confirmation';
+
+  const ConfirmationPage({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
-
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../blocs/greatwall/greatwall_bloc.dart';
+import '../blocs/greatwall/greatwall_event.dart';
+import '../blocs/greatwall/greatwall_state.dart';
+import 'derivation_result_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
-  const DerivationLevelPage({super.key});
-
   static const routeName = 'derivation_level';
+
+  const DerivationLevelPage({super.key});
 
   @override
   Widget build(BuildContext context) {

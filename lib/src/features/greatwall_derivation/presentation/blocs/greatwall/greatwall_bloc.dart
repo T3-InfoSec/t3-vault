@@ -2,8 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:great_wall/great_wall.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
+import 'greatwall_event.dart';
+import 'greatwall_state.dart';
 
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;

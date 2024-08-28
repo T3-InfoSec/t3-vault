@@ -3,23 +3,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_formosa/formosa.dart';
 
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
-
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/confirmation_page.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../blocs/greatwall/greatwall_bloc.dart';
+import '../blocs/greatwall/greatwall_event.dart';
+import '../blocs/greatwall/greatwall_state.dart';
+import 'confirmation_page.dart';
+import 'knowledge_types_page.dart';
 
 class TreeInputsPage extends StatelessWidget {
-  TreeInputsPage({super.key});
-
   static const routeName = 'tree_inputs';
 
   final TextEditingController _arityController = TextEditingController();
+
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  TreeInputsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

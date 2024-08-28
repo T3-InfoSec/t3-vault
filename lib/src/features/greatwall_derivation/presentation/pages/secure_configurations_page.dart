@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
+import '../../../../common/settings/presentation/pages/settings_page.dart';
 
 /// NOTE: This class is not part of the MVP and is currently disabled.
 /// In the future, it may be revisited to add configuration and validation of derivation parameters.
@@ -21,9 +21,9 @@ class SecureConfigPage extends StatefulWidget {
 }
 
 class SecureConfigPageState extends State<SecureConfigPage> {
+  static const String _password = "password"; // Temporarily Hardcoded Password
   final TextEditingController _controller = TextEditingController();
   bool _isToggled = false;
-  static const String _password = "password"; // Temporarily Hardcoded Password
 
   @override
   Widget build(BuildContext context) {
