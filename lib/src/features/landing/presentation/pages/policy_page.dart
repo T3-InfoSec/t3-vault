@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../bloc/bloc.dart';
+import '../blocs/blocs.dart';
 
 /// Displays a list of SampleItems.
 class PolicyPage extends StatelessWidget {
