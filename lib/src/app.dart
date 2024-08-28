@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/landing/presentation/blocs/blocs.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -12,7 +13,6 @@ import 'features/greatwall_derivation/presentation/pages/derivation_level_page.d
 import 'features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
 import 'features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 import 'features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
-import 'features/landing/presentation/bloc/bloc.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';

@@ -66,7 +66,10 @@ class ConfirmationPage extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<GreatWallBloc>().add(StartDerivation());
+                      Future.delayed(const Duration(seconds: 1), () {
+                        if (!context.mounted) return;
+                        context.read<GreatWallBloc>().add(StartDerivation());
+                      });
                     },
                     child: const Text('Confirm'),
                   ),

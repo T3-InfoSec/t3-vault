@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/common/settings/presentation/pages/settings_page.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
   const DerivationLevelPage({super.key});
@@ -22,8 +22,7 @@ class DerivationLevelPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go(
-                '/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
+            context.go('/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
           },
         ),
         actions: [
@@ -51,20 +50,17 @@ class DerivationLevelPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            context
-                                .read<GreatWallBloc>()
-                                .add(MakeTacitDerivation(index));
-                            if (state.currentLevel < state.treeDepth) {
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(AdvanceToNextLevel());
-                              context.go("/${DerivationLevelPage.routeName}");
-                            } else {
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(FinishDerivation());
-                              context.go("/${DerivationResultPage.routeName}");
-                            }
+                            Future.delayed(const Duration(seconds: 1), () {
+                              if (!context.mounted) return;
+                              context.read<GreatWallBloc>().add(MakeTacitDerivation(index));
+                              if (state.currentLevel < state.treeDepth) {
+                                context.read<GreatWallBloc>().add(AdvanceToNextLevel());
+                                context.go("/${DerivationLevelPage.routeName}");
+                              } else {
+                                context.read<GreatWallBloc>().add(FinishDerivation());
+                                context.go("/${DerivationResultPage.routeName}");
+                              }
+                            });
                           },
                           child: Text(value.knowledge),
                         ),

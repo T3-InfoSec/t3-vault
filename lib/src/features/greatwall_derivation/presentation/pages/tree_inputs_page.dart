@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_formosa/formosa.dart';
+import 'package:t3_vault/src/common/settings/presentation/pages/settings_page.dart';
 
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_bloc.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_event.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/bloc/greatwall/greatwall_state.dart';
 
-import 'package:t3_vault/src/core/settings/presentation/pages/settings_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/confirmation_page.dart';
 import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
@@ -50,7 +49,6 @@ class TreeInputsPage extends StatelessWidget {
               if (state is GreatWallFormosaThemeState) {
                 selectedOption = state.selectedOption;
               }
-
               return DropdownButton<String>(
                 value: selectedOption,
                 hint: const Text('Select Theme'),
@@ -86,8 +84,7 @@ class TreeInputsPage extends StatelessWidget {
           const SizedBox(height: 10),
           TextField(
             controller: _timeLockController,
-            decoration:
-                const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+            decoration: const InputDecoration(labelText: 'Time Lock Puzzle Param'),
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
@@ -102,17 +99,19 @@ class TreeInputsPage extends StatelessWidget {
               final arity = int.parse(_arityController.text);
               final depth = int.parse(_depthController.text);
               final timeLock = int.parse(_timeLockController.text);
+              Future.delayed(const Duration(seconds: 1), () {
+                if (!context.mounted) return;
+                context.read<GreatWallBloc>().add(
+                      InitializeGreatWall(
+                        treeArity: arity,
+                        treeDepth: depth,
+                        timeLockPuzzleParam: timeLock,
+                        seed: _passwordController.text,
+                      ),
+                    );
 
-              context.read<GreatWallBloc>().add(
-                    InitializeGreatWall(
-                      treeArity: arity,
-                      treeDepth: depth,
-                      timeLockPuzzleParam: timeLock,
-                      seed: _passwordController.text,
-                    ),
-                  );
-
-              context.go('/${ConfirmationPage.routeName}');
+                context.go('/${ConfirmationPage.routeName}');
+              });
             },
             child: const Text('Start Derivation'),
           ),
