@@ -22,7 +22,6 @@ class MemoCardsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    final List<MemoCard> memoCards = _createMemoCards();
 
     return Scaffold(
       appBar: AppBar(
@@ -46,52 +45,47 @@ class MemoCardsPage extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
-                builder: (context, state) {
-              return Wrap(
-                spacing: 5.0,
-                runSpacing: 5.0,
-                direction: Axis.horizontal,
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: memoCards.asMap().entries.map(
-                  (entry) {
-                    int levelNumber = entry.key;
-                    MemoCard memoCard = entry.value;
-                    return GestureDetector(
-                      onTap: () {
-                        context.go(
-                          '/$routeName/${MemoCardDetailsPage.routeName}/$levelNumber',
-                          extra: memoCard,
-                        );
-                      },
-                      child: MemoCardViewer(
-                        themeData: themeData,
-                        levelNumber: levelNumber,
-                        memoCard: memoCard,
-                      ),
+            child: BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+              builder: (context, state) {
+                if (state.memoCardCollection.isEmpty) {
+                  return const Text('No Memorization Card Yet!');
+                }
+                return BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
+                  builder: (context, _) {
+                    return Wrap(
+                      spacing: 5.0,
+                      runSpacing: 5.0,
+                      direction: Axis.horizontal,
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: state.memoCardCollection.asMap().entries.map(
+                        (entry) {
+                          int levelNumber = entry.key;
+                          MemoCard memoCard = entry.value;
+                          return GestureDetector(
+                            onTap: () {
+                              context.go(
+                                '/$routeName/${MemoCardDetailsPage.routeName}'
+                                '/$levelNumber',
+                                extra: memoCard,
+                              );
+                            },
+                            child: MemoCardViewer(
+                              themeData: themeData,
+                              levelNumber: levelNumber,
+                              memoCard: memoCard,
+                            ),
+                          );
+                        },
+                      ).toList(),
                     );
                   },
-                ).toList(),
-              );
-            }),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
-  }
-
-  // TODO Get the memory cards from the derivation protocol.
-  List<MemoCard> _createMemoCards() {
-    return List.generate(10, (index) {
-      MemoCard memoCard = MemoCard(knowledge: 'test');
-      memoCard.rateCard(index < 3
-          ? "easy"
-          : index < 6
-              ? "good"
-              : "hard");
-      if (index == 9) memoCard.rateCard("again");
-      return memoCard;
-    });
   }
 }
