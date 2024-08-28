@@ -21,8 +21,7 @@ class DerivationLevelPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go(
-                '/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
+            context.go('/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
           },
         ),
         actions: [
@@ -50,20 +49,17 @@ class DerivationLevelPage extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            context
-                                .read<GreatWallBloc>()
-                                .add(MakeTacitDerivation(index));
-                            if (state.currentLevel < state.treeDepth) {
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(AdvanceToNextLevel());
-                              context.go("/${DerivationLevelPage.routeName}");
-                            } else {
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(FinishDerivation());
-                              context.go("/${DerivationResultPage.routeName}");
-                            }
+                            Future.delayed(const Duration(seconds: 1), () {
+                              if (!context.mounted) return;
+                              context.read<GreatWallBloc>().add(MakeTacitDerivation(index));
+                              if (state.currentLevel < state.treeDepth) {
+                                context.read<GreatWallBloc>().add(AdvanceToNextLevel());
+                                context.go("/${DerivationLevelPage.routeName}");
+                              } else {
+                                context.read<GreatWallBloc>().add(FinishDerivation());
+                                context.go("/${DerivationResultPage.routeName}");
+                              }
+                            });
                           },
                           child: Text(value.knowledge),
                         ),
