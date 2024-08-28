@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
-import 'features/landing/presentation/bloc/bloc.dart';
+import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
