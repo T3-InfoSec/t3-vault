@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../blocs/blocs.dart';
 import 'derivation_level_page.dart';
 import 'tree_inputs_page.dart';
@@ -64,9 +65,9 @@ class ConfirmationPage extends StatelessWidget {
                   const Text('****'),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {              
+                    onPressed: () {
                       Future.delayed(const Duration(seconds: 1), () {
-                        if (!context.mounted) return;                                               
+                        if (!context.mounted) return;
                         context.read<GreatWallBloc>().add(StartDerivation());
                       });
                     },

@@ -21,7 +21,8 @@ class DerivationLevelPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go('/${DerivationLevelPage.routeName}'); // TODO: _onGoBackToPreviousLevel event
+            // TODO: _onGoBackToPreviousLevel event
+            context.go('/${DerivationLevelPage.routeName}');
           },
         ),
         actions: [
@@ -51,13 +52,20 @@ class DerivationLevelPage extends StatelessWidget {
                           onPressed: () {
                             Future.delayed(const Duration(seconds: 1), () {
                               if (!context.mounted) return;
-                              context.read<GreatWallBloc>().add(MakeTacitDerivation(index));
+                              context
+                                  .read<GreatWallBloc>()
+                                  .add(MakeTacitDerivation(index));
                               if (state.currentLevel < state.treeDepth) {
-                                context.read<GreatWallBloc>().add(AdvanceToNextLevel());
+                                context
+                                    .read<GreatWallBloc>()
+                                    .add(AdvanceToNextLevel());
                                 context.go("/${DerivationLevelPage.routeName}");
                               } else {
-                                context.read<GreatWallBloc>().add(FinishDerivation());
-                                context.go("/${DerivationResultPage.routeName}");
+                                context
+                                    .read<GreatWallBloc>()
+                                    .add(FinishDerivation());
+                                context
+                                    .go("/${DerivationResultPage.routeName}");
                               }
                             });
                           },
@@ -70,7 +78,8 @@ class DerivationLevelPage extends StatelessWidget {
                 ],
               );
             } else {
-              return const Center(child: Text('Loading or no level data available.'));
+              return const Center(
+                  child: Text('Loading or no level data available.'));
             }
           },
         ),
