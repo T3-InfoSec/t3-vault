@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall_derivation/presentation/widgets/initialization_dialog.dart';
 import '../blocs/blocs.dart';
 import 'derivation_level_page.dart';
 import 'tree_inputs_page.dart';
@@ -24,9 +25,13 @@ class ConfirmationPage extends StatelessWidget {
       ),
       body: BlocConsumer<GreatWallBloc, GreatWallState>(
         listener: (context, state) {
-          if (state is GreatWallDeriving) {
-            context.read<GreatWallBloc>().add(LoadArityIndexes());
-            context.go('/${DerivationLevelPage.routeName}');
+          if (state is GreatWallDeriving) {            
+            Future.delayed(const Duration(seconds: 1), () {
+              if (!context.mounted) return;
+              context.pop();
+              context.read<GreatWallBloc>().add(LoadArityIndexes());
+              context.go('/${DerivationLevelPage.routeName}');
+            });
           }
         },
         builder: (context, state) {
@@ -64,9 +69,14 @@ class ConfirmationPage extends StatelessWidget {
                   const Text('****'),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {              
+                    onPressed: () {
+                      showAdaptiveDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => const InitializationDialog(),
+                      );
                       Future.delayed(const Duration(seconds: 1), () {
-                        if (!context.mounted) return;                                               
+                        if (!context.mounted) return;
                         context.read<GreatWallBloc>().add(StartDerivation());
                       });
                     },
