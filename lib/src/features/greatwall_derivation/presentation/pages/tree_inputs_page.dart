@@ -40,86 +40,82 @@ class TreeInputsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            BlocBuilder<GreatWallBloc, GreatWallState>(
-              builder: (context, state) {
-                String? selectedOption;
+      body: Column(
+        children: [
+          BlocBuilder<GreatWallBloc, GreatWallState>(
+            builder: (context, state) {
+              String? selectedOption;
 
-                if (state is GreatWallFormosaThemeState) {
-                  selectedOption = state.selectedOption;
-                }
+              if (state is GreatWallFormosaThemeState) {
+                selectedOption = state.selectedOption;
+              }
 
-                return DropdownButton<String>(
-                  value: selectedOption,
-                  hint: const Text('Select Theme'),
-                  items: FormosaTheme.values.map((FormosaTheme theme) {
-                    return DropdownMenuItem<String>(
-                      value: theme.label,
-                      child: Text(theme.label),
+              return DropdownButton<String>(
+                value: selectedOption,
+                hint: const Text('Select Theme'),
+                items: FormosaTheme.values.map((FormosaTheme theme) {
+                  return DropdownMenuItem<String>(
+                    value: theme.label,
+                    child: Text(theme.label),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    context.read<GreatWallBloc>().add(GreatWallFormosaThemeSelected(newValue));
+                  }
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _arityController,
+            decoration: const InputDecoration(labelText: 'Tree Arity'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _depthController,
+            decoration: const InputDecoration(labelText: 'Tree Depth'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _timeLockController,
+            decoration: const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+            keyboardType: TextInputType.number,
+          ),
+          const SizedBox(height: 10),
+          TextField(
+            controller: _passwordController,
+            obscureText: true,
+            decoration: const InputDecoration(hintText: 'Password'),
+          ),
+          const SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              final arity = int.parse(_arityController.text);
+              final depth = int.parse(_depthController.text);
+              final timeLock = int.parse(_timeLockController.text);
+
+              Future.delayed(const Duration(seconds: 1), () {
+                if (!context.mounted) return;  
+                context.read<GreatWallBloc>().add(
+                      InitializeGreatWall(
+                        treeArity: arity,
+                        treeDepth: depth,
+                        timeLockPuzzleParam: timeLock,
+                        seed: _passwordController.text,
+                      ),
                     );
-                  }).toList(),
-                  onChanged: (newValue) {
-                    if (newValue != null) {
-                      context
-                          .read<GreatWallBloc>()
-                          .add(GreatWallFormosaThemeSelected(newValue));
-                    }
-                  },
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _arityController,
-              decoration: const InputDecoration(labelText: 'Tree Arity'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _depthController,
-              decoration: const InputDecoration(labelText: 'Tree Depth'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _timeLockController,
-              decoration:
-                  const InputDecoration(labelText: 'Time Lock Puzzle Param'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(hintText: 'Password'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                final arity = int.parse(_arityController.text);
-                final depth = int.parse(_depthController.text);
-                final timeLock = int.parse(_timeLockController.text);
+                context.go('/${ConfirmationPage.routeName}');
 
-                Future.delayed(const Duration(seconds: 1), () {
-                  if (!context.mounted) return;
-                  context.read<GreatWallBloc>().add(
-                        InitializeGreatWall(
-                          treeArity: arity,
-                          treeDepth: depth,
-                          timeLockPuzzleParam: timeLock,
-                          seed: _passwordController.text,
-                        ),
-                      );
-                  context.go('/${ConfirmationPage.routeName}');
-                });
-              },
-              child: const Text('Start Derivation'),
-            ),
-          ],
-        ),
+              });
+
+            },
+            child: const Text('Start Derivation'),
+          ),
+        ],
       ),
     );
   }

@@ -32,8 +32,7 @@ class GreatWallInitialized extends GreatWallState {
   });
 
   @override
-  List<Object> get props =>
-      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, seed];
+  List<Object> get props => [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, seed];
 }
 
 class GreatWallLoading extends GreatWallState {}
