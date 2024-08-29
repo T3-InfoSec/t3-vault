@@ -61,7 +61,9 @@ class TreeInputsPage extends StatelessWidget {
                 }).toList(),
                 onChanged: (newValue) {
                   if (newValue != null) {
-                    context.read<GreatWallBloc>().add(GreatWallFormosaThemeSelected(newValue));
+                    context
+                        .read<GreatWallBloc>()
+                        .add(GreatWallFormosaThemeSelected(newValue));
                   }
                 },
               );
@@ -82,7 +84,8 @@ class TreeInputsPage extends StatelessWidget {
           const SizedBox(height: 10),
           TextField(
             controller: _timeLockController,
-            decoration: const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+            decoration:
+                const InputDecoration(labelText: 'Time Lock Puzzle Param'),
             keyboardType: TextInputType.number,
           ),
           const SizedBox(height: 10),
@@ -99,7 +102,7 @@ class TreeInputsPage extends StatelessWidget {
               final timeLock = int.parse(_timeLockController.text);
 
               Future.delayed(const Duration(seconds: 1), () {
-                if (!context.mounted) return;  
+                if (!context.mounted) return;
                 context.read<GreatWallBloc>().add(
                       InitializeGreatWall(
                         treeArity: arity,
@@ -109,9 +112,7 @@ class TreeInputsPage extends StatelessWidget {
                       ),
                     );
                 context.go('/${ConfirmationPage.routeName}');
-
               });
-
             },
             child: const Text('Start Derivation'),
           ),

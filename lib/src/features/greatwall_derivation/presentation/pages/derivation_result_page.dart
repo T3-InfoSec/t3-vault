@@ -21,8 +21,8 @@ class DerivationResultPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go(
-                '/${TreeInputsPage.routeName}'); // TODO: re-initialize the protocol derivation process.
+            // TODO: re-initialize the protocol derivation process.
+            context.go('/${TreeInputsPage.routeName}');
           },
         ),
         actions: [
@@ -52,7 +52,8 @@ class DerivationResultPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // context.read<GreatWallBloc>().add(Restart()); // TODO: re-initialize the protocol derivation process.
+                      // TODO: re-initialize the protocol derivation process.
+                      // context.read<GreatWallBloc>().add(Restart()); 
                       context.go(HomePage.routeName);
                     },
                     child: const Text('Reset'),
@@ -60,8 +61,7 @@ class DerivationResultPage extends StatelessWidget {
                 ],
               );
             }
-            return const Center(
-                child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
