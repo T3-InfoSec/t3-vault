@@ -44,19 +44,21 @@ class KnowledgeTypesPage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: knowledgeTypes.map((type) {
-            return Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    context.go('/${TreeInputsPage.routeName}');
-                  },
-                  child: Text(type),
-                ),
-                const SizedBox(height: 10),
-              ],
-            );
-          }).toList(),
+          children: knowledgeTypes.map(
+            (type) {
+              return Column(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/${TreeInputsPage.routeName}');
+                    },
+                    child: Text(type),
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              );
+            },
+          ).toList(),
         ),
       ),
     );

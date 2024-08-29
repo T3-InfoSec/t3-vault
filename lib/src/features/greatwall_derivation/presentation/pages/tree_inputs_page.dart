@@ -14,10 +14,10 @@ class TreeInputsPage extends StatelessWidget {
   static const routeName = 'tree_inputs';
 
   final TextEditingController _arityController = TextEditingController();
-
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   TreeInputsPage({super.key});
 
   @override
@@ -103,18 +103,21 @@ class TreeInputsPage extends StatelessWidget {
                 final depth = int.parse(_depthController.text);
                 final timeLock = int.parse(_timeLockController.text);
 
-                Future.delayed(const Duration(seconds: 1), () {
-                  if (!context.mounted) return;
-                  context.read<GreatWallBloc>().add(
-                        InitializeGreatWall(
-                          treeArity: arity,
-                          treeDepth: depth,
-                          timeLockPuzzleParam: timeLock,
-                          seed: _passwordController.text,
-                        ),
-                      );
-                  context.go('/${ConfirmationPage.routeName}');
-                });
+                Future.delayed(
+                  const Duration(seconds: 1),
+                  () {
+                    if (!context.mounted) return;
+                    context.read<GreatWallBloc>().add(
+                          InitializeGreatWall(
+                            treeArity: arity,
+                            treeDepth: depth,
+                            timeLockPuzzleParam: timeLock,
+                            seed: _passwordController.text,
+                          ),
+                        );
+                    context.go('/${ConfirmationPage.routeName}');
+                  },
+                );
               },
               child: const Text('Start Derivation'),
             ),
