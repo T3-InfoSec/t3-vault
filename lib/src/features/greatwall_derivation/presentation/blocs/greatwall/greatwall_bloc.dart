@@ -10,118 +10,97 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   int _currentLevel = 1;
 
   GreatWallBloc() : super(GreatWallInitial()) {
-    on<GreatWallFormosaThemeSelected>(_onThemeSelected);
-    on<InitializeGreatWall>(_onInitializeGreatWall);
-    on<StartDerivation>(_onStartDerivation);
-    on<LoadArityIndexes>(_onLoadArityIndexes);
-    on<MakeTacitDerivation>(_onMakeTacitDerivation);
-    on<AdvanceToNextLevel>(_onAdvanceToNextLevel);
-    on<GoBackToPreviousLevel>(_onGoBackToPreviousLevel);
-    on<FinishDerivation>(_onFinishDerivation);
+    on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
+    on<GreatWallInitialized>(_onGreatWallInitialized);
+    on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
+    on<GreatWallDerivationStepMade>(_onDerivationStepMade);
+    on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
   }
 
-  void _onThemeSelected(
+  void _onGreatWallFormosaThemeSelected(
       GreatWallFormosaThemeSelected event, Emitter<GreatWallState> emit) {
-    emit(GreatWallFormosaThemeState(event.selectedOption));
+    emit(GreatWallFormosaThemeSelectSuccess(event.theme));
   }
 
-  void _onInitializeGreatWall(
-      InitializeGreatWall event, Emitter<GreatWallState> emit) {
+  void _onGreatWallInitialized(
+      GreatWallInitialized event, Emitter<GreatWallState> emit) {
     _greatWall = GreatWall(
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
       timeLockPuzzleParam: event.timeLockPuzzleParam,
     );
 
-    _greatWall!.seed0 = event.seed;
+    _greatWall!.seed0 = event.secretSeed;
 
-    emit(GreatWallInitialized(
-      tacitKnowledge: 'Formosa',
-      treeArity: event.treeArity,
-      treeDepth: event.treeDepth,
-      timeLockPuzzleParam: event.timeLockPuzzleParam,
-      seed: event.seed,
-    ));
+    emit(
+      GreatWallInitialSuccess(
+        tacitKnowledge: 'Formosa',
+        treeArity: event.treeArity,
+        treeDepth: event.treeDepth,
+        timeLockPuzzleParam: event.timeLockPuzzleParam,
+        secretSeed: event.secretSeed,
+      ),
+    );
   }
 
-  Future<void> _onStartDerivation(
-      StartDerivation event, Emitter<GreatWallState> emit) async {
-    emit(GreatWallLoading());
+  Future<void> _onGreatWallDerivationStarted(
+      GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
+    emit(GreatWallDeriveInProgress());
 
-    if (_greatWall != null) {
-      _greatWall!.startDerivation();
-      await Future.delayed(const Duration(seconds: 3));
-      emit(
-        GreatWallDeriving(
-          currentLevel: _greatWall!.derivationLevel,
-          knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        ),
-      );
-    }
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.startDerivation();
+      },
+    );
+
+    emit(
+      GreatWallDeriveStepSuccess(
+        currentLevel: _currentLevel,
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        treeDepth: _greatWall!.treeDepth,
+      ),
+    );
   }
 
-  void _onLoadArityIndexes(
-      LoadArityIndexes event, Emitter<GreatWallState> emit) {
-    if (_greatWall != null) {
-      emit(
-        GreatWallLoadedArityIndexes(
-          currentLevel: _currentLevel,
-          knowledgeValues: _greatWall!.currentLevelKnowledgePalettes,
-          treeDepth: _greatWall!.treeDepth,
-        ),
-      );
-    }
-  }
+  void _onDerivationStepMade(
+      GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
+    emit(GreatWallDeriveInProgress());
 
-  void _onMakeTacitDerivation(
-      MakeTacitDerivation event, Emitter<GreatWallState> emit) {
-    if (_greatWall != null) {
-      _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
-
-      emit(
-        GreatWallDeriving(
-          currentLevel: _greatWall!.derivationLevel,
-          knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        ),
-      );
-    }
-  }
-
-  void _onAdvanceToNextLevel(
-      AdvanceToNextLevel event, Emitter<GreatWallState> emit) {
-    if (_greatWall != null && _currentLevel < _greatWall!.treeDepth) {
-      _currentLevel++;
-      emit(
-        GreatWallLoadedArityIndexes(
-          currentLevel: _currentLevel,
-          knowledgeValues: _greatWall!.currentLevelKnowledgePalettes,
-          treeDepth: _greatWall!.treeDepth,
-        ),
-      );
-    }
-  }
-
-  void _onGoBackToPreviousLevel(
-      GoBackToPreviousLevel event, Emitter<GreatWallState> emit) {
-    if (_greatWall != null && _currentLevel > 1) {
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
+      },
+    );
+    if (event.choiceNumber == 0 && _currentLevel > 1) {
       _currentLevel--;
-      emit(
-        GreatWallLoadedArityIndexes(
-          currentLevel: _currentLevel,
-          knowledgeValues: _greatWall!.currentLevelKnowledgePalettes,
-          treeDepth: _greatWall!.treeDepth,
-        ),
-      );
+    } else {
+      _currentLevel++;
     }
+
+    emit(
+      GreatWallDeriveStepSuccess(
+        currentLevel: _greatWall!.derivationLevel,
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        treeDepth: _greatWall!.treeDepth,
+      ),
+    );
   }
 
-  Future<void> _onFinishDerivation(
-      FinishDerivation event, Emitter<GreatWallState> emit) async {
-    if (_greatWall != null) {
-      _greatWall!.finishDerivation();
-      await Future.delayed(const Duration(seconds: 3));
+  Future<void> _onGreatWallDerivationFinished(
+      GreatWallDerivationFinished event, Emitter<GreatWallState> emit) async {
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.finishDerivation();
+      },
+    );
 
-      emit(GreatWallFinished(_greatWall!.derivationHashResult!.toString()));
-    }
+    emit(
+      GreatWallFinishSuccess(
+        _greatWall!.derivationHashResult!.toString(),
+      ),
+    );
   }
 }

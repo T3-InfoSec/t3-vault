@@ -37,7 +37,7 @@ class DerivationResultPage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
-            if (state is GreatWallFinished) {
+            if (state is GreatWallFinishSuccess) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

@@ -48,8 +48,8 @@ class TreeInputsPage extends StatelessWidget {
               builder: (context, state) {
                 String? selectedOption;
 
-                if (state is GreatWallFormosaThemeState) {
-                  selectedOption = state.selectedOption;
+                if (state is GreatWallFormosaThemeSelectSuccess) {
+                  selectedOption = state.theme;
                 }
 
                 return DropdownButton<String>(
@@ -108,11 +108,11 @@ class TreeInputsPage extends StatelessWidget {
                   () {
                     if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
-                          InitializeGreatWall(
+                          GreatWallInitialized(
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,
-                            seed: _passwordController.text,
+                            secretSeed: _passwordController.text,
                           ),
                         );
                     context.go('/${ConfirmationPage.routeName}');

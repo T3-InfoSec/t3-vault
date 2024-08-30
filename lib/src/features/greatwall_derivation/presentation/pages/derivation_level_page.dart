@@ -37,8 +37,11 @@ class DerivationLevelPage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
-            // TODO: _onGoBackToPreviousLevel event
-            if (state is GreatWallLoadedArityIndexes) {
+            if (state is GreatWallDeriveInProgress) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is GreatWallDeriveStepSuccess) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -49,17 +52,14 @@ class DerivationLevelPage extends StatelessWidget {
                       if (state.currentLevel > 1) {
                         context
                             .read<GreatWallBloc>()
-                            .add(MakeTacitDerivation(0));
-                        context
-                            .read<GreatWallBloc>()
-                            .add(GoBackToPreviousLevel());
+                            .add(GreatWallDerivationStepMade(0));
                         context.go('/${DerivationLevelPage.routeName}');
                       }
                     },
                     child: const Text('Previous Level'),
                   ),
                   const SizedBox(height: 10),
-                  ...state.knowledgeValues.asMap().entries.map(
+                  ...state.knowledgePalettes.asMap().entries.map(
                     (entry) {
                       int index = entry.key + 1;
                       dynamic value = entry.value;
@@ -73,19 +73,16 @@ class DerivationLevelPage extends StatelessWidget {
                                   if (!context.mounted) return;
                                   context
                                       .read<GreatWallBloc>()
-                                      .add(MakeTacitDerivation(index));
+                                      .add(GreatWallDerivationStepMade(index));
                                   if (state.currentLevel < state.treeDepth) {
-                                    context
-                                        .read<GreatWallBloc>()
-                                        .add(AdvanceToNextLevel());
                                     context.go(
-                                        "/${DerivationLevelPage.routeName}");
+                                        '/${DerivationLevelPage.routeName}');
                                   } else {
                                     context
                                         .read<GreatWallBloc>()
-                                        .add(FinishDerivation());
+                                        .add(GreatWallDerivationFinished());
                                     context.go(
-                                        "/${DerivationResultPage.routeName}");
+                                        '/${DerivationResultPage.routeName}');
                                   }
                                 },
                               );

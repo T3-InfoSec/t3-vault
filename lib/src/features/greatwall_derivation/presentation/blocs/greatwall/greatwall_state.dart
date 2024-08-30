@@ -1,76 +1,87 @@
 import 'package:equatable/equatable.dart';
 
-abstract class GreatWallState extends Equatable {
+sealed class GreatWallState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class GreatWallFormosaThemeState extends GreatWallState {
-  final String selectedOption;
+final class GreatWallInitial extends GreatWallState {}
 
-  GreatWallFormosaThemeState(this.selectedOption);
+final class GreatWallTacitKnowledgeSelectSuccess extends GreatWallState {
+  final String tacitKnowledge;
+
+  GreatWallTacitKnowledgeSelectSuccess(this.tacitKnowledge);
 
   @override
-  List<Object> get props => [selectedOption];
+  List<Object> get props => [tacitKnowledge];
 }
 
-class GreatWallInitial extends GreatWallState {}
+final class GreatWallFormosaThemeSelectSuccess extends GreatWallState {
+  final String theme;
 
-class GreatWallInitialized extends GreatWallState {
+  GreatWallFormosaThemeSelectSuccess(this.theme);
+
+  @override
+  List<Object> get props => [theme];
+}
+
+class GreatWallInitialSuccess extends GreatWallState {
   final String tacitKnowledge;
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
-  final String seed;
+  final String secretSeed;
 
-  GreatWallInitialized({
+  GreatWallInitialSuccess({
     required this.tacitKnowledge,
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
-    required this.seed,
+    required this.secretSeed,
   });
 
   @override
   List<Object> get props =>
-      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, seed];
+      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
 }
 
-class GreatWallLoading extends GreatWallState {}
+final class GreatWallDeriveInProgress extends GreatWallState {}
 
-class GreatWallDeriving extends GreatWallState {
+final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int currentLevel;
   final List<dynamic> knowledgePalettes;
+  final int treeDepth;
 
-  GreatWallDeriving({
+  GreatWallDeriveStepSuccess({
     required this.currentLevel,
     required this.knowledgePalettes,
+    required this.treeDepth,
   });
 
   @override
   List<Object> get props => [currentLevel, knowledgePalettes];
 }
 
-class GreatWallLoadedArityIndexes extends GreatWallState {
-  final int currentLevel;
-  final List<dynamic> knowledgeValues;
-  final int treeDepth;
-
-  GreatWallLoadedArityIndexes({
-    required this.currentLevel,
-    required this.knowledgeValues,
-    required this.treeDepth,
-  });
-
-  @override
-  List<Object> get props => [currentLevel, knowledgeValues, treeDepth];
-}
-
-class GreatWallFinished extends GreatWallState {
+final class GreatWallFinishSuccess extends GreatWallState {
   final String derivationHashResult;
 
-  GreatWallFinished(this.derivationHashResult);
+  GreatWallFinishSuccess(this.derivationHashResult);
 
   @override
   List<Object> get props => [derivationHashResult];
 }
+
+// class GreatWallLoadedArityIndexes extends GreatWallState {
+//   final int currentLevel;
+//   final List<dynamic> knowledgeValues;
+//   final int treeDepth;
+//
+//   GreatWallLoadedArityIndexes({
+//     required this.currentLevel,
+//     required this.knowledgeValues,
+//     required this.treeDepth,
+//   });
+//
+//   @override
+//   List<Object> get props => [currentLevel, knowledgeValues, treeDepth];
+// }

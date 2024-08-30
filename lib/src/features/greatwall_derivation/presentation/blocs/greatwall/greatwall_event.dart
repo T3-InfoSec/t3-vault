@@ -1,51 +1,55 @@
 import 'package:equatable/equatable.dart';
 
-abstract class GreatWallEvent extends Equatable {
+sealed class GreatWallEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class GreatWallFormosaThemeSelected extends GreatWallEvent {
-  final String selectedOption;
-
-  GreatWallFormosaThemeSelected(this.selectedOption);
-
-  @override
-  List<Object> get props => [selectedOption];
-}
-
-class InitializeGreatWall extends GreatWallEvent {
+final class GreatWallInitialized extends GreatWallEvent {
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
-  final String seed;
+  final String secretSeed;
 
-  InitializeGreatWall({
+  GreatWallInitialized({
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
-    required this.seed,
+    required this.secretSeed,
   });
 
   @override
-  List<Object> get props => [treeArity, treeDepth, timeLockPuzzleParam, seed];
+  List<Object> get props =>
+      [treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
 }
 
-class StartDerivation extends GreatWallEvent {}
+final class GreatWallTacitKnowledgeSelected extends GreatWallEvent {
+  final String tacitKnowledge;
 
-class LoadArityIndexes extends GreatWallEvent {}
+  GreatWallTacitKnowledgeSelected(this.tacitKnowledge);
 
-class MakeTacitDerivation extends GreatWallEvent {
+  @override
+  List<Object> get props => [tacitKnowledge];
+}
+
+final class GreatWallFormosaThemeSelected extends GreatWallEvent {
+  final String theme;
+
+  GreatWallFormosaThemeSelected(this.theme);
+
+  @override
+  List<Object> get props => [theme];
+}
+
+final class GreatWallDerivationStarted extends GreatWallEvent {}
+
+final class GreatWallDerivationStepMade extends GreatWallEvent {
   final int choiceNumber;
 
-  MakeTacitDerivation(this.choiceNumber);
+  GreatWallDerivationStepMade(this.choiceNumber);
 
   @override
   List<Object> get props => [choiceNumber];
 }
 
-class AdvanceToNextLevel extends GreatWallEvent {}
-
-class GoBackToPreviousLevel extends GreatWallEvent {}
-
-class FinishDerivation extends GreatWallEvent {}
+final class GreatWallDerivationFinished extends GreatWallEvent {}
