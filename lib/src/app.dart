@@ -6,12 +6,12 @@ import 'package:go_router/go_router.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
-import 'features/greatwall_derivation/presentation/blocs/blocs.dart';
-import 'features/greatwall_derivation/presentation/pages/confirmation_page.dart';
-import 'features/greatwall_derivation/presentation/pages/derivation_level_page.dart';
-import 'features/greatwall_derivation/presentation/pages/derivation_result_page.dart';
-import 'features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
-import 'features/greatwall_derivation/presentation/pages/tree_inputs_page.dart';
+import 'features/greatwall/presentation/blocs/blocs.dart';
+import 'features/greatwall/presentation/pages/confirmation_page.dart';
+import 'features/greatwall/presentation/pages/derivation_level_page.dart';
+import 'features/greatwall/presentation/pages/derivation_result_page.dart';
+import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
+import 'features/greatwall/presentation/pages/tree_inputs_page.dart';
 import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
