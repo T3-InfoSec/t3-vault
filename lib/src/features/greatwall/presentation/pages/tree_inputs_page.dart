@@ -109,19 +109,17 @@ class TreeInputsPage extends StatelessWidget {
                           final timeLock = int.parse(_timeLockController.text);
 
                           context.read<MemoCardSetBloc>().add(
-                            MemoCardSetCardAdded(
-                              memoCard: MemoCard(
-                                knowledge: () {
-                                  GreatWall greatWall = GreatWall(
-                                      treeArity: arity,
-                                      treeDepth: depth,
-                                      timeLockPuzzleParam: timeLock);
-                                  greatWall.seed0 = _passwordController.text;
-                                  return greatWall;
-                                }(),
-                              ),
-                            ),
-                          );
+                                MemoCardSetCardAdded(
+                                  memoCard: MemoCard(
+                                    knowledge: {
+                                      'treeArity': arity,
+                                      'treeDepth': depth,
+                                      'timeLockPuzzleParam': timeLock,
+                                      'secretSeed': _passwordController.text,
+                                    },
+                                  ),
+                                ),
+                              );
                         },
                   child: const Text('Save To Memorization Card'),
                 );
