@@ -32,12 +32,7 @@ class ConfirmationPage extends StatelessWidget {
           ),
         ],
       ),
-      body: BlocConsumer<GreatWallBloc, GreatWallState>(
-        listener: (context, state) {
-          if (state is GreatWallDeriveStepSuccess) {
-            context.go('/${DerivationLevelPage.routeName}');
-          }
-        },
+      body: BlocBuilder<GreatWallBloc, GreatWallState>(
         builder: (context, state) {
           if (state is GreatWallDeriveInProgress) {
             return const Center(
@@ -79,6 +74,7 @@ class ConfirmationPage extends StatelessWidget {
                         () {
                           if (!context.mounted) return;
                           context.read<GreatWallBloc>().add(GreatWallDerivationStarted());
+                          context.go('/${DerivationLevelPage.routeName}');
                         },
                       );
                     },
