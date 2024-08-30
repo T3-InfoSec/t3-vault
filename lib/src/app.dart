@@ -42,15 +42,15 @@ class T3Vault extends StatelessWidget {
             BlocProvider<AgreementBloc>(
               create: (BuildContext context) => AgreementBloc(),
             ),
-                        BlocProvider<GreatWallBloc>(
-              create: (context) => GreatWallBloc(),)
+            BlocProvider<GreatWallBloc>(
+              create: (context) => GreatWallBloc(),
+            )
           ],
           child: Builder(
             builder: (context) {
               final agreementState = context.watch<AgreementBloc>().state;
 
               return MaterialApp.router(
-
                 // Providing a restorationScopeId allows the Navigator built by the
                 // MaterialApp to restore the navigation stack when a user leaves and
                 // returns to the app after it has been killed while running in the
@@ -188,16 +188,19 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: SettingsPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return MaterialPage(
                               restorationId: 'router.root.settings',
-                              child: SettingsPage(controller: settingsController),
+                              child:
+                                  SettingsPage(controller: settingsController),
                             );
                           },
                         ),
                         GoRoute(
                           path: KnowledgeTypesPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               restorationId: 'router.root.knowledge_types',
                               child: KnowledgeTypesPage(),
@@ -206,7 +209,8 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: TreeInputsPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return MaterialPage(
                               restorationId: 'router.root.tree_inputs',
                               child: TreeInputsPage(),
@@ -215,7 +219,8 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: ConfirmationPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               restorationId: 'router.root.derivation_seed',
                               child: ConfirmationPage(),
@@ -224,7 +229,8 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: DerivationLevelPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               restorationId: 'router.root.derivation_level',
                               child: DerivationLevelPage(),
@@ -233,7 +239,8 @@ class T3Vault extends StatelessWidget {
                         ),
                         GoRoute(
                           path: DerivationResultPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               restorationId: 'router.root.derivation_result',
                               child: DerivationResultPage(),
