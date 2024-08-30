@@ -10,10 +10,10 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData themeData = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: themeData.colorScheme.surface,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -30,7 +30,7 @@ class SplashPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
-                  color: theme.colorScheme.onSurface,
+                  color: themeData.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(
@@ -41,7 +41,7 @@ class SplashPage extends StatelessWidget {
                 children: [
                   Image.asset(
                     "assets/images/flutter_logo.png",
-                    color: theme.colorScheme.onSurface,
+                    color: themeData.colorScheme.onSurface,
                     width: 35,
                     height: 35,
                   ),
@@ -53,7 +53,7 @@ class SplashPage extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w500,
-                      color: theme.colorScheme.onSurface,
+                      color: themeData.colorScheme.onSurface,
                     ),
                   ),
                 ],
