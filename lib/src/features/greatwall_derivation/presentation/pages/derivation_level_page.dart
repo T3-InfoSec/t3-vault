@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../blocs/greatwall/greatwall_bloc.dart';
-import '../blocs/greatwall/greatwall_event.dart';
-import '../blocs/greatwall/greatwall_state.dart';
+import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
 import 'tree_inputs_page.dart';
 

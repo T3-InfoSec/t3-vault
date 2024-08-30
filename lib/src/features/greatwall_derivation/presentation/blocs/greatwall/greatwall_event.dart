@@ -23,6 +23,8 @@ final class GreatWallInitialized extends GreatWallEvent {
       [treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
 }
 
+final class GreatWallReset extends GreatWallEvent {}
+
 final class GreatWallTacitKnowledgeSelected extends GreatWallEvent {
   final String tacitKnowledge;
 

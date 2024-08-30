@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:t3_formosa/formosa.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../blocs/greatwall/greatwall_bloc.dart';
-import '../blocs/greatwall/greatwall_event.dart';
-import '../blocs/greatwall/greatwall_state.dart';
+import '../blocs/blocs.dart';
 import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 

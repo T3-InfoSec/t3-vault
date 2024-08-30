@@ -4,8 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../landing/presentation/pages/home_page.dart';
-import '../blocs/greatwall/greatwall_bloc.dart';
-import '../blocs/greatwall/greatwall_state.dart';
+import '../blocs/blocs.dart';
 import 'tree_inputs_page.dart';
 
 class DerivationResultPage extends StatelessWidget {
@@ -21,7 +20,7 @@ class DerivationResultPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // TODO: re-initialize the protocol derivation process.
+            context.read<GreatWallBloc>().add(GreatWallReset());
             context.go('/${TreeInputsPage.routeName}');
           },
         ),
@@ -52,8 +51,7 @@ class DerivationResultPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
-                      // TODO: re-initialize the protocol derivation process.
-                      // context.read<GreatWallBloc>().add(Restart()); 
+                      context.read<GreatWallBloc>().add(GreatWallReset());
                       context.go(HomePage.routeName);
                     },
                     child: const Text('Reset'),

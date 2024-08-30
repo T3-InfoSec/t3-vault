@@ -1,9 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:great_wall/great_wall.dart';
 
-import 'greatwall_event.dart';
-import 'greatwall_state.dart';
+import 'bloc.dart';
 
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
@@ -12,55 +10,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
     on<GreatWallInitialized>(_onGreatWallInitialized);
+    on<GreatWallReset>(_onGreatWallReset);
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
-  }
-
-  void _onGreatWallFormosaThemeSelected(
-      GreatWallFormosaThemeSelected event, Emitter<GreatWallState> emit) {
-    emit(GreatWallFormosaThemeSelectSuccess(event.theme));
-  }
-
-  void _onGreatWallInitialized(
-      GreatWallInitialized event, Emitter<GreatWallState> emit) {
-    _greatWall = GreatWall(
-      treeArity: event.treeArity,
-      treeDepth: event.treeDepth,
-      timeLockPuzzleParam: event.timeLockPuzzleParam,
-    );
-
-    _greatWall!.seed0 = event.secretSeed;
-
-    emit(
-      GreatWallInitialSuccess(
-        tacitKnowledge: 'Formosa',
-        treeArity: event.treeArity,
-        treeDepth: event.treeDepth,
-        timeLockPuzzleParam: event.timeLockPuzzleParam,
-        secretSeed: event.secretSeed,
-      ),
-    );
-  }
-
-  Future<void> _onGreatWallDerivationStarted(
-      GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
-    emit(GreatWallDeriveInProgress());
-
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-      () {
-        _greatWall!.startDerivation();
-      },
-    );
-
-    emit(
-      GreatWallDeriveStepSuccess(
-        currentLevel: _currentLevel,
-        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        treeDepth: _greatWall!.treeDepth,
-      ),
-    );
   }
 
   void _onDerivationStepMade(
@@ -102,5 +55,59 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         _greatWall!.derivationHashResult!.toString(),
       ),
     );
+  }
+
+  Future<void> _onGreatWallDerivationStarted(
+      GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
+    emit(GreatWallDeriveInProgress());
+
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.startDerivation();
+      },
+    );
+
+    emit(
+      GreatWallDeriveStepSuccess(
+        currentLevel: _currentLevel,
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        treeDepth: _greatWall!.treeDepth,
+      ),
+    );
+  }
+
+  void _onGreatWallFormosaThemeSelected(
+      GreatWallFormosaThemeSelected event, Emitter<GreatWallState> emit) {
+    emit(GreatWallFormosaThemeSelectSuccess(event.theme));
+  }
+
+  void _onGreatWallInitialized(
+      GreatWallInitialized event, Emitter<GreatWallState> emit) {
+    _greatWall = GreatWall(
+      treeArity: event.treeArity,
+      treeDepth: event.treeDepth,
+      timeLockPuzzleParam: event.timeLockPuzzleParam,
+    );
+
+    _greatWall!.seed0 = event.secretSeed;
+
+    emit(
+      GreatWallInitialSuccess(
+        tacitKnowledge: 'Formosa',
+        treeArity: event.treeArity,
+        treeDepth: event.treeDepth,
+        timeLockPuzzleParam: event.timeLockPuzzleParam,
+        secretSeed: event.secretSeed,
+      ),
+    );
+  }
+
+  void _onGreatWallReset(
+      GreatWallReset event, Emitter<GreatWallState> emit) {
+    _greatWall = null;
+    _currentLevel = 1;
+
+    emit(GreatWallInitial());
   }
 }
