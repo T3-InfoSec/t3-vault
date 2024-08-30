@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/features/greatwall_derivation/presentation/pages/knowledge_types_page.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../../../greatwall/presentation/pages/knowledge_types_page.dart';
 import '../../../sample/sample_item_list_view.dart';
 
 /// Displays a list of SampleItems.
