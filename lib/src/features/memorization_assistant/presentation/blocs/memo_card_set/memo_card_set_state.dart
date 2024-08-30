@@ -2,31 +2,30 @@ import 'package:equatable/equatable.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 sealed class MemoCardSetState extends Equatable {
-  final List<MemoCard> memoCardCollection = const <MemoCard>[];
+  final List<MemoCard> memoCardSet = <MemoCard>[];
 
-  const MemoCardSetState();
-
-  @override
-  List<Object?> get props => [memoCardCollection];
-}
-
-final class MemoCardSetEmpty extends MemoCardSetState {
-  const MemoCardSetEmpty();
+  MemoCardSetState();
 
   @override
-  List<Object?> get props => [memoCardCollection];
+  List<Object?> get props => [memoCardSet];
 }
+
+final class MemoCardSetEmpty extends MemoCardSetState {}
 
 final class MemoCardSetAddSuccess extends MemoCardSetState {
-  const MemoCardSetAddSuccess({memoCardCollection});
+  MemoCardSetAddSuccess({required memoCards}) {
+    memoCardSet.addAll(memoCards);
+  }
 
   @override
-  List<Object?> get props => [memoCardCollection];
+  List<Object?> get props => [memoCardSet];
 }
 
 final class MemoCardSetRemoveSuccess extends MemoCardSetState {
-  const MemoCardSetRemoveSuccess({memoCardCollection});
+  MemoCardSetRemoveSuccess({required memoCards}) {
+    memoCardSet.addAll(memoCards);
+  }
 
   @override
-  List<Object?> get props => [memoCardCollection];
+  List<Object?> get props => [memoCardSet];
 }
