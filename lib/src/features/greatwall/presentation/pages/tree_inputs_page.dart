@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
+import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
 import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
@@ -93,6 +96,36 @@ class TreeInputsPage extends StatelessWidget {
               controller: _passwordController,
               obscureText: true,
               decoration: const InputDecoration(hintText: 'Password'),
+            ),
+            const SizedBox(height: 10),
+            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+              builder: (context, memoCardSetState) {
+                return ElevatedButton(
+                  onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                      ? null
+                      : () {
+                          final arity = int.parse(_arityController.text);
+                          final depth = int.parse(_depthController.text);
+                          final timeLock = int.parse(_timeLockController.text);
+
+                          context.read<MemoCardSetBloc>().add(
+                            MemoCardSetCardAdded(
+                              memoCard: MemoCard(
+                                knowledge: () {
+                                  GreatWall greatWall = GreatWall(
+                                      treeArity: arity,
+                                      treeDepth: depth,
+                                      timeLockPuzzleParam: timeLock);
+                                  greatWall.seed0 = _passwordController.text;
+                                  return greatWall;
+                                }(),
+                              ),
+                            ),
+                          );
+                        },
+                  child: const Text('Save To Memorization Card'),
+                );
+              },
             ),
             const SizedBox(height: 10),
             ElevatedButton(
