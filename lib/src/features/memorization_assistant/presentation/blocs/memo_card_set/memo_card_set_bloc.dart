@@ -4,7 +4,7 @@ import 'bloc.dart';
 
 class MemoCardSetBloc
     extends Bloc<MemoCardSetEvent, MemoCardSetState> {
-  MemoCardSetBloc() : super(const MemoCardSetEmpty()) {
+  MemoCardSetBloc() : super(MemoCardSetEmpty()) {
     on<MemoCardSetCardAdded>(_onMemoCardCollectionEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardCollectionEvent);
   }
@@ -14,17 +14,17 @@ class MemoCardSetBloc
     Emitter<MemoCardSetState> emit,
   ) async {
     if (event is MemoCardSetCardAdded) {
-      state.memoCardCollection.add(event.memoCard);
-      return emit(const MemoCardSetAddSuccess());
+      state.memoCardSet.add(event.memoCard);
+      return emit(MemoCardSetAddSuccess(memoCards: state.memoCardSet));
     }
 
     if (event is MemoCardSetCardRemoved) {
-      if (state.memoCardCollection.isEmpty) {
-        return emit(const MemoCardSetEmpty());
+      if (state.memoCardSet.isEmpty) {
+        return emit(MemoCardSetEmpty());
       } else {
-        state.memoCardCollection.add(event.memoCard);
-        state.memoCardCollection.remove(event.memoCard);
-        return emit(const MemoCardSetRemoveSuccess());
+        state.memoCardSet.add(event.memoCard);
+        state.memoCardSet.remove(event.memoCard);
+        return emit(MemoCardSetRemoveSuccess(memoCards: state.memoCardSet));
       }
     }
   }
