@@ -44,9 +44,24 @@ class DerivationLevelPage extends StatelessWidget {
                 children: [
                   Text('Level ${state.currentLevel} of ${state.treeDepth}:'),
                   const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (state.currentLevel > 1) {
+                        context
+                            .read<GreatWallBloc>()
+                            .add(MakeTacitDerivation(0));
+                        context
+                            .read<GreatWallBloc>()
+                            .add(GoBackToPreviousLevel());
+                        context.go('/${DerivationLevelPage.routeName}');
+                      }
+                    },
+                    child: const Text('Previous Level'),
+                  ),
+                  const SizedBox(height: 10),
                   ...state.knowledgeValues.asMap().entries.map(
                     (entry) {
-                      int index = entry.key;
+                      int index = entry.key + 1;
                       dynamic value = entry.value;
                       return Column(
                         children: [
