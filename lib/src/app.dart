@@ -48,7 +48,7 @@ class T3Vault extends StatelessWidget {
             ),
             BlocProvider<GreatWallBloc>(
               create: (context) => GreatWallBloc(),
-            )
+            ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) => MemoCardRatingBloc(),
             ),
