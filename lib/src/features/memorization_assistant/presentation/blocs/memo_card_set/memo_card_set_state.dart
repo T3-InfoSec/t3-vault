@@ -12,6 +12,15 @@ sealed class MemoCardSetState extends Equatable {
 
 final class MemoCardSetEmpty extends MemoCardSetState {}
 
+final class MemoCardSetChangeNothing extends MemoCardSetState {
+  MemoCardSetChangeNothing({required memoCards}) {
+    memoCardSet.addAll(memoCards);
+  }
+
+  @override
+  List<Object?> get props => [memoCardSet];
+}
+
 final class MemoCardSetAddSuccess extends MemoCardSetState {
   MemoCardSetAddSuccess({required memoCards}) {
     memoCardSet.addAll(memoCards);
