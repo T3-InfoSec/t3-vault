@@ -8,6 +8,8 @@ sealed class MemoCardSetEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+final class MemoCardSetUnchanged extends MemoCardSetEvent {}
+
 final class MemoCardSetCardAdded extends MemoCardSetEvent {
   final MemoCard memoCard;
 
