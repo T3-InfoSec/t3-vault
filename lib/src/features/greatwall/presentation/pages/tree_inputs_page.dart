@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
@@ -29,6 +28,7 @@ class TreeInputsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
+            context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
             context.go('/${KnowledgeTypesPage.routeName}');
           },
         ),
