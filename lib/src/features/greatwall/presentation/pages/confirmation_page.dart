@@ -61,6 +61,14 @@ class ConfirmationPage extends StatelessWidget {
                   ),
                   Text('${state.treeDepth}'),
                   const SizedBox(height: 20),
+                  if (state.size != null) ...[
+                    const Text(
+                      'Hashviz Block Size',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('${state.size}'),
+                    const SizedBox(height: 20),
+                  ],
                   const Text(
                     'Password',
                     style: TextStyle(fontWeight: FontWeight.bold),

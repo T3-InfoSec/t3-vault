@@ -99,6 +99,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
         secretSeed: event.secretSeed,
+        size: event.size,
       ),
     );
   }

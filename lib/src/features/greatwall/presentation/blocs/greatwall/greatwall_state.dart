@@ -26,11 +26,13 @@ final class GreatWallFormosaThemeSelectSuccess extends GreatWallState {
 }
 
 class GreatWallInitialSuccess extends GreatWallState {
+
   final String tacitKnowledge;
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
   final String secretSeed;
+  final int? size;
 
   GreatWallInitialSuccess({
     required this.tacitKnowledge,
@@ -38,11 +40,12 @@ class GreatWallInitialSuccess extends GreatWallState {
     required this.treeDepth,
     required this.timeLockPuzzleParam,
     required this.secretSeed,
+    this.size,
   });
 
   @override
   List<Object> get props =>
-      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
+      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, secretSeed, size!];
 }
 
 final class GreatWallDeriveInProgress extends GreatWallState {}

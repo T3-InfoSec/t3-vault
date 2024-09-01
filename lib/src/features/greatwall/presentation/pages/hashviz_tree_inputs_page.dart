@@ -121,7 +121,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,
-                            // size: size, TODO: Update bloc event with size param.
+                            size: size,
                             secretSeed: _passwordController.text,
                           ),
                         );

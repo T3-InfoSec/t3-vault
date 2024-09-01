@@ -6,21 +6,24 @@ sealed class GreatWallEvent extends Equatable {
 }
 
 final class GreatWallInitialized extends GreatWallEvent {
+
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
   final String secretSeed;
+  final int? size;
 
   GreatWallInitialized({
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
     required this.secretSeed,
+    this.size,
   });
 
   @override
   List<Object> get props =>
-      [treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
+      [treeArity, treeDepth, timeLockPuzzleParam, secretSeed, size!];
 }
 
 final class GreatWallReset extends GreatWallEvent {}
