@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -12,7 +13,7 @@ import 'features/greatwall/presentation/pages/confirmation_page.dart';
 import 'features/greatwall/presentation/pages/derivation_level_page.dart';
 import 'features/greatwall/presentation/pages/derivation_result_page.dart';
 import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
-import 'features/greatwall/presentation/pages/tree_inputs_page.dart';
+import 'features/greatwall/presentation/pages/formosa_tree_inputs_page.dart';
 import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
@@ -255,12 +256,22 @@ class T3Vault extends StatelessWidget {
                           },
                         ),
                         GoRoute(
-                          path: TreeInputsPage.routeName,
+                          path: FormosaTreeInputsPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return MaterialPage(
-                              restorationId: 'router.root.tree_inputs',
-                              child: TreeInputsPage(),
+                              restorationId: 'router.root.formosa_tree_inputs',
+                              child: FormosaTreeInputsPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: HashvizTreeInputsPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return MaterialPage(
+                              restorationId: 'router.root.hashviz_tree_inputs',
+                              child: HashvizTreeInputsPage(),
                             );
                           },
                         ),

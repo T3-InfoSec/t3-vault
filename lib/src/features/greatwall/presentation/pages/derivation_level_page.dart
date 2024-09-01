@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
-import 'tree_inputs_page.dart';
+import 'formosa_tree_inputs_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
   static const routeName = 'derivation_level';
@@ -20,7 +20,7 @@ class DerivationLevelPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go('/${TreeInputsPage.routeName}');
+            context.go('/${FormosaTreeInputsPage.routeName}'); // TODO: fix navigation
           },
         ),
         actions: [

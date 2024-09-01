@@ -10,21 +10,21 @@ import '../blocs/blocs.dart';
 import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 
-class TreeInputsPage extends StatelessWidget {
-  static const routeName = 'tree_inputs';
+class FormosaTreeInputsPage extends StatelessWidget {
+  static const routeName = 'formosa_tree_inputs';
 
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  TreeInputsPage({super.key});
+  FormosaTreeInputsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Input Parameters'),
+        title: const Text('Formosa Input Parameters'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
