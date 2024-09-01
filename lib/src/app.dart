@@ -21,8 +21,6 @@ import 'features/landing/presentation/pages/splash_page.dart';
 import 'features/memorization_assistant/presentation/blocs/blocs.dart';
 import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
-import 'features/sample/sample_item_details_view.dart';
-import 'features/sample/sample_item_list_view.dart';
 
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
@@ -199,35 +197,6 @@ class T3Vault extends StatelessWidget {
                                     cardName: cardName,
                                     memoCard: memoCard,
                                   ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-                        GoRoute(
-                          path: SampleItemListView.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
-                            return const MaterialPage(
-                              // If the user leaves and returns to the app after it has
-                              // been killed while running in the background, the
-                              // navigation stack is restored.
-                              restorationId: 'router.root.sampleItemListView',
-                              child: SampleItemListView(),
-                            );
-                          },
-                          routes: <RouteBase>[
-                            GoRoute(
-                              path: SampleItemDetailsView.routeName,
-                              pageBuilder:
-                                  (BuildContext context, GoRouterState state) {
-                                return const MaterialPage(
-                                  // If the user leaves and returns to the app after it
-                                  // has been killed while running in the background, the
-                                  // navigation stack is restored.
-                                  restorationId:
-                                      'router.root.sampleItemListView.details',
-                                  child: SampleItemDetailsView(),
                                 );
                               },
                             ),
