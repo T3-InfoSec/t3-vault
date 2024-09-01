@@ -128,6 +128,7 @@ class MemoCardDetailsPage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                String tacitKnowledge = memoCard.knowledge['tacitKnowledge'];
                 int treeArity = memoCard.knowledge['treeArity'];
                 int treeDepth = memoCard.knowledge['treeDepth'];
                 int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
@@ -135,6 +136,7 @@ class MemoCardDetailsPage extends StatelessWidget {
 
                 context.read<GreatWallBloc>().add(
                       GreatWallInitialized(
+                        tacitKnowledge: tacitKnowledge,
                         treeArity: treeArity,
                         treeDepth: treeDepth,
                         timeLockPuzzleParam: timeLock,

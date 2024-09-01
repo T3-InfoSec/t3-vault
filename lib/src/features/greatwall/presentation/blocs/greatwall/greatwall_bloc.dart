@@ -94,7 +94,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallInitialSuccess(
-        tacitKnowledge: 'Formosa',
+        tacitKnowledge: event.tacitKnowledge,
         treeArity: event.treeArity,
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,

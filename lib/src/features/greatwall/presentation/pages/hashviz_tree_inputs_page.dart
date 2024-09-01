@@ -90,6 +90,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                 MemoCardSetCardAdded(
                                   memoCard: MemoCard(
                                     knowledge: {
+                                      'tacitKnowledge': 'HashViz',
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
@@ -118,6 +119,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                     if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
                           GreatWallInitialized(
+                            tacitKnowledge: 'HashViz',
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,

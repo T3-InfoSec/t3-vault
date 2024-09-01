@@ -138,6 +138,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                     if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
                           GreatWallInitialized(
+                            tacitKnowledge: 'Formosa',
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,
