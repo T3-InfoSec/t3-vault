@@ -50,6 +50,15 @@ class GreatWallInitialSuccess extends GreatWallState {
       [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
 }
 
+final class GreatWallNodesUpdated extends GreatWallState {
+  final dynamic nodes;
+
+  GreatWallNodesUpdated({required this.nodes});
+
+  @override
+  List<Object> get props => [nodes];
+}
+
 final class GreatWallDeriveInProgress extends GreatWallState {}
 
 final class GreatWallDeriveStepSuccess extends GreatWallState {

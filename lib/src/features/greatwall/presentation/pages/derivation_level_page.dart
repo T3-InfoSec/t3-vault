@@ -41,6 +41,9 @@ class DerivationLevelPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (state is GreatWallDeriveStepSuccess) {
+              context
+                  .read<GreatWallBloc>()
+                  .add(GreatWallUpdateNodes());
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

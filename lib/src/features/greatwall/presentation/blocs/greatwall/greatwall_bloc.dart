@@ -6,11 +6,13 @@ import 'bloc.dart';
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
   int _currentLevel = 1;
+  dynamic nodes;
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
     on<GreatWallInitialized>(_onGreatWallInitialized);
     on<GreatWallReset>(_onGreatWallReset);
+    on<GreatWallUpdateNodes>(_onGreatWallUpdateNodes);
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
@@ -112,5 +114,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     _currentLevel = 1;
 
     emit(GreatWallInitial());
+  }
+
+    void _onGreatWallUpdateNodes(GreatWallUpdateNodes event, Emitter<GreatWallState> emit) {
+    nodes[_greatWall!.derivationLevel] = _greatWall!.currentHash; // TODO: Add all nodes of a level
+    emit(GreatWallNodesUpdated(nodes: nodes));
   }
 }
