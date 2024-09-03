@@ -20,7 +20,8 @@ class ConfirmationPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go('/${FormosaTreeInputsPage.routeName}'); // TODO: Fix navigation
+            context.go(
+                '/${FormosaTreeInputsPage.routeName}'); // TODO: Fix navigation
           },
         ),
         actions: [
@@ -47,7 +48,7 @@ class ConfirmationPage extends StatelessWidget {
                     'Tacit Knowledge',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(state.tacitKnowledge),
+                  Text(state.tacitKnowledgeType.value),
                   const SizedBox(height: 20),
                   const Text(
                     'Tree Arity',
@@ -61,14 +62,19 @@ class ConfirmationPage extends StatelessWidget {
                   ),
                   Text('${state.treeDepth}'),
                   const SizedBox(height: 20),
-                  if (state.size != null) ...[
-                    const Text(
-                      'Hashviz Block Size',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text('${state.size}'),
-                    const SizedBox(height: 20),
-                  ],
+                  ...state.tacitKnowledgeConfigs.entries.map((entry) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          entry.key,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('${entry.value}'),
+                        const SizedBox(height: 20),
+                      ],
+                    );
+                  }),
                   const Text(
                     'Password',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -81,7 +87,9 @@ class ConfirmationPage extends StatelessWidget {
                         const Duration(seconds: 1),
                         () {
                           if (!context.mounted) return;
-                          context.read<GreatWallBloc>().add(GreatWallDerivationStarted());
+                          context
+                              .read<GreatWallBloc>()
+                              .add(GreatWallDerivationStarted());
                           context.go('/${DerivationLevelPage.routeName}');
                         },
                       );

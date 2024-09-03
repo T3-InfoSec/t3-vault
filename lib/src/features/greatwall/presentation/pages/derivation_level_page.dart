@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:blockies/blockies.dart'; // Asegúrate de importar la librería Blockies
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -61,6 +62,7 @@ class DerivationLevelPage extends StatelessWidget {
                     (entry) {
                       int index = entry.key + 1;
                       dynamic value = entry.value;
+
                       return Column(
                         children: [
                           ElevatedButton(
@@ -85,7 +87,7 @@ class DerivationLevelPage extends StatelessWidget {
                                 },
                               );
                             },
-                            child: Text(value.knowledge),
+                            child: renderKnowledgeWidget(value),
                           ),
                           const SizedBox(height: 10),
                         ],
@@ -103,5 +105,15 @@ class DerivationLevelPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget renderKnowledgeWidget(value) {
+    if (value.knowledge is String) {
+      return Text(value.knowledge);
+    } else if (value.knowledge is Blockies) {
+      return value.knowledge;
+    } else {
+      return const Text('Unknown type');
+    }
   }
 }

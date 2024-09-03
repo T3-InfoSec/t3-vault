@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:t3_formosa/formosa.dart';
+import 'package:great_wall/great_wall.dart';
 
 sealed class GreatWallEvent extends Equatable {
   @override
@@ -7,25 +9,25 @@ sealed class GreatWallEvent extends Equatable {
 
 final class GreatWallInitialized extends GreatWallEvent {
 
-  final String tacitKnowledge;
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
+  final TacitKnowledgeTypes tacitKnowledgeType;
+  final Map<String, dynamic> tacitKnowledgeConfigs;
   final String secretSeed;
-  final int? size;
 
   GreatWallInitialized({
-    required this.tacitKnowledge,
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
+    required this.tacitKnowledgeType,
+    required this.tacitKnowledgeConfigs,
     required this.secretSeed,
-    this.size,
   });
 
   @override
   List<Object> get props =>
-      [tacitKnowledge, treeDepth, timeLockPuzzleParam, secretSeed, size!];
+      [treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
 }
 
 final class GreatWallReset extends GreatWallEvent {}
@@ -40,7 +42,7 @@ final class GreatWallTacitKnowledgeSelected extends GreatWallEvent {
 }
 
 final class GreatWallFormosaThemeSelected extends GreatWallEvent {
-  final String theme;
+  final FormosaTheme theme;
 
   GreatWallFormosaThemeSelected(this.theme);
 

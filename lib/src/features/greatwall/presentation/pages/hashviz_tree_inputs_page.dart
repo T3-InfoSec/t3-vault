@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -65,7 +66,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
             const SizedBox(height: 10),
             TextField(
               controller: _sizeController,
-              decoration: const InputDecoration(labelText: 'Hashviz block size'),
+              decoration:
+                  const InputDecoration(labelText: 'Hashviz block size'),
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
@@ -90,11 +92,11 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                 MemoCardSetCardAdded(
                                   memoCard: MemoCard(
                                     knowledge: {
-                                      'tacitKnowledge': 'HashViz',
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'size': size,
+                                      'tacitKnowledgeType': TacitKnowledgeTypes.hashviz,
+                                      'tacitKnowledgeConfigs': {'size': size},
                                       'secretSeed': _passwordController.text,
                                     },
                                   ),
@@ -119,11 +121,13 @@ class HashvizTreeInputsPage extends StatelessWidget {
                     if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
                           GreatWallInitialized(
-                            tacitKnowledge: 'HashViz',
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,
-                            size: size,
+                            tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
+                            tacitKnowledgeConfigs: {
+                              'size': size,
+                            },
                             secretSeed: _passwordController.text,
                           ),
                         );

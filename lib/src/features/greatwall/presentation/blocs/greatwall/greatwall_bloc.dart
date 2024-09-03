@@ -88,18 +88,20 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
       timeLockPuzzleParam: event.timeLockPuzzleParam,
+      tacitKnowledgeType: event.tacitKnowledgeType,
+      tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
     );
 
     _greatWall!.seed0 = event.secretSeed;
 
     emit(
       GreatWallInitialSuccess(
-        tacitKnowledge: event.tacitKnowledge,
         treeArity: event.treeArity,
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
+        tacitKnowledgeType: event.tacitKnowledgeType,
+        tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
         secretSeed: event.secretSeed,
-        size: event.size,
       ),
     );
   }
