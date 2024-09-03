@@ -50,8 +50,6 @@ final class GreatWallFormosaThemeSelected extends GreatWallEvent {
   List<Object> get props => [theme];
 }
 
-final class GreatWallUpdateNodes extends GreatWallEvent {}
-
 final class GreatWallDerivationStarted extends GreatWallEvent {}
 
 final class GreatWallDerivationStepMade extends GreatWallEvent {

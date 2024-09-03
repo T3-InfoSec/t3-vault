@@ -231,7 +231,7 @@ packages:
     description:
       path: "."
       ref: hashviz_integration
-      resolved-ref: "747a1dec2ed8752abffd709aa8950e51b01d2a77"
+      resolved-ref: "63b5137739e246694949538bba22b11312dac08e"
       url: "https://github.com/T3-InfoSec/great-wall-dart.git"
     source: git
     version: "0.1.0-dev"

@@ -41,9 +41,6 @@ class DerivationLevelPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             } else if (state is GreatWallDeriveStepSuccess) {
-              context
-                  .read<GreatWallBloc>()
-                  .add(GreatWallUpdateNodes());
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -97,6 +94,11 @@ class DerivationLevelPage extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(height: 20),
+                  const Text('Saved Derived States:'),
+                  ...state.savedDerivedStates.entries.map((entry) {
+                    return Text('Path: ${entry.key}, Value: ${entry.value}');
+                  }),
                 ],
               );
             } else {

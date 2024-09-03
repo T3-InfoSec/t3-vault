@@ -12,7 +12,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
     on<GreatWallInitialized>(_onGreatWallInitialized);
     on<GreatWallReset>(_onGreatWallReset);
-    on<GreatWallUpdateNodes>(_onGreatWallUpdateNodes);
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
@@ -39,6 +38,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _greatWall!.derivationLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        savedDerivedStates: _greatWall!.savedDerivedStates,
       ),
     );
   }
@@ -54,7 +54,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallFinishSuccess(
-        _greatWall!.derivationHashResult!.toString(),
+        derivationHashResult: _greatWall!.derivationHashResult!.toString(),
+        savedDerivedStates: _greatWall!.savedDerivedStates,
       ),
     );
   }
@@ -75,6 +76,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _currentLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        savedDerivedStates: _greatWall!.savedDerivedStates,
       ),
     );
   }
@@ -108,16 +110,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
   }
 
-  void _onGreatWallReset(
-      GreatWallReset event, Emitter<GreatWallState> emit) {
+  void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
     _greatWall = null;
     _currentLevel = 1;
 
     emit(GreatWallInitial());
-  }
-
-    void _onGreatWallUpdateNodes(GreatWallUpdateNodes event, Emitter<GreatWallState> emit) {
-    nodes[_greatWall!.derivationLevel] = _greatWall!.currentHash; // TODO: Add all nodes of a level
-    emit(GreatWallNodesUpdated(nodes: nodes));
   }
 }
