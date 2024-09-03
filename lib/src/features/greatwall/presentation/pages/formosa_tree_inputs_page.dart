@@ -120,7 +120,8 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType': TacitKnowledgeTypes.formosa,
+                                      'tacitKnowledgeType':
+                                          TacitKnowledgeTypes.formosa,
                                       'tacitKnowledgeConfigs': {
                                         'formosaTheme': theme
                                       },
@@ -153,14 +154,20 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                   treeArity: arity,
                                   treeDepth: depth,
                                   timeLockPuzzleParam: timeLock,
-                                  tacitKnowledgeType: TacitKnowledgeTypes.formosa,
+                                  tacitKnowledgeType:
+                                      TacitKnowledgeTypes.formosa,
                                   tacitKnowledgeConfigs: {
                                     'formosaTheme': state.theme,
                                   },
                                   secretSeed: _passwordController.text,
                                 ),
                               );
-                          context.go('/${ConfirmationPage.routeName}');
+                          context.go(
+                            '/${ConfirmationPage.routeName}',
+                            extra: {
+                              'previousRoute': FormosaTreeInputsPage.routeName
+                            },
+                          );
                         },
                       );
                     },

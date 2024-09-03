@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_level_page.dart';
-import 'formosa_tree_inputs_page.dart';
 
 class ConfirmationPage extends StatelessWidget {
   static const routeName = 'confirmation';
@@ -14,14 +13,20 @@ class ConfirmationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previousRoute = (GoRouterState.of(context).extra
+        as Map<String, String>)['previousRoute'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirmation'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go(
-                '/${FormosaTreeInputsPage.routeName}'); // TODO: Fix navigation
+            if (previousRoute != null) {
+              context.go('/$previousRoute');
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
         actions: [

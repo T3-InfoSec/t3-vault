@@ -95,7 +95,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType': TacitKnowledgeTypes.hashviz,
+                                      'tacitKnowledgeType':
+                                          TacitKnowledgeTypes.hashviz,
                                       'tacitKnowledgeConfigs': {'size': size},
                                       'secretSeed': _passwordController.text,
                                     },
@@ -131,7 +132,10 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             secretSeed: _passwordController.text,
                           ),
                         );
-                    context.go('/${ConfirmationPage.routeName}');
+                    context.go(
+                      '/${ConfirmationPage.routeName}',
+                      extra: {'previousRoute': HashvizTreeInputsPage.routeName},
+                    );
                   },
                 );
               },
