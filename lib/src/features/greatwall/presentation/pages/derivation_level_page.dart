@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_painter.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -106,13 +107,24 @@ class DerivationLevelPage extends StatelessWidget {
     );
   }
 
-  Widget renderKnowledgeWidget(value) {
-    if (value.knowledge is String) {
-      return Text(value.knowledge);
-    } else if (value.knowledge is Widget) {
-      return value.knowledge as Widget;
-    } else {
-      return const Text('Unknown type');
-    }
+Widget renderKnowledgeWidget(value) {
+  if (value.knowledge is String) {
+    return Text(value.knowledge);
+  } else if (value.knowledge is List<int>) {
+    List<int> imageData = value.knowledge as List<int>;
+    return SizedBox(
+      width: 64,
+      height: 64,
+      child: CustomPaint(
+        painter: HashvizPainter(
+          imageData: imageData,
+          size: 8, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+        ),
+      ),
+    );
+  } else {
+    return const Text('Unknown type');
   }
+}
+
 }
