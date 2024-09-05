@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/pages/knowledge_types_page.dart';
-import '../../../sample/sample_item_list_view.dart';
+import '../../../memorization_assistant/presentation/pages/memo_cards_page.dart';
 
 /// Displays a list of SampleItems.
 class HomePage extends StatelessWidget {
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/${SampleItemListView.routeName}');
+                    context.go('/${MemoCardsPage.routeName}');
                   },
                   child: const Text('Memorize Your Keys!'),
                 ),

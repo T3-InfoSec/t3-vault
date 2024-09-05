@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../landing/presentation/pages/home_page.dart';
+import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
 import 'tree_inputs_page.dart';
 
@@ -51,6 +52,9 @@ class DerivationResultPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
+                      context
+                          .read<MemoCardSetBloc>()
+                          .add(MemoCardSetUnchanged());
                       context.read<GreatWallBloc>().add(GreatWallReset());
                       context.go(HomePage.routeName);
                     },

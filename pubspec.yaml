@@ -24,6 +24,11 @@ dependencies:
     git:
       url: https://github.com/T3-InfoSec/great-wall-dart.git
       ref: formosa_integration
+  t3_memassist:
+    git:
+      url: https://github.com/T3-InfoSec/t3-memassist.git
+      ref: migrate_main_logic
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

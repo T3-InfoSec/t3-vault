@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_memassist/memory_assistant.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -17,8 +18,9 @@ import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
 import 'features/landing/presentation/pages/splash_page.dart';
-import 'features/sample/sample_item_details_view.dart';
-import 'features/sample/sample_item_list_view.dart';
+import 'features/memorization_assistant/presentation/blocs/blocs.dart';
+import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
+import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
@@ -44,7 +46,13 @@ class T3Vault extends StatelessWidget {
             ),
             BlocProvider<GreatWallBloc>(
               create: (context) => GreatWallBloc(),
-            )
+            ),
+            BlocProvider<MemoCardRatingBloc>(
+              create: (BuildContext context) => MemoCardRatingBloc(),
+            ),
+            BlocProvider<MemoCardSetBloc>(
+              create: (BuildContext context) => MemoCardSetBloc(),
+            ),
           ],
           child: Builder(
             builder: (context) {
@@ -158,29 +166,37 @@ class T3Vault extends StatelessWidget {
                           ],
                         ),
                         GoRoute(
-                          path: SampleItemListView.routeName,
+                          path: MemoCardsPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
                               // If the user leaves and returns to the app after it has
                               // been killed while running in the background, the
                               // navigation stack is restored.
-                              restorationId: 'router.root.sampleItemListView',
-                              child: SampleItemListView(),
+                              restorationId: 'router.root.memoCards',
+                              child: MemoCardsPage(),
                             );
                           },
                           routes: <RouteBase>[
                             GoRoute(
-                              path: SampleItemDetailsView.routeName,
+                              path:
+                                  '${MemoCardDetailsPage.routeName}/:cardName',
                               pageBuilder:
                                   (BuildContext context, GoRouterState state) {
-                                return const MaterialPage(
+                                final cardName = int.parse(
+                                    state.pathParameters['cardName']!);
+                                final memoCard = state.extra as MemoCard;
+
+                                return MaterialPage(
                                   // If the user leaves and returns to the app after it
                                   // has been killed while running in the background, the
                                   // navigation stack is restored.
                                   restorationId:
-                                      'router.root.sampleItemListView.details',
-                                  child: SampleItemDetailsView(),
+                                      'router.root.memoCards.details',
+                                  child: MemoCardDetailsPage(
+                                    cardName: cardName,
+                                    memoCard: memoCard,
+                                  ),
                                 );
                               },
                             ),
