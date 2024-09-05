@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
+import '../../../greatwall/presentation/pages/knowledge_types_page.dart';
 import '../../../sample/sample_item_list_view.dart';
 
 /// Displays a list of SampleItems.
@@ -46,7 +47,7 @@ class HomePage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/${SampleItemListView.routeName}');
+                    context.go('/${KnowledgeTypesPage.routeName}');
                   },
                   child: const Text('Derive Your Keys!'),
                 ),

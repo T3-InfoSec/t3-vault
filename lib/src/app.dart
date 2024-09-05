@@ -6,6 +6,12 @@ import 'package:go_router/go_router.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
+import 'features/greatwall/presentation/blocs/blocs.dart';
+import 'features/greatwall/presentation/pages/confirmation_page.dart';
+import 'features/greatwall/presentation/pages/derivation_level_page.dart';
+import 'features/greatwall/presentation/pages/derivation_result_page.dart';
+import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
+import 'features/greatwall/presentation/pages/tree_inputs_page.dart';
 import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
@@ -25,10 +31,6 @@ class T3Vault extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Glue the SettingsController to the MaterialApp.
-    //
-    // The ListenableBuilder Widget listens to the SettingsController for changes.
-    // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
@@ -40,6 +42,9 @@ class T3Vault extends StatelessWidget {
             BlocProvider<AgreementBloc>(
               create: (BuildContext context) => AgreementBloc(),
             ),
+            BlocProvider<GreatWallBloc>(
+              create: (context) => GreatWallBloc(),
+            )
           ],
           child: Builder(
             builder: (context) {
@@ -186,12 +191,59 @@ class T3Vault extends StatelessWidget {
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return MaterialPage(
-                              // If the user leaves and returns to the app after it has
-                              // been killed while running in the background, the
-                              // navigation stack is restored.
                               restorationId: 'router.root.settings',
                               child:
                                   SettingsPage(controller: settingsController),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: KnowledgeTypesPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.knowledge_types',
+                              child: KnowledgeTypesPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: TreeInputsPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return MaterialPage(
+                              restorationId: 'router.root.tree_inputs',
+                              child: TreeInputsPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: ConfirmationPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.derivation_seed',
+                              child: ConfirmationPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: DerivationLevelPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.derivation_level',
+                              child: DerivationLevelPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: DerivationResultPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.derivation_result',
+                              child: DerivationResultPage(),
                             );
                           },
                         ),
