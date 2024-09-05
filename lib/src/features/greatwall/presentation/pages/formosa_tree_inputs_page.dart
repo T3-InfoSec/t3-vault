@@ -93,10 +93,34 @@ class FormosaTreeInputsPage extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(hintText: 'Password'),
+            BlocBuilder<GreatWallBloc, GreatWallState>(
+              builder: (context, state) {
+                bool isPasswordVisible = false;
+
+                if (state is GreatWallPasswordVisibility) {
+                  isPasswordVisible = state.isPasswordVisible;
+                }
+
+                return TextField(
+                  controller: _passwordController,
+                  obscureText: !isPasswordVisible,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        context
+                            .read<GreatWallBloc>()
+                            .add(GreatWallPasswordVisibilityToggled());
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
             const SizedBox(height: 10),
             BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
@@ -120,7 +144,8 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType': TacitKnowledgeTypes.formosa,
+                                      'tacitKnowledgeType':
+                                          TacitKnowledgeTypes.formosa,
                                       'tacitKnowledgeConfigs': {
                                         'formosaTheme': theme
                                       },
@@ -153,14 +178,20 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                   treeArity: arity,
                                   treeDepth: depth,
                                   timeLockPuzzleParam: timeLock,
-                                  tacitKnowledgeType: TacitKnowledgeTypes.formosa,
+                                  tacitKnowledgeType:
+                                      TacitKnowledgeTypes.formosa,
                                   tacitKnowledgeConfigs: {
                                     'formosaTheme': state.theme,
                                   },
                                   secretSeed: _passwordController.text,
                                 ),
                               );
-                          context.go('/${ConfirmationPage.routeName}');
+                          context.go(
+                            '/${ConfirmationPage.routeName}',
+                            extra: {
+                              'previousRoute': FormosaTreeInputsPage.routeName
+                            },
+                          );
                         },
                       );
                     },
