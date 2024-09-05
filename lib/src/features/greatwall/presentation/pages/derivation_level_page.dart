@@ -6,7 +6,6 @@ import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_pai
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
-import 'formosa_tree_inputs_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
   static const routeName = 'derivation_level';
@@ -15,13 +14,20 @@ class DerivationLevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previousRoute = (GoRouterState.of(context).extra
+        as Map<String, String>)['previousRoute'];
+        
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Level'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go('/${FormosaTreeInputsPage.routeName}'); // TODO: fix navigation
+            if (previousRoute != null) {
+              context.go('/$previousRoute');
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
         actions: [
@@ -118,7 +124,7 @@ Widget renderKnowledgeWidget(value) {
       child: CustomPaint(
         painter: HashvizPainter(
           imageData: imageData,
-          size: 8, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+          size: 16, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
         ),
       ),
     );

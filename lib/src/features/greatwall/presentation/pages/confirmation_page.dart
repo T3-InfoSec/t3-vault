@@ -95,7 +95,10 @@ class ConfirmationPage extends StatelessWidget {
                           context
                               .read<GreatWallBloc>()
                               .add(GreatWallDerivationStarted());
-                          context.go('/${DerivationLevelPage.routeName}');
+                          context.go(
+                            '/${DerivationLevelPage.routeName}',
+                            extra: {'previousRoute': previousRoute},
+                          );
                         },
                       );
                     },
