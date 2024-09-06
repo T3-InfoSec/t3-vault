@@ -16,7 +16,7 @@ class DerivationLevelPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final previousRoute = (GoRouterState.of(context).extra
         as Map<String, String>)['previousRoute'];
-        
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Level'),
@@ -58,7 +58,10 @@ class DerivationLevelPage extends StatelessWidget {
                         context
                             .read<GreatWallBloc>()
                             .add(GreatWallDerivationStepMade(0));
-                        context.go('/${DerivationLevelPage.routeName}');
+                        context.go(
+                          '/${DerivationLevelPage.routeName}',
+                          extra: {'previousRoute': previousRoute!},
+                        );
                       }
                     },
                     child: const Text('Previous Level'),
@@ -82,13 +85,17 @@ class DerivationLevelPage extends StatelessWidget {
                                       .add(GreatWallDerivationStepMade(index));
                                   if (state.currentLevel < state.treeDepth) {
                                     context.go(
-                                        '/${DerivationLevelPage.routeName}');
+                                      '/${DerivationLevelPage.routeName}',
+                                      extra: {'previousRoute': previousRoute!},
+                                    );
                                   } else {
                                     context
                                         .read<GreatWallBloc>()
                                         .add(GreatWallDerivationFinished());
                                     context.go(
-                                        '/${DerivationResultPage.routeName}');
+                                      '/${DerivationResultPage.routeName}',
+                                      extra: {'previousRoute': previousRoute!},
+                                    );
                                   }
                                 },
                               );
@@ -113,24 +120,24 @@ class DerivationLevelPage extends StatelessWidget {
     );
   }
 
-Widget renderKnowledgeWidget(value) {
-  if (value.knowledge is String) {
-    return Text(value.knowledge);
-  } else if (value.knowledge is List<int>) {
-    List<int> imageData = value.knowledge as List<int>;
-    return SizedBox(
-      width: 64,
-      height: 64,
-      child: CustomPaint(
-        painter: HashvizPainter(
-          imageData: imageData,
-          size: 16, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+  Widget renderKnowledgeWidget(value) {
+    if (value.knowledge is String) {
+      return Text(value.knowledge);
+    } else if (value.knowledge is List<int>) {
+      List<int> imageData = value.knowledge as List<int>;
+      return SizedBox(
+        width: 64,
+        height: 64,
+        child: CustomPaint(
+          painter: HashvizPainter(
+            imageData: imageData,
+            size:
+                16, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+          ),
         ),
-      ),
-    );
-  } else {
-    return const Text('Unknown type');
+      );
+    } else {
+      return const Text('Unknown type');
+    }
   }
-}
-
 }
