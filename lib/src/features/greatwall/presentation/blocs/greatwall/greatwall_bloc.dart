@@ -1,101 +1,127 @@
-import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_formosa/formosa.dart';
 
-sealed class GreatWallState extends Equatable {
-  @override
-  List<Object> get props => [];
+import 'bloc.dart';
+
+class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
+  GreatWall? _greatWall;
+  int _currentLevel = 1;
+
+  GreatWallBloc() : super(GreatWallInitial()) {
+    on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
+    on<GreatWallPasswordVisibilityToggled>(_onPasswordVisibilityToggled);
+    on<GreatWallInitialized>(_onGreatWallInitialized);
+    on<GreatWallReset>(_onGreatWallReset);
+    on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
+    on<GreatWallDerivationStepMade>(_onDerivationStepMade);
+    on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
+  }
+
+  void _onDerivationStepMade(
+      GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
+    emit(GreatWallDeriveInProgress());
+
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
+      },
+    );
+    if (event.choiceNumber == 0 && _currentLevel > 1) {
+      _currentLevel--;
+    } else {
+      _currentLevel++;
+    }
+
+    emit(
+      GreatWallDeriveStepSuccess(
+        currentLevel: _greatWall!.derivationLevel,
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        treeDepth: _greatWall!.treeDepth,
+      ),
+    );
+  }
+
+  Future<void> _onGreatWallDerivationFinished(
+      GreatWallDerivationFinished event, Emitter<GreatWallState> emit) async {
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.finishDerivation();
+      },
+    );
+
+    emit(
+      GreatWallFinishSuccess(
+        _greatWall!.derivationHashResult!.toString(),
+      ),
+    );
+  }
+
+  Future<void> _onGreatWallDerivationStarted(
+      GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
+    emit(GreatWallDeriveInProgress());
+
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.startDerivation();
+      },
+    );
+
+    emit(
+      GreatWallDeriveStepSuccess(
+        currentLevel: _currentLevel,
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        treeDepth: _greatWall!.treeDepth,
+      ),
+    );
+  }
+
+  void _onGreatWallFormosaThemeSelected(
+      GreatWallFormosaThemeSelected event, Emitter<GreatWallState> emit) {
+    emit(GreatWallFormosaThemeSelectSuccess(event.theme));
+  }
+
+    void _onPasswordVisibilityToggled(
+      GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
+    if (state is GreatWallPasswordVisibility) {
+      final currentState = state as GreatWallPasswordVisibility;
+      emit(GreatWallPasswordVisibility(!currentState.isPasswordVisible));
+    } else {
+      emit(GreatWallPasswordVisibility(true));
+    }
+  }
+
+  void _onGreatWallInitialized(
+      GreatWallInitialized event, Emitter<GreatWallState> emit) {
+    _greatWall = GreatWall(
+      treeArity: event.treeArity,
+      treeDepth: event.treeDepth,
+      timeLockPuzzleParam: event.timeLockPuzzleParam,
+      tacitKnowledgeType: event.tacitKnowledgeType,
+      tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
+    );
+
+    _greatWall!.seed0 = event.secretSeed;
+
+    emit(
+      GreatWallInitialSuccess(
+        treeArity: event.treeArity,
+        treeDepth: event.treeDepth,
+        timeLockPuzzleParam: event.timeLockPuzzleParam,
+        tacitKnowledgeType: event.tacitKnowledgeType,
+        tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
+        secretSeed: event.secretSeed,
+      ),
+    );
+  }
+
+  void _onGreatWallReset(
+      GreatWallReset event, Emitter<GreatWallState> emit) {
+    _greatWall = null;
+    _currentLevel = 1;
+
+    emit(GreatWallInitial());
+  }
 }
-
-final class GreatWallInitial extends GreatWallState {}
-
-final class GreatWallTacitKnowledgeSelectSuccess extends GreatWallState {
-  final String tacitKnowledge;
-
-  GreatWallTacitKnowledgeSelectSuccess(this.tacitKnowledge);
-
-  @override
-  List<Object> get props => [tacitKnowledge];
-}
-
-final class GreatWallFormosaThemeSelectSuccess extends GreatWallState {
-  final FormosaTheme theme;
-
-  GreatWallFormosaThemeSelectSuccess(this.theme);
-
-  @override
-  List<Object> get props => [theme];
-}
-
-class GreatWallInitialSuccess extends GreatWallState {
-
-  final int treeArity;
-  final int treeDepth;
-  final int timeLockPuzzleParam;
-  final TacitKnowledgeTypes tacitKnowledgeType;
-  final Map<String, dynamic> tacitKnowledgeConfigs;
-  final String secretSeed;
-
-  GreatWallInitialSuccess({
-    required this.treeArity,
-    required this.treeDepth,
-    required this.timeLockPuzzleParam,
-    required this.tacitKnowledgeType,
-    required this.tacitKnowledgeConfigs,
-    required this.secretSeed,
-  });
-
-  @override
-  List<Object> get props =>
-      [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
-}
-
-final class GreatWallPasswordVisibility extends GreatWallState {
-  final bool isPasswordVisible;
-
-  GreatWallPasswordVisibility(this.isPasswordVisible);
-
-  @override
-  List<Object> get props => [isPasswordVisible];
-}
-
-final class GreatWallDeriveInProgress extends GreatWallState {}
-
-final class GreatWallDeriveStepSuccess extends GreatWallState {
-  final int currentLevel;
-  final List<dynamic> knowledgePalettes;
-  final int treeDepth;
-
-  GreatWallDeriveStepSuccess({
-    required this.currentLevel,
-    required this.knowledgePalettes,
-    required this.treeDepth,
-  });
-
-  @override
-  List<Object> get props => [currentLevel, knowledgePalettes];
-}
-
-final class GreatWallFinishSuccess extends GreatWallState {
-  final String derivationHashResult;
-
-  GreatWallFinishSuccess(this.derivationHashResult);
-
-  @override
-  List<Object> get props => [derivationHashResult];
-}
-
-// class GreatWallLoadedArityIndexes extends GreatWallState {
-//   final int currentLevel;
-//   final List<dynamic> knowledgeValues;
-//   final int treeDepth;
-//
-//   GreatWallLoadedArityIndexes({
-//     required this.currentLevel,
-//     required this.knowledgeValues,
-//     required this.treeDepth,
-//   });
-//
-//   @override
-//   List<Object> get props => [currentLevel, knowledgeValues, treeDepth];
-// }
