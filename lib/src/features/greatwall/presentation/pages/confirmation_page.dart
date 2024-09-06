@@ -97,7 +97,7 @@ class ConfirmationPage extends StatelessWidget {
                               .add(GreatWallDerivationStarted());
                           context.go(
                             '/${DerivationLevelPage.routeName}',
-                            extra: {'previousRoute': previousRoute},
+                            extra: {'previousRoute': previousRoute!},
                           );
                         },
                       );

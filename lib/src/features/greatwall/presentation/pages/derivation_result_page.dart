@@ -6,7 +6,6 @@ import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../landing/presentation/pages/home_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
-import 'formosa_tree_inputs_page.dart';
 
 class DerivationResultPage extends StatelessWidget {
   static const routeName = 'derivation_result';
@@ -15,6 +14,9 @@ class DerivationResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previousRoute = (GoRouterState.of(context).extra
+        as Map<String, String>)['previousRoute'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Result'),
@@ -22,7 +24,11 @@ class DerivationResultPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.read<GreatWallBloc>().add(GreatWallReset());
-            context.go('/${FormosaTreeInputsPage.routeName}'); // TODO: Fix Navigation
+            if (previousRoute != null) {
+              context.go('/$previousRoute');
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
         actions: [
