@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_painter.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
-import 'formosa_tree_inputs_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
   static const routeName = 'derivation_level';
@@ -14,13 +14,20 @@ class DerivationLevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final previousRoute = (GoRouterState.of(context).extra
+        as Map<String, String>)['previousRoute'];
+        
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Level'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.go('/${FormosaTreeInputsPage.routeName}'); // TODO: fix navigation
+            if (previousRoute != null) {
+              context.go('/$previousRoute');
+            } else {
+              Navigator.of(context).pop();
+            }
           },
         ),
         actions: [
@@ -106,13 +113,24 @@ class DerivationLevelPage extends StatelessWidget {
     );
   }
 
-  Widget renderKnowledgeWidget(value) {
-    if (value.knowledge is String) {
-      return Text(value.knowledge);
-    } else if (value.knowledge is Widget) {
-      return value.knowledge as Widget;
-    } else {
-      return const Text('Unknown type');
-    }
+Widget renderKnowledgeWidget(value) {
+  if (value.knowledge is String) {
+    return Text(value.knowledge);
+  } else if (value.knowledge is List<int>) {
+    List<int> imageData = value.knowledge as List<int>;
+    return SizedBox(
+      width: 64,
+      height: 64,
+      child: CustomPaint(
+        painter: HashvizPainter(
+          imageData: imageData,
+          size: 16, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+        ),
+      ),
+    );
+  } else {
+    return const Text('Unknown type');
   }
+}
+
 }
