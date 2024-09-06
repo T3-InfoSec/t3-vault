@@ -1,3 +1,4 @@
+import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 
@@ -52,9 +53,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
 
     emit(
-      GreatWallFinishSuccess(
-        _greatWall!.derivationHashResult!.toString(),
-      ),
+      GreatWallFinishSuccess(hex.encode(_greatWall!.derivationHashResult!)),
     );
   }
 
@@ -83,7 +82,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     emit(GreatWallFormosaThemeSelectSuccess(event.theme));
   }
 
-    void _onPasswordVisibilityToggled(
+  void _onPasswordVisibilityToggled(
       GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
     if (state is GreatWallPasswordVisibility) {
       final currentState = state as GreatWallPasswordVisibility;
@@ -117,8 +116,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
   }
 
-  void _onGreatWallReset(
-      GreatWallReset event, Emitter<GreatWallState> emit) {
+  void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
     _greatWall = null;
     _currentLevel = 1;
 
