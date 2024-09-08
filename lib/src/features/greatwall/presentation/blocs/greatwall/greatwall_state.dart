@@ -7,6 +7,15 @@ sealed class GreatWallState extends Equatable {
   List<Object> get props => [];
 }
 
+class GreatWallInputInvalid extends GreatWallState {
+  final Map<String, String> errors;
+
+  GreatWallInputInvalid(this.errors);
+
+  @override
+  List<Object> get props => [errors];
+}
+
 final class GreatWallInitial extends GreatWallState {}
 
 final class GreatWallTacitKnowledgeSelectSuccess extends GreatWallState {

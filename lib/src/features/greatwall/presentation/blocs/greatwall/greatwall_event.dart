@@ -7,8 +7,34 @@ sealed class GreatWallEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GreatWallInitialized extends GreatWallEvent {
+class GreatWallArityChanged extends GreatWallEvent {
+  final String arity;
 
+  GreatWallArityChanged(this.arity);
+
+  @override
+  List<Object> get props => [arity];
+}
+
+class GreatWallDepthChanged extends GreatWallEvent {
+  final String depth;
+
+  GreatWallDepthChanged(this.depth);
+
+  @override
+  List<Object> get props => [depth];
+}
+
+class GreatWallTimeLockChanged extends GreatWallEvent {
+  final String timeLock;
+
+  GreatWallTimeLockChanged(this.timeLock);
+
+  @override
+  List<Object> get props => [timeLock];
+}
+
+final class GreatWallInitialized extends GreatWallEvent {
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
@@ -26,8 +52,13 @@ final class GreatWallInitialized extends GreatWallEvent {
   });
 
   @override
-  List<Object> get props =>
-      [treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
+  List<Object> get props => [
+        treeDepth,
+        timeLockPuzzleParam,
+        tacitKnowledgeType,
+        tacitKnowledgeConfigs,
+        secretSeed
+      ];
 }
 
 final class GreatWallReset extends GreatWallEvent {}

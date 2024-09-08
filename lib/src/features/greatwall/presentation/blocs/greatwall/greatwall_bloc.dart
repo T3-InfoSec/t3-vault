@@ -1,6 +1,7 @@
 import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
 
 import 'bloc.dart';
 
@@ -11,6 +12,9 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
     on<GreatWallPasswordVisibilityToggled>(_onPasswordVisibilityToggled);
+    on<GreatWallArityChanged>(_onGreatWallArityChanged);
+    on<GreatWallDepthChanged>(_onGreatWallDepthChanged);
+    on<GreatWallTimeLockChanged>(_onGreatWallTimeLockChanged);
     on<GreatWallInitialized>(_onGreatWallInitialized);
     on<GreatWallReset>(_onGreatWallReset);
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
@@ -91,6 +95,49 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       emit(GreatWallPasswordVisibility(true));
     }
   }
+
+  void _onGreatWallArityChanged(
+      GreatWallArityChanged event, Emitter<GreatWallState> emit) {
+    final errors = <String, String>{};
+
+    final arityError = TreeInputValidator.validateArity(event.arity);
+    if (arityError != null) {
+      errors['treeArity'] = arityError;
+    }
+
+    if (errors.isNotEmpty) {
+      emit(GreatWallInputInvalid(errors));
+    }
+  }
+
+    void _onGreatWallDepthChanged(
+      GreatWallDepthChanged event, Emitter<GreatWallState> emit) {
+    final errors = <String, String>{};
+
+    final depthError = TreeInputValidator.validateArity(event.depth);
+    if (depthError != null) {
+      errors['treeDepth'] = depthError;
+    }
+
+    if (errors.isNotEmpty) {
+      emit(GreatWallInputInvalid(errors));
+    }
+  }
+
+      void _onGreatWallTimeLockChanged(
+      GreatWallTimeLockChanged event, Emitter<GreatWallState> emit) {
+    final errors = <String, String>{};
+
+    final timeLockError = TreeInputValidator.validateArity(event.timeLock);
+    if (timeLockError != null) {
+      errors['treeTimeLock'] = timeLockError;
+    }
+
+    if (errors.isNotEmpty) {
+      emit(GreatWallInputInvalid(errors));
+    }
+  }
+
 
   void _onGreatWallInitialized(
       GreatWallInitialized event, Emitter<GreatWallState> emit) {
