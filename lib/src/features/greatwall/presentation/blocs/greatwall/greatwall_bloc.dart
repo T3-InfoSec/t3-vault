@@ -40,11 +40,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallDeriveStepSuccess(
-        currentLevel: _greatWall!.derivationLevel,
-        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        treeDepth: _greatWall!.treeDepth,
-        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
-      ),
+          currentLevel: _greatWall!.derivationLevel,
+          knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+          treeDepth: _greatWall!.treeDepth,
+          tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs),
     );
   }
 
@@ -75,11 +74,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallDeriveStepSuccess(
-        currentLevel: _currentLevel,
-        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        treeDepth: _greatWall!.treeDepth,
-        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
-      ),
+          currentLevel: _currentLevel,
+          knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+          treeDepth: _greatWall!.treeDepth,
+          tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs),
     );
   }
 
@@ -109,37 +107,42 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     if (errors.isNotEmpty) {
       emit(GreatWallInputInvalid(errors));
+    } else {
+      emit(GreatWallInputValid());
     }
   }
 
-    void _onGreatWallDepthChanged(
+  void _onGreatWallDepthChanged(
       GreatWallDepthChanged event, Emitter<GreatWallState> emit) {
     final errors = <String, String>{};
 
-    final depthError = TreeInputValidator.validateArity(event.depth);
+    final depthError = TreeInputValidator.validateDepth(event.depth);
     if (depthError != null) {
       errors['treeDepth'] = depthError;
     }
 
     if (errors.isNotEmpty) {
       emit(GreatWallInputInvalid(errors));
+    } else {
+      emit(GreatWallInputValid());
     }
   }
 
-      void _onGreatWallTimeLockChanged(
+  void _onGreatWallTimeLockChanged(
       GreatWallTimeLockChanged event, Emitter<GreatWallState> emit) {
     final errors = <String, String>{};
 
-    final timeLockError = TreeInputValidator.validateArity(event.timeLock);
+    final timeLockError = TreeInputValidator.validateTimeLock(event.timeLock);
     if (timeLockError != null) {
       errors['treeTimeLock'] = timeLockError;
     }
 
     if (errors.isNotEmpty) {
       emit(GreatWallInputInvalid(errors));
+    } else {
+      emit(GreatWallInputValid());
     }
   }
-
 
   void _onGreatWallInitialized(
       GreatWallInitialized event, Emitter<GreatWallState> emit) {

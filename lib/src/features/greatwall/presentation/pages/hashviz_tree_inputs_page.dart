@@ -41,131 +41,160 @@ class HashvizTreeInputsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _arityController,
-              decoration: const InputDecoration(labelText: 'Tree Arity'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _depthController,
-              decoration: const InputDecoration(labelText: 'Tree Depth'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _timeLockController,
-              decoration:
-                  const InputDecoration(labelText: 'Time Lock Puzzle Param'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _sizeController,
-              decoration:
-                  const InputDecoration(labelText: 'Hashviz block size'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            BlocBuilder<GreatWallBloc, GreatWallState>(
-              builder: (context, state) {
-                bool isPasswordVisible = false;
+      body: BlocListener<GreatWallBloc, GreatWallState>(
+        listener: (context, state) {
+          if (state is GreatWallInputInvalid) {
+            final errors = state.errors;
+            final errorMessage = errors.values.join('\n');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(errorMessage)),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _arityController,
+                decoration: const InputDecoration(labelText: 'Tree Arity'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallArityChanged(_arityController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _depthController,
+                decoration: const InputDecoration(labelText: 'Tree Depth'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallDepthChanged(_depthController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _timeLockController,
+                decoration:
+                    const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallTimeLockChanged(_timeLockController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _sizeController,
+                decoration:
+                    const InputDecoration(labelText: 'Hashviz block size'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<GreatWallBloc, GreatWallState>(
+                builder: (context, state) {
+                  bool isPasswordVisible = false;
 
-                if (state is GreatWallPasswordVisibility) {
-                  isPasswordVisible = state.isPasswordVisible;
-                }
+                  if (state is GreatWallPasswordVisibility) {
+                    isPasswordVisible = state.isPasswordVisible;
+                  }
 
-                return TextField(
-                  controller: _passwordController,
-                  obscureText: !isPasswordVisible,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        context
-                            .read<GreatWallBloc>()
-                            .add(GreatWallPasswordVisibilityToggled());
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-              builder: (context, memoCardSetState) {
-                return ElevatedButton(
-                  onPressed: (memoCardSetState is MemoCardSetAddSuccess)
-                      ? null
-                      : () {
-                          final arity = int.parse(_arityController.text);
-                          final depth = int.parse(_depthController.text);
-                          final timeLock = int.parse(_timeLockController.text);
-                          final size = int.parse(_sizeController.text);
-
-                          context.read<MemoCardSetBloc>().add(
-                                MemoCardSetCardAdded(
-                                  memoCard: MemoCard(
-                                    knowledge: {
-                                      'treeArity': arity,
-                                      'treeDepth': depth,
-                                      'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType':
-                                          TacitKnowledgeTypes.hashviz,
-                                      'tacitKnowledgeConfigs': {'size': size},
-                                      'secretSeed': _passwordController.text,
-                                    },
-                                  ),
-                                ),
-                              );
+                  return TextField(
+                    controller: _passwordController,
+                    obscureText: !isPasswordVisible,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          context
+                              .read<GreatWallBloc>()
+                              .add(GreatWallPasswordVisibilityToggled());
                         },
-                  child: const Text('Save To Memorization Card'),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                final arity = int.parse(_arityController.text);
-                final depth = int.parse(_depthController.text);
-                final timeLock = int.parse(_timeLockController.text);
-                final size = int.parse(_sizeController.text);
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+                builder: (context, memoCardSetState) {
+                  return ElevatedButton(
+                    onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                        ? null
+                        : () {
+                            final arity = int.parse(_arityController.text);
+                            final depth = int.parse(_depthController.text);
+                            final timeLock =
+                                int.parse(_timeLockController.text);
+                            final size = int.parse(_sizeController.text);
 
-                Future.delayed(
-                  const Duration(seconds: 1),
-                  () {
-                    if (!context.mounted) return;
-                    context.read<GreatWallBloc>().add(
-                          GreatWallInitialized(
-                            treeArity: arity,
-                            treeDepth: depth,
-                            timeLockPuzzleParam: timeLock,
-                            tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
-                            tacitKnowledgeConfigs: {
-                              'size': size,
-                            },
-                            secretSeed: _passwordController.text,
-                          ),
-                        );
-                    context.go(
-                      '/${ConfirmationPage.routeName}',
-                      extra: {'previousRoute': HashvizTreeInputsPage.routeName},
-                    );
-                  },
-                );
-              },
-              child: const Text('Start Derivation'),
-            ),
-          ],
+                            context.read<MemoCardSetBloc>().add(
+                                  MemoCardSetCardAdded(
+                                    memoCard: MemoCard(
+                                      knowledge: {
+                                        'treeArity': arity,
+                                        'treeDepth': depth,
+                                        'timeLockPuzzleParam': timeLock,
+                                        'tacitKnowledgeType':
+                                            TacitKnowledgeTypes.hashviz,
+                                        'tacitKnowledgeConfigs': {'size': size},
+                                        'secretSeed': _passwordController.text,
+                                      },
+                                    ),
+                                  ),
+                                );
+                          },
+                    child: const Text('Save To Memorization Card'),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  final arity = int.parse(_arityController.text);
+                  final depth = int.parse(_depthController.text);
+                  final timeLock = int.parse(_timeLockController.text);
+                  final size = int.parse(_sizeController.text);
+
+                  Future.delayed(
+                    const Duration(seconds: 1),
+                    () {
+                      if (!context.mounted) return;
+                      context.read<GreatWallBloc>().add(
+                            GreatWallInitialized(
+                              treeArity: arity,
+                              treeDepth: depth,
+                              timeLockPuzzleParam: timeLock,
+                              tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
+                              tacitKnowledgeConfigs: {
+                                'size': size,
+                              },
+                              secretSeed: _passwordController.text,
+                            ),
+                          );
+                      context.go(
+                        '/${ConfirmationPage.routeName}',
+                        extra: {
+                          'previousRoute': HashvizTreeInputsPage.routeName
+                        },
+                      );
+                    },
+                  );
+                },
+                child: const Text('Start Derivation'),
+              ),
+            ],
+          ),
         ),
       ),
     );
