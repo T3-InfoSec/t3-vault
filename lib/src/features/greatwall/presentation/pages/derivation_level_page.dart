@@ -100,7 +100,7 @@ class DerivationLevelPage extends StatelessWidget {
                                 },
                               );
                             },
-                            child: renderKnowledgeWidget(value),
+                            child: renderKnowledgeWidget(value, state.tacitKnowledgeConfigs),
                           ),
                           const SizedBox(height: 10),
                         ],
@@ -120,7 +120,7 @@ class DerivationLevelPage extends StatelessWidget {
     );
   }
 
-  Widget renderKnowledgeWidget(value) {
+  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) {
     if (value.knowledge is String) {
       return Text(value.knowledge);
     } else if (value.knowledge is List<int>) {
@@ -131,8 +131,7 @@ class DerivationLevelPage extends StatelessWidget {
         child: CustomPaint(
           painter: HashvizPainter(
             imageData: imageData,
-            size:
-                16, // TODO: retrieve Hashviz size (tacitKnowledgeConfigs['size'])
+            size: tacitKnowledgeConfigs['size'] ?? 16,
           ),
         ),
       );
