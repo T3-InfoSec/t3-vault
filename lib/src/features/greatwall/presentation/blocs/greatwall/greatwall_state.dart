@@ -56,11 +56,13 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int currentLevel;
   final List<dynamic> knowledgePalettes;
   final int treeDepth;
+  final Map<String, dynamic> tacitKnowledgeConfigs;
 
   GreatWallDeriveStepSuccess({
     required this.currentLevel,
     required this.knowledgePalettes,
     required this.treeDepth,
+    required this.tacitKnowledgeConfigs,
   });
 
   @override

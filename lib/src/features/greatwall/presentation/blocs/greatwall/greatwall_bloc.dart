@@ -37,6 +37,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _greatWall!.derivationLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
@@ -73,6 +74,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _currentLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
