@@ -15,13 +15,13 @@ class HashvizPainter extends CustomPainter {
   ///   - [size]: The size of the pattern grid.
   ///   - [color]: The color used for the foreground (default is black).
   ///   - [bgColor]: The color used for the background (default is yellow).
-  HashvizPainter({
-    required this.imageData,
-    required this.size,
-    this.color = Colors.black,
-    this.bgColor = Colors.yellowAccent,
-    this.spotColor = Colors.lightBlue,
-  });
+HashvizPainter({
+  required this.imageData,
+  required this.size,
+  this.color = const Color(0xFF009E60), // Shamrock Green
+  this.bgColor = const Color(0xFF77DD77), // Pastel Green
+  this.spotColor = const Color(0xFF00FF7F), // Spring Green
+});
 
   /// Paints the hash-based pattern onto the canvas.
   ///
