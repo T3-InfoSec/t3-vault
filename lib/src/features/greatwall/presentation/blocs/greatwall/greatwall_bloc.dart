@@ -20,6 +20,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
+    on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
   }
 
   void _onDerivationStepMade(
@@ -57,7 +58,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
 
     emit(
-      GreatWallFinishSuccess(hex.encode(_greatWall!.derivationHashResult!)),
+      GreatWallFinishSuccess(
+          hex.encode(_greatWall!.derivationHashResult!), false),
     );
   }
 
@@ -166,6 +168,15 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         secretSeed: event.secretSeed,
       ),
     );
+  }
+
+  void _onKAVisibilityToggled(
+      GreatWallKAVisibilityToggled event, Emitter<GreatWallState> emit) {
+    if (state is GreatWallFinishSuccess) {
+      final currentState = state as GreatWallFinishSuccess;
+      emit(GreatWallFinishSuccess(
+          currentState.derivationHashResult, !currentState.isKAVisible));
+    }
   }
 
   void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {

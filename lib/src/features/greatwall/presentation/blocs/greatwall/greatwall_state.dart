@@ -91,11 +91,12 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
 
 final class GreatWallFinishSuccess extends GreatWallState {
   final String derivationHashResult;
+  final bool isKAVisible;
 
-  GreatWallFinishSuccess(this.derivationHashResult);
+  GreatWallFinishSuccess(this.derivationHashResult, this.isKAVisible);
 
   @override
-  List<Object> get props => [derivationHashResult];
+  List<Object> get props => [derivationHashResult, isKAVisible];
 }
 
 // class GreatWallLoadedArityIndexes extends GreatWallState {

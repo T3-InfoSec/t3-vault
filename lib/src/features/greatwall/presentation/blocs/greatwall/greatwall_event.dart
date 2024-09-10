@@ -95,3 +95,5 @@ final class GreatWallDerivationStepMade extends GreatWallEvent {
 }
 
 final class GreatWallDerivationFinished extends GreatWallEvent {}
+
+final class GreatWallKAVisibilityToggled extends GreatWallEvent {}

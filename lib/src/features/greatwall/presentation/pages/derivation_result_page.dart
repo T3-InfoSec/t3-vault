@@ -59,6 +59,21 @@ class DerivationResultPage extends StatelessWidget {
                           controller: TextEditingController(
                               text: state.derivationHashResult),
                           readOnly: true,
+                          obscureText: !state.isKAVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                state.isKAVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                context
+                                    .read<GreatWallBloc>()
+                                    .add(GreatWallKAVisibilityToggled());
+                              },
+                            ),
+                          ),
                         ),
                       ),
                       IconButton(
