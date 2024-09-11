@@ -255,7 +255,7 @@ packages:
     description:
       path: "."
       ref: hashviz_integration
-      resolved-ref: "9d1f85ffd3a82998f7efdd1e81f352abc7b81df2"
+      resolved-ref: "40b60ba9f8811e6e7f5f1eb8e66c6511fc717226"
       url: "https://github.com/T3-InfoSec/great-wall-dart.git"
     source: git
     version: "0.1.0-dev"
@@ -590,7 +590,7 @@ packages:
     description:
       path: "."
       ref: initial_commit
-      resolved-ref: "26b99181be352908ab67f8a620c327803ae1bf5d"
+      resolved-ref: "958c6f1a3af944962cfb0bae034780b4f88483e2"
       url: "https://github.com/T3-InfoSec/t3-formosa-dart.git"
     source: git
     version: "0.1.0-dev"
