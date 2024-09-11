@@ -67,46 +67,55 @@ class DerivationLevelPage extends StatelessWidget {
                     child: const Text('Previous Level'),
                   ),
                   const SizedBox(height: 10),
-                  ...state.knowledgePalettes.asMap().entries.map(
-                    (entry) {
-                      int index = entry.key + 1;
-                      dynamic value = entry.value;
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: state.knowledgePalettes.asMap().entries.map(
+                          (entry) {
+                            int index = entry.key + 1;
+                            dynamic value = entry.value;
 
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Future.delayed(
-                                const Duration(seconds: 1),
-                                () {
-                                  if (!context.mounted) return;
-                                  context
-                                      .read<GreatWallBloc>()
-                                      .add(GreatWallDerivationStepMade(index));
-                                  if (state.currentLevel < state.treeDepth) {
-                                    context.go(
-                                      '/${DerivationLevelPage.routeName}',
-                                      extra: {'previousRoute': previousRoute!},
+                            return Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () {
+                                        if (!context.mounted) return;
+                                        context.read<GreatWallBloc>().add(
+                                            GreatWallDerivationStepMade(index));
+                                        if (state.currentLevel <
+                                            state.treeDepth) {
+                                          context.go(
+                                            '/${DerivationLevelPage.routeName}',
+                                            extra: {
+                                              'previousRoute': previousRoute!
+                                            },
+                                          );
+                                        } else {
+                                          context.read<GreatWallBloc>().add(
+                                              GreatWallDerivationFinished());
+                                          context.go(
+                                            '/${DerivationResultPage.routeName}',
+                                            extra: {
+                                              'previousRoute': previousRoute!
+                                            },
+                                          );
+                                        }
+                                      },
                                     );
-                                  } else {
-                                    context
-                                        .read<GreatWallBloc>()
-                                        .add(GreatWallDerivationFinished());
-                                    context.go(
-                                      '/${DerivationResultPage.routeName}',
-                                      extra: {'previousRoute': previousRoute!},
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                            child: renderKnowledgeWidget(
-                                value, state.tacitKnowledgeConfigs),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    },
+                                  },
+                                  child: renderKnowledgeWidget(
+                                      value, state.tacitKnowledgeConfigs),
+                                ),
+                                const SizedBox(height: 20),
+                              ],
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
                   ),
                 ],
               );
@@ -134,8 +143,8 @@ class DerivationLevelPage extends StatelessWidget {
     } else if (value.knowledge is List<int>) {
       List<int> imageData = value.knowledge as List<int>;
       return SizedBox(
-        width: 64,
-        height: 64,
+        width: 256,
+        height: 256,
         child: CustomPaint(
           painter: HashvizPainter(
             imageData: imageData,
