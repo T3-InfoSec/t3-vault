@@ -100,7 +100,8 @@ class DerivationLevelPage extends StatelessWidget {
                                 },
                               );
                             },
-                            child: renderKnowledgeWidget(value, state.tacitKnowledgeConfigs),
+                            child: renderKnowledgeWidget(
+                                value, state.tacitKnowledgeConfigs),
                           ),
                           const SizedBox(height: 10),
                         ],
@@ -120,7 +121,14 @@ class DerivationLevelPage extends StatelessWidget {
     );
   }
 
-  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) {
+  /// Renders a widget based on the type of [value.knowledge].
+  ///
+  /// - Parameters:
+  ///   - [value] An object containing the `knowledge` to be rendered.
+  ///   - [tacitKnowledgeConfigs] A dynamic configuration map used to determine the pattern grid size.
+  ///
+  /// - Returns: A [Widget] that represents the rendered knowledge based on the provided value.
+  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) { // TODO: Extract to KnowledgeWidget? 
     if (value.knowledge is String) {
       return Text(value.knowledge);
     } else if (value.knowledge is List<int>) {
