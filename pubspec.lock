@@ -254,8 +254,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: hashviz_integration
-      resolved-ref: "40b60ba9f8811e6e7f5f1eb8e66c6511fc717226"
+      ref: hashviz_enhacement_features
+      resolved-ref: "76feb502ed035b867bc1546acacdc020795a6085"
       url: "https://github.com/T3-InfoSec/great-wall-dart.git"
     source: git
     version: "0.1.0-dev"
@@ -263,10 +263,10 @@ packages:
     dependency: transitive
     description:
       name: hashlib
-      sha256: "7431346983b7c18fa3d6107891b7f00da4fffc378eed8454a0c9e17961164ffd"
+      sha256: cf156a54f6cd87fe8de7748a5b66556ba3470c58d6c83d292accff781c2b3fa7
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.2"
+    version: "1.20.3"
   hashlib_codecs:
     dependency: transitive
     description:
@@ -279,8 +279,8 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: hashviz_blockies
-      resolved-ref: a6ac90fb33cf3c565725c2601dc6e6a0d78715bc
+      ref: feature_asymmetric_images
+      resolved-ref: de42122894652724d7252282ad8df25302799f90
       url: "https://github.com/T3-InfoSec/t3-hashviz-dart.git"
     source: git
     version: "1.0.0"
@@ -590,7 +590,7 @@ packages:
     description:
       path: "."
       ref: initial_commit
-      resolved-ref: "958c6f1a3af944962cfb0bae034780b4f88483e2"
+      resolved-ref: "5c8b9b25c90abece9f65b37600475b212a6253df"
       url: "https://github.com/T3-InfoSec/t3-formosa-dart.git"
     source: git
     version: "0.1.0-dev"
@@ -663,10 +663,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
+      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.4"
+    version: "14.2.5"
   watcher:
     dependency: transitive
     description:
