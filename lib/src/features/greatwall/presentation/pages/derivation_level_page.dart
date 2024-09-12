@@ -149,6 +149,7 @@ class DerivationLevelPage extends StatelessWidget {
           painter: HashvizPainter(
             imageData: imageData,
             size: tacitKnowledgeConfigs['size'] ?? 16,
+            numColors: tacitKnowledgeConfigs['numColors'] ?? 3,
           ),
         ),
       );

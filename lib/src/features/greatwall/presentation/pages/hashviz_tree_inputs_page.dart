@@ -179,6 +179,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                               tacitKnowledgeConfigs: {
                                 'size': size,
                                 'isSymmetric': false,
+                                'numColors': 4
                               },
                               secretSeed: _passwordController.text,
                             ),
