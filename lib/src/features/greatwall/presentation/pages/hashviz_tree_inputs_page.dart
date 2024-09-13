@@ -18,6 +18,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _sizeController = TextEditingController();
+  final TextEditingController _colorsNumberController = TextEditingController();
   HashvizTreeInputsPage({super.key});
 
   @override
@@ -88,7 +89,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                       );
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               TextField(
                 controller: _sizeController,
                 decoration:
@@ -96,11 +97,41 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 10),
+              TextField(
+                controller: _colorsNumberController,
+                decoration: const InputDecoration(labelText: 'Colors Number'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<GreatWallBloc, GreatWallState>(
+                builder: (context, state) {
+                  bool isSymmetric = false;
+
+                  if (state is GreatWallHashvizInputInProgress) {
+                    isSymmetric = state.isSymmetric;
+                  }
+
+                  return Row(
+                    children: [
+                      Checkbox(
+                        value: isSymmetric,
+                        onChanged: (bool? value) {
+                          context.read<GreatWallBloc>().add(
+                                GreatWallSymmetricToggled(),
+                              );
+                        },
+                      ),
+                      const Text('Symmetric'),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
               BlocBuilder<GreatWallBloc, GreatWallState>(
                 builder: (context, state) {
                   bool isPasswordVisible = false;
 
-                  if (state is GreatWallPasswordVisibility) {
+                  if (state is GreatWallHashvizInputInProgress) {
                     isPasswordVisible = state.isPasswordVisible;
                   }
 
@@ -137,6 +168,14 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             final timeLock =
                                 int.parse(_timeLockController.text);
                             final size = int.parse(_sizeController.text);
+                            final numColors =
+                                int.parse(_colorsNumberController.text);
+
+                            final state = context.read<GreatWallBloc>().state;
+                            final isSymmetric =
+                                state is GreatWallHashvizInputInProgress
+                                    ? state.isSymmetric
+                                    : false;
 
                             context.read<MemoCardSetBloc>().add(
                                   MemoCardSetCardAdded(
@@ -147,7 +186,11 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                         'timeLockPuzzleParam': timeLock,
                                         'tacitKnowledgeType':
                                             TacitKnowledgeTypes.hashviz,
-                                        'tacitKnowledgeConfigs': {'size': size},
+                                        'tacitKnowledgeConfigs': {
+                                          'size': size,
+                                          'isSymmetric': isSymmetric,
+                                          'numColors': numColors,
+                                        },
                                         'secretSeed': _passwordController.text,
                                       },
                                     ),
@@ -165,6 +208,12 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   final depth = int.parse(_depthController.text);
                   final timeLock = int.parse(_timeLockController.text);
                   final size = int.parse(_sizeController.text);
+                  final numColors = int.parse(_colorsNumberController.text);
+
+                  final state = context.read<GreatWallBloc>().state;
+                  final isSymmetric = state is GreatWallHashvizInputInProgress
+                      ? state.isSymmetric
+                      : false;
 
                   Future.delayed(
                     const Duration(seconds: 1),
@@ -178,8 +227,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
                               tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
                               tacitKnowledgeConfigs: {
                                 'size': size,
-                                'isSymmetric': false,
-                                'numColors': 4
+                                'isSymmetric': isSymmetric,
+                                'numColors': numColors,
                               },
                               secretSeed: _passwordController.text,
                             ),

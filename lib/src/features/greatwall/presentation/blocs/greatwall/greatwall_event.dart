@@ -81,6 +81,8 @@ final class GreatWallFormosaThemeSelected extends GreatWallEvent {
   List<Object> get props => [theme];
 }
 
+final class GreatWallSymmetricToggled extends GreatWallEvent {}
+
 final class GreatWallPasswordVisibilityToggled extends GreatWallEvent {}
 
 final class GreatWallDerivationStarted extends GreatWallEvent {}

@@ -122,7 +122,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                 builder: (context, state) {
                   bool isPasswordVisible = false;
 
-                  if (state is GreatWallPasswordVisibility) {
+                  if (state is GreatWallHashvizInputInProgress) {
                     isPasswordVisible = state.isPasswordVisible;
                   }
 

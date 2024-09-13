@@ -11,6 +11,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
+    on<GreatWallSymmetricToggled>(_onGreatWallSymmetricToggled);
     on<GreatWallPasswordVisibilityToggled>(_onPasswordVisibilityToggled);
     on<GreatWallArityChanged>(_onGreatWallArityChanged);
     on<GreatWallDepthChanged>(_onGreatWallDepthChanged);
@@ -88,13 +89,23 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     emit(GreatWallFormosaThemeSelectSuccess(event.theme));
   }
 
-  void _onPasswordVisibilityToggled(
+    void _onPasswordVisibilityToggled(
       GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
-    if (state is GreatWallPasswordVisibility) {
-      final currentState = state as GreatWallPasswordVisibility;
-      emit(GreatWallPasswordVisibility(!currentState.isPasswordVisible));
+    if (state is GreatWallHashvizInputInProgress) {
+      final currentState = state as GreatWallHashvizInputInProgress;
+      emit(GreatWallHashvizInputInProgress(currentState.isSymmetric, !currentState.isPasswordVisible));
     } else {
-      emit(GreatWallPasswordVisibility(true));
+      emit(GreatWallHashvizInputInProgress(true, true));
+    }
+  }
+
+  void _onGreatWallSymmetricToggled(
+      GreatWallSymmetricToggled event, Emitter<GreatWallState> emit) {
+    if (state is GreatWallHashvizInputInProgress) {
+      final currentState = state as GreatWallHashvizInputInProgress;
+      emit(GreatWallHashvizInputInProgress(!currentState.isSymmetric, currentState.isPasswordVisible));
+    } else {
+      emit(GreatWallHashvizInputInProgress(true, true));
     }
   }
 
