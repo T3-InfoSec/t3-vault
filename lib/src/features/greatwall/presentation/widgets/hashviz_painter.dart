@@ -2,20 +2,14 @@ import 'package:flutter/material.dart';
 
 /// A [CustomPainter] that draws a hash-based pattern on a canvas.
 ///
-/// This class takes an image pattern and renders it using specified colors.
-/// The pattern is represented by a list of integers, where different values
-/// are used to determine the color of each block in the pattern.
+/// This painter takes a list of integers, [imageData], to represent the pattern,
+/// where each value defines the color of the corresponding block in the grid.
+/// The grid has a size defined by [size], and each block is painted with either
+/// the foreground color [color], the background color [bgColor], or the spot
+/// color [spotColor], depending on the value in [imageData].
 ///
-/// - [imageData] A list of integers representing the image pattern to be drawn.
-/// - [size] The size of the pattern grid, defining the number of rows and columns.
-/// - [color] The foreground color for the pattern blocks (default is Shamrock Green).
-/// - [bgColor] The background color of the canvas (default is Pastel Green).
-/// - [spotColor] The color used for specific pattern spots (default is Spring Green).
-///
-/// The [paint] method draws the pattern onto the canvas based on [imageData],
-/// using the specified colors.
-/// The [shouldRepaint] method always returns `true`
-/// to ensure that the painter is always redrawn when the widget needs to be updated.
+/// The default foreground color is Shamrock Green, the background color is
+/// Pastel Green, and the spot color is Spring Green.
 class HashvizPainter extends CustomPainter {
   final List<int> imageData;
   final int size;
@@ -23,13 +17,15 @@ class HashvizPainter extends CustomPainter {
   final Color bgColor;
   final Color spotColor;
 
-  /// Constructor for the [HashvizPainter] class.
+  /// Creates a [HashvizPainter].
   ///
-  /// - Parameters:
-  ///   - [imageData]: List of integers representing the image pattern to be drawn.
-  ///   - [size]: The size of the pattern grid.
-  ///   - [color]: The color used for the foreground (default is black).
-  ///   - [bgColor]: The color used for the background (default is yellow).
+  /// The [imageData] parameter is a list of integers representing the image
+  /// pattern to be drawn, and [size] defines the number of rows and columns
+  /// in the grid. Optionally, you can specify a custom [color] for the foreground,
+  /// a [bgColor] for the background, and a [spotColor] for specific pattern
+  /// spots. If not provided, these colors default to Shamrock Green for
+  /// the foreground, Pastel Green for the background, and Spring Green
+  /// for the spots.
   HashvizPainter({
     required this.imageData,
     required this.size,
@@ -38,11 +34,12 @@ class HashvizPainter extends CustomPainter {
     this.spotColor = const Color(0xFF00FF7F), // Spring Green
   });
 
-  /// Paints the hash-based pattern onto the canvas.
+  /// Paints the hash-based pattern on the given [canvas] using the available
+  /// [canvasSize].
   ///
-  /// - Parameters:
-  ///   - [canvas]: The canvas to draw on.
-  ///   - [canvasSize]: The size of the canvas.
+  /// The canvas is first filled with [bgColor], and then each block is drawn
+  /// based on the values in [imageData]. A value of 0 leaves the background
+  /// color intact, 1 paints the block with [color], and 2 uses [spotColor].
   @override
   void paint(Canvas canvas, Size canvasSize) {
     final bgPaint = Paint()..color = bgColor;
@@ -77,9 +74,10 @@ class HashvizPainter extends CustomPainter {
     }
   }
 
-  /// Determines whether the painter needs to repaint.
+  /// Always returns `true` to indicate that the painter should repaint whenever
+  /// the widget needs to update.
   ///
-  /// - Returns: `true` to always repaint.
+  /// This ensures that the pattern is redrawn each time the widget rebuilds.
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
