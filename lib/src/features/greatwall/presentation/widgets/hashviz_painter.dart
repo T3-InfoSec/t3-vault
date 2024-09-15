@@ -15,28 +15,12 @@ class HashvizPainter extends CustomPainter {
   final int size;
   final int numColors;
 
-  /// A predefined set of fixed colors used for the pattern.
-  ///
-  /// The first color, Shamrock Green, is used as the background color, while
-  /// the rest are used to paint the pattern blocks based on [imageData].
-  final List<Color> fixedColors = const [
-    Color(0xFF009E60), // Shamrock Green (bgColor)
-    Color(0xFF01796F), // Pine Green [1]
-    Color(0xFF808000), // Olive Green [2]
-    Color(0xFF2E8B57), // Sea Green [3]
-    Color(0xFF00FF00), // Lime Green [4]
-    Color(0xFFD0F0C0), // Tea Green [5]
-    Color(0xFF228B22), // Forest Green [6]
-    Color(0xFF00A36C), // Jade Green [7]
-    Color(0xFF7FFF00), // Chartreuse Green [8]
-  ];
-
   /// Creates an instance of [HashvizPainter].
   ///
   /// The [imageData] parameter contains a list of integers representing the
   /// pattern to be drawn, while [size] defines the dimensions of the pattern grid
   /// (i.e., the number of rows and columns). The [numColors] parameter specifies
-  /// how many colors from [fixedColors] will be used for rendering the pattern.
+  /// how many colors from will be generated for rendering the pattern.
   HashvizPainter({
     required this.imageData,
     required this.size,
@@ -47,22 +31,20 @@ class HashvizPainter extends CustomPainter {
   ///
   /// The canvas is first filled with the background color (Shamrock Green),
   /// after which the pattern blocks are drawn based on [imageData]. The blocks
-  /// are painted with colors selected from [fixedColors], where the number of
-  /// colors used is controlled by [numColors].
+  /// are painted with [numColors] dynamically generated.
   ///
   /// Each block's color is determined by the corresponding value in [imageData],
   /// and the color is chosen using a modulo operation to cycle through the
   /// available colors if necessary.
   @override
   void paint(Canvas canvas, Size canvasSize) {
-    final bgPaint = Paint()..color = fixedColors[0];
+    final dynamicColors = generateDynamicColors();
+    final bgPaint = Paint()..color = dynamicColors[0];
 
     final blockSize = Size(canvasSize.width / size, canvasSize.height / size);
 
     canvas.drawRect(
         Rect.fromLTWH(0, 0, canvasSize.width, canvasSize.height), bgPaint);
-
-    final colorsToUse = fixedColors.sublist(0, numColors);
 
     // Draw the blocks for the pattern based on `imageData`
     for (int i = 0; i < imageData.length; i++) {
@@ -72,7 +54,7 @@ class HashvizPainter extends CustomPainter {
         final col = (i % size);
 
         final paint = Paint()
-          ..color = colorsToUse[imageData[i] % colorsToUse.length];
+          ..color = dynamicColors[imageData[i] % dynamicColors.length];
 
         canvas.drawRect(
           Rect.fromLTWH(
@@ -94,5 +76,31 @@ class HashvizPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+
+  /// Generates a list of colors dynamically based on [numColors].
+  ///
+  /// The Red, Blue, and Alpha components are kept fixed at low values, and
+  /// the Green component is varied between a specified range.
+  List<Color> generateDynamicColors() {
+    // Fix R, B and A at low values so given color will naturally 'stand out' from the others
+    const int fixedRed = 50;
+    const int fixedBlue = 50;
+    const int fixedAlpha = 255;
+
+    // Range of values for green (G)
+    const int minGreen = 30; // Lowest value for green
+    const int maxGreen = 180; // Highest value for green
+
+    int step = (maxGreen - minGreen) ~/ (numColors - 1);
+
+    List<Color> colors = [];
+    for (int i = 0; i < numColors; i++) {
+      int greenValue = minGreen + (i * step);
+      var color = Color.fromARGB(fixedAlpha, fixedRed, greenValue, fixedBlue);
+      colors.add(color);
+    }
+
+    return colors;
   }
 }
