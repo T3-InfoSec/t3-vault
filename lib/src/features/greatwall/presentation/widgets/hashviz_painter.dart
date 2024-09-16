@@ -20,7 +20,7 @@ class HashvizPainter extends CustomPainter {
   /// The [imageData] parameter contains a list of integers representing the
   /// pattern to be drawn, while [size] defines the dimensions of the pattern grid
   /// (i.e., the number of rows and columns). The [numColors] parameter specifies
-  /// how many colors from will be generated for rendering the pattern.
+  /// how many colors will be generated for rendering the pattern.
   HashvizPainter({
     required this.imageData,
     required this.size,
@@ -29,9 +29,9 @@ class HashvizPainter extends CustomPainter {
 
   /// Paints the hash-based pattern onto the canvas.
   ///
-  /// The canvas is first filled with the background color (Shamrock Green),
-  /// after which the pattern blocks are drawn based on [imageData]. The blocks
-  /// are painted with [numColors] dynamically generated.
+  /// The canvas is first filled with the background color,
+  /// after which the pattern blocks are drawn based on [imageData].
+  /// The blocks are painted with dynamically generated colors.
   ///
   /// Each block's color is determined by the corresponding value in [imageData],
   /// and the color is chosen using a modulo operation to cycle through the
@@ -71,33 +71,36 @@ class HashvizPainter extends CustomPainter {
 
   /// Always returns `true` to indicate that the painter should repaint whenever
   /// the widget needs to update.
-  ///
-  /// This ensures that the pattern is redrawn each time the widget rebuilds.
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
 
-  /// Generates a list of colors dynamically based on [numColors].
+  /// Generates a list of colors dynamically based on [numColors] using HSVColor.
   ///
-  /// The Red, Blue, and Alpha components are kept fixed at low values, and
-  /// the Green component is varied between a specified range.
+  /// The hue (H) component will vary, and we will control the saturation (S)
+  /// and brightness (V) components to keep the colors within a certain range.
   List<Color> generateDynamicColors() {
-    // Fix R, B and A at low values so given color will naturally 'stand out' from the others
-    const int fixedRed = 50;
-    const int fixedBlue = 50;
+    // Fixed values for saturation and brightness for better control over luminosity
+    const double fixedSaturation = 0.7; // Fixed saturation value
+    const double fixedBrightness = 0.8; // Fixed brightness value
     const int fixedAlpha = 255;
 
-    // Range of values for green (G)
-    const int minGreen = 30; // Lowest value for green
-    const int maxGreen = 180; // Highest value for green
+    // Range for hue (H)
+    const double minHue = 90; // Lowest value for hue (Greenish range)
+    const double maxHue = 150; // Highest value for hue
 
-    int step = (maxGreen - minGreen) ~/ (numColors - 1);
+    double step = (maxHue - minHue) / (numColors - 1);
 
     List<Color> colors = [];
     for (int i = 0; i < numColors; i++) {
-      int greenValue = minGreen + (i * step);
-      var color = Color.fromARGB(fixedAlpha, fixedRed, greenValue, fixedBlue);
+      double hueValue = minHue + (i * step);
+      var color = HSVColor.fromAHSV(
+        fixedAlpha / 255.0, // Alpha needs to be in the range 0.0 - 1.0
+        hueValue,
+        fixedSaturation,
+        fixedBrightness,
+      ).toColor(); // Convert HSV to Color (RGB)
       colors.add(color);
     }
 
