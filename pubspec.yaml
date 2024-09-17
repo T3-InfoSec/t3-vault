@@ -18,15 +18,15 @@ dependencies:
   go_router: ^14.2.3
   t3_formosa:
     git:
-      url: https://github.com/T3-InfoSec/t3-formosa-dart.git
+      url: git@github.com:T3-InfoSec/t3-formosa-dart.git
       ref: initial_commit
   great_wall:
     git:
-      url: https://github.com/T3-InfoSec/great-wall-dart.git
+      url: git@github.com:T3-InfoSec/great-wall-dart.git
       ref: hashviz_enhacement_features
   t3_memassist:
     git:
-      url: https://github.com/T3-InfoSec/t3-memassist.git
+      url: git@github.com:T3-InfoSec/t3-memassist.git
       ref: migrate_main_logic
   convert: ^3.1.1
 
