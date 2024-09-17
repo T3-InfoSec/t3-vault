@@ -60,7 +60,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                   items: FormosaTheme.values.map((FormosaTheme theme) {
                     return DropdownMenuItem<FormosaTheme>(
                       value: theme,
-                      child: Text(theme.label),
+                      child: Text(theme.name),
                     );
                   }).toList(),
                   onChanged: (newValue) {
