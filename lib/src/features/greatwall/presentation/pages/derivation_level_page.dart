@@ -68,55 +68,49 @@ class DerivationLevelPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: state.knowledgePalettes.asMap().entries.map(
-                          (entry) {
-                            int index = entry.key + 1;
-                            dynamic value = entry.value;
-
-                            return Column(
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    Future.delayed(
-                                      const Duration(seconds: 1),
-                                      () {
-                                        if (!context.mounted) return;
-                                        context.read<GreatWallBloc>().add(
-                                            GreatWallDerivationStepMade(index));
-                                        if (state.currentLevel <
-                                            state.treeDepth) {
-                                          context.go(
-                                            '/${DerivationLevelPage.routeName}',
-                                            extra: {
-                                              'previousRoute': previousRoute!
-                                            },
-                                          );
-                                        } else {
-                                          context.read<GreatWallBloc>().add(
-                                              GreatWallDerivationFinished());
-                                          context.go(
-                                            '/${DerivationResultPage.routeName}',
-                                            extra: {
-                                              'previousRoute': previousRoute!
-                                            },
-                                          );
-                                        }
-                                      },
-                                    );
-                                  },
-                                  child: renderKnowledgeWidget(
-                                      value, state.tacitKnowledgeConfigs),
-                                ),
-                                const SizedBox(height: 20),
-                              ],
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(10),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3, // Number of columns in the grid
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1, // Aspect ratio for cells 1:1
+                      ),
+                      itemCount: state.knowledgePalettes.length,
+                      itemBuilder: (context, index) {
+                        final value = state.knowledgePalettes[index];
+                        return ElevatedButton(
+                          onPressed: () {
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                              () {
+                                if (!context.mounted) return;
+                                context.read<GreatWallBloc>().add(
+                                    GreatWallDerivationStepMade(index + 1));
+                                if (state.currentLevel < state.treeDepth) {
+                                  context.go(
+                                    '/${DerivationLevelPage.routeName}',
+                                    extra: {'previousRoute': previousRoute!},
+                                  );
+                                } else {
+                                  context
+                                      .read<GreatWallBloc>()
+                                      .add(GreatWallDerivationFinished());
+                                  context.go(
+                                    '/${DerivationResultPage.routeName}',
+                                    extra: {'previousRoute': previousRoute!},
+                                  );
+                                }
+                              },
                             );
                           },
-                        ).toList(),
-                      ),
+                          child: renderKnowledgeWidget(
+                              value, state.tacitKnowledgeConfigs),
+                        );
+                      },
                     ),
-                  ),
+                  )
                 ],
               );
             } else {
@@ -137,7 +131,7 @@ class DerivationLevelPage extends StatelessWidget {
   ///   - [tacitKnowledgeConfigs] A dynamic configuration map used to determine the pattern grid size.
   ///
   /// - Returns: A [Widget] that represents the rendered knowledge based on the provided value.
-  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) { // TODO: Extract to KnowledgeWidget? 
+  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) {
     if (value.knowledge is String) {
       return Text(value.knowledge);
     } else if (value.knowledge is List<int>) {
