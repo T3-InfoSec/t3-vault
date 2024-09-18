@@ -146,7 +146,12 @@ class MemoCardDetailsPage extends StatelessWidget {
                         secretSeed: secretSeed,
                       ),
                     );
-                context.go('/${ConfirmationPage.routeName}');
+                context.go(
+                        '/${ConfirmationPage.routeName}',
+                        extra: {
+                          'previousRoute': MemoCardDetailsPage.routeName
+                        },
+                      );
               },
               child: const Text('Try protocol'),
             ),
