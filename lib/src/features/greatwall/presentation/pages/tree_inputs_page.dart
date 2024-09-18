@@ -58,8 +58,8 @@ class TreeInputsPage extends StatelessWidget {
                   hint: const Text('Select Theme'),
                   items: FormosaTheme.values.map((FormosaTheme theme) {
                     return DropdownMenuItem<String>(
-                      value: theme.label,
-                      child: Text(theme.label),
+                      value: theme.name,
+                      child: Text(theme.name),
                     );
                   }).toList(),
                   onChanged: (newValue) {
