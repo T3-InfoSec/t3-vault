@@ -61,34 +61,60 @@ class DerivationLevelPage extends StatelessWidget {
                     (entry) {
                       int index = entry.key + 1;
                       dynamic value = entry.value;
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Future.delayed(
-                                const Duration(seconds: 1),
-                                () {
-                                  if (!context.mounted) return;
-                                  context
-                                      .read<GreatWallBloc>()
-                                      .add(GreatWallDerivationStepMade(index));
-                                  if (state.currentLevel < state.treeDepth) {
-                                    context.go(
-                                        '/${DerivationLevelPage.routeName}');
-                                  } else {
-                                    context
-                                        .read<GreatWallBloc>()
-                                        .add(GreatWallDerivationFinished());
-                                    context.go(
-                                        '/${DerivationResultPage.routeName}');
-                                  }
-                                },
-                              );
-                            },
-                            child: Text(value.knowledge),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
+                      // Asynchronous loading of knowledge
+                      return FutureBuilder<String>(
+                        future: Future.delayed(
+                          const Duration(milliseconds: 500),
+                          () async {
+                            return value.knowledge;
+                          },
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () {
+                                        if (!context.mounted) return;
+                                        context.read<GreatWallBloc>().add(
+                                            GreatWallDerivationStepMade(index));
+                                        if (state.currentLevel <
+                                            state.treeDepth) {
+                                          context.go(
+                                              '/${DerivationLevelPage.routeName}');
+                                        } else {
+                                          context.read<GreatWallBloc>().add(
+                                              GreatWallDerivationFinished());
+                                          context.go(
+                                              '/${DerivationResultPage.routeName}');
+                                        }
+                                      },
+                                    );
+                                  },
+                                  child:
+                                      Text(snapshot.data ?? 'Loading error.'),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const Column(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: null,
+                                  child: Text("Loading..."),
+                                ),
+                                SizedBox(height: 10),
+                              ],
+                            );
+                          }
+                        },
                       );
                     },
                   ),
@@ -96,7 +122,7 @@ class DerivationLevelPage extends StatelessWidget {
               );
             } else {
               return const Center(
-                child: Text('Loading or no level data available.'),
+                child: Text('No level data available.'),
               );
             }
           },
