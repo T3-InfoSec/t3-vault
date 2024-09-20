@@ -35,11 +35,7 @@ class DerivationLevelPage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
-            if (state is GreatWallDeriveInProgress) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is GreatWallDeriveStepSuccess) {
+            if (state is GreatWallDeriveStepSuccess) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -96,7 +92,7 @@ class DerivationLevelPage extends StatelessWidget {
               );
             } else {
               return const Center(
-                child: Text('Loading or no level data available.'),
+                child: Text('Derivation in progress. Be patient, this will take some time...'),
               );
             }
           },

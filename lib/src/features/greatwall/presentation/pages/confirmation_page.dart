@@ -34,11 +34,7 @@ class ConfirmationPage extends StatelessWidget {
       ),
       body: BlocBuilder<GreatWallBloc, GreatWallState>(
         builder: (context, state) {
-          if (state is GreatWallDeriveInProgress) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state is GreatWallInitialSuccess) {
+          if (state is GreatWallInitialSuccess) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
