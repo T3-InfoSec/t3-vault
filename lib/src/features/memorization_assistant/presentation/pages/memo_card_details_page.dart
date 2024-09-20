@@ -149,7 +149,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                 context.go(
                         '/${ConfirmationPage.routeName}',
                         extra: {
-                          'previousRoute': MemoCardDetailsPage.routeName
+                          'previousRoute': MemoCardsPage.routeName
                         },
                       );
               },
