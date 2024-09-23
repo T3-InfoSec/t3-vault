@@ -63,6 +63,7 @@ class MemoCardsPage extends StatelessWidget {
                         (entry) {
                           int levelNumber = entry.key;
                           MemoCard memoCard = entry.value;
+                          String deckName = 'Deck ${entry.key + 1}';
                           return GestureDetector(
                             onTap: () {
                               context.go(
@@ -75,6 +76,8 @@ class MemoCardsPage extends StatelessWidget {
                               themeData: themeData,
                               levelNumber: levelNumber,
                               memoCard: memoCard,
+                              
+                              deckName: deckName,
                             ),
                           );
                         },
