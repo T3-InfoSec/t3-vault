@@ -37,6 +37,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _greatWall!.derivationLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
@@ -73,6 +74,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _currentLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
@@ -88,16 +90,19 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
       timeLockPuzzleParam: event.timeLockPuzzleParam,
+      tacitKnowledgeType: event.tacitKnowledgeType,
+      tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
     );
 
     _greatWall!.seed0 = event.secretSeed;
 
     emit(
       GreatWallInitialSuccess(
-        tacitKnowledge: 'Formosa',
         treeArity: event.treeArity,
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
+        tacitKnowledgeType: event.tacitKnowledgeType,
+        tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
         secretSeed: event.secretSeed,
       ),
     );

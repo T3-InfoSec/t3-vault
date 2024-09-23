@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:great_wall/great_wall.dart';
+import 'package:t3_formosa/formosa.dart';
 
 sealed class GreatWallState extends Equatable {
   @override
@@ -17,7 +19,7 @@ final class GreatWallTacitKnowledgeSelectSuccess extends GreatWallState {
 }
 
 final class GreatWallFormosaThemeSelectSuccess extends GreatWallState {
-  final String theme;
+  final FormosaTheme theme;
 
   GreatWallFormosaThemeSelectSuccess(this.theme);
 
@@ -26,23 +28,26 @@ final class GreatWallFormosaThemeSelectSuccess extends GreatWallState {
 }
 
 class GreatWallInitialSuccess extends GreatWallState {
-  final String tacitKnowledge;
+
   final int treeArity;
   final int treeDepth;
   final int timeLockPuzzleParam;
+  final TacitKnowledgeTypes tacitKnowledgeType;
+  final Map<String, dynamic> tacitKnowledgeConfigs;
   final String secretSeed;
 
   GreatWallInitialSuccess({
-    required this.tacitKnowledge,
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
+    required this.tacitKnowledgeType,
+    required this.tacitKnowledgeConfigs,
     required this.secretSeed,
   });
 
   @override
   List<Object> get props =>
-      [tacitKnowledge, treeArity, treeDepth, timeLockPuzzleParam, secretSeed];
+      [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
 }
 
 final class GreatWallDeriveInProgress extends GreatWallState {}
@@ -51,11 +56,13 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int currentLevel;
   final List<dynamic> knowledgePalettes;
   final int treeDepth;
+  final Map<String, dynamic> tacitKnowledgeConfigs;
 
   GreatWallDeriveStepSuccess({
     required this.currentLevel,
     required this.knowledgePalettes,
     required this.treeDepth,
+    required this.tacitKnowledgeConfigs,
   });
 
   @override
