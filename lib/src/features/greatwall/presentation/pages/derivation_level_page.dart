@@ -43,8 +43,15 @@ class DerivationLevelPage extends StatelessWidget {
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             if (state is GreatWallDeriveInProgress) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    value: state.progress / 100,
+                  ),
+                  const SizedBox(height: 20),
+                  Text('${state.progress}% completed'),
+                ],
               );
             } else if (state is GreatWallDeriveStepSuccess) {
               return Column(

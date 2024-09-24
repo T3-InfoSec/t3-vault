@@ -246,8 +246,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: development
-      resolved-ref: d6e0c388d301f778d61279466812f84d794526d3
+      ref: split_long_hashing_derivation
+      resolved-ref: c538fb4312765e11a5ef114ece5ebc415acb013f
       url: "https://github.com/T3-InfoSec/great-wall-dart.git"
     source: git
     version: "0.1.0-dev"

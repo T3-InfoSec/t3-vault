@@ -23,7 +23,7 @@ dependencies:
   great_wall:
     git:
       url: https://github.com/T3-InfoSec/great-wall-dart.git
-      ref: development
+      ref: split_long_hashing_derivation
   t3_memassist:
     git:
       url: https://github.com/T3-InfoSec/t3-memassist.git

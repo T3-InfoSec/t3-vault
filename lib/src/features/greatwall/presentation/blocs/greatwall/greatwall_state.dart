@@ -50,7 +50,14 @@ class GreatWallInitialSuccess extends GreatWallState {
       [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledgeType, tacitKnowledgeConfigs, secretSeed];
 }
 
-final class GreatWallDeriveInProgress extends GreatWallState {}
+final class GreatWallDeriveInProgress extends GreatWallState {
+  final int progress;
+
+  GreatWallDeriveInProgress({required this.progress});
+
+  @override
+   List<Object> get props => [progress];
+}
 
 final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int currentLevel;
