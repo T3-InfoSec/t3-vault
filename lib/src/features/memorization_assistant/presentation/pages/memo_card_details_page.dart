@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -128,9 +129,11 @@ class MemoCardDetailsPage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
+                TacitKnowledgeTypes tacitKnowledgeType = memoCard.knowledge['tacitKnowledgeType'];
                 int treeArity = memoCard.knowledge['treeArity'];
                 int treeDepth = memoCard.knowledge['treeDepth'];
                 int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
+                Map<String, dynamic> tacitKnowledgeConfigs = memoCard.knowledge['tacitKnowledgeConfigs'];
                 String secretSeed = memoCard.knowledge['secretSeed'];
 
                 context.read<GreatWallBloc>().add(
@@ -138,6 +141,8 @@ class MemoCardDetailsPage extends StatelessWidget {
                         treeArity: treeArity,
                         treeDepth: treeDepth,
                         timeLockPuzzleParam: timeLock,
+                        tacitKnowledgeType: tacitKnowledgeType,
+                        tacitKnowledgeConfigs: tacitKnowledgeConfigs,
                         secretSeed: secretSeed,
                       ),
                     );

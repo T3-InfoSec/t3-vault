@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../landing/presentation/pages/home_page.dart';
-import 'tree_inputs_page.dart';
+import 'formosa_tree_inputs_page.dart';
+import 'hashviz_tree_inputs_page.dart';
 
 class KnowledgeTypesPage extends StatelessWidget {
   static const routeName = 'knowledge_types';
@@ -14,13 +15,12 @@ class KnowledgeTypesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Temporarily hardcoded list of knowledge types
-    final List<String> knowledgeTypes = [
-      "Hashviz",
-      "Formosa",
-      "Fractal",
-      "Voice"
-    ];
+    final Map<String, String> knowledgeTypeRoutes = {
+      "Hashviz": HashvizTreeInputsPage.routeName,
+      "Formosa": FormosaTreeInputsPage.routeName,
+      "Fractal": "/fractal_page",
+      "Voice": "/voice_page",
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -44,15 +44,15 @@ class KnowledgeTypesPage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: knowledgeTypes.map(
-            (type) {
+          children: knowledgeTypeRoutes.entries.map(
+            (entry) {
               return Column(
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/${TreeInputsPage.routeName}');
+                      context.go('/${entry.value}');
                     },
-                    child: Text(type),
+                    child: Text(entry.key),
                   ),
                   const SizedBox(height: 10),
                 ],

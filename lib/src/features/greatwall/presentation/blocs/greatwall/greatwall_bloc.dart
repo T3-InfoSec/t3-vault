@@ -18,7 +18,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onDerivationStepMade(
       GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
-    emit(GreatWallDeriveInProgress());
+    emit(GreatWallDeriveInProgress(
+        progress: 0)); // TODO Fix GreatWallDeriveInProgress for step made
 
     await Future<void>.delayed(
       const Duration(seconds: 1),
@@ -37,6 +38,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         currentLevel: _greatWall!.derivationLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
@@ -59,20 +61,22 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
-    emit(GreatWallDeriveInProgress());
+    emit(GreatWallDeriveInProgress(progress: 0));
+    await Future.delayed(const Duration(milliseconds: 50));
 
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-      () {
-        _greatWall!.startDerivation();
+    await _greatWall!.startDerivation(
+      onProgress: (int progress) {
+        emit(GreatWallDeriveInProgress(progress: progress));
       },
     );
+    await Future.delayed(const Duration(milliseconds: 50));
 
     emit(
       GreatWallDeriveStepSuccess(
         currentLevel: _currentLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
         treeDepth: _greatWall!.treeDepth,
+        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
       ),
     );
   }
@@ -88,16 +92,19 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
       timeLockPuzzleParam: event.timeLockPuzzleParam,
+      tacitKnowledgeType: event.tacitKnowledgeType,
+      tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
     );
 
     _greatWall!.seed0 = event.secretSeed;
 
     emit(
       GreatWallInitialSuccess(
-        tacitKnowledge: 'Formosa',
         treeArity: event.treeArity,
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
+        tacitKnowledgeType: event.tacitKnowledgeType,
+        tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
         secretSeed: event.secretSeed,
       ),
     );
