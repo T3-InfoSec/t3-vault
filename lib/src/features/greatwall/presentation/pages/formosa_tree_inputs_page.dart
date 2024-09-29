@@ -121,9 +121,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
                                       'tacitKnowledgeType':
-                                          TacitKnowledgeTypes.formosa,
+                                          TacitKnowledgeTypes.formosa.value,
                                       'tacitKnowledgeConfigs': {
-                                        'formosaTheme': theme
+                                        'formosaTheme': theme.name
                                       },
                                       'secretSeed': _passwordController.text,
                                     },

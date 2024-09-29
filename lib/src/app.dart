@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_set_repository.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -26,10 +27,12 @@ import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart'
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
+  final MemoCardSetRepository memoCardSetRepository;
 
   const T3Vault({
     super.key,
     required this.settingsController,
+    required this.memoCardSetRepository,
   });
 
   @override
@@ -52,7 +55,7 @@ class T3Vault extends StatelessWidget {
               create: (BuildContext context) => MemoCardRatingBloc(),
             ),
             BlocProvider<MemoCardSetBloc>(
-              create: (BuildContext context) => MemoCardSetBloc(),
+              create: (BuildContext context) => MemoCardSetBloc(repository: memoCardSetRepository),
             ),
           ],
           child: Builder(

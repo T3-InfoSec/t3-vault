@@ -96,7 +96,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
                                       'tacitKnowledgeType':
-                                          TacitKnowledgeTypes.hashviz,
+                                          TacitKnowledgeTypes.hashviz.value,
                                       'tacitKnowledgeConfigs': {'size': size},
                                       'secretSeed': _passwordController.text,
                                     },

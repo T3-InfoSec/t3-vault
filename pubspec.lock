@@ -789,9 +789,11 @@ packages:
   t3_memassist:
     dependency: "direct main"
     description:
-      path: "../../dart/t3-memassist"
-      relative: true
-    source: path
+      path: "."
+      ref: memo_cards_store
+      resolved-ref: bbf1d9c6828cf6fe83e3031bb44be58ab12c892b
+      url: "https://github.com/T3-InfoSec/t3-memassist.git"
+    source: git
     version: "0.1.0-dev"
   term_glyph:
     dependency: transitive

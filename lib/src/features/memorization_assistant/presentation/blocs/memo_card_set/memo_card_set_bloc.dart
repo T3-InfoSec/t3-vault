@@ -1,13 +1,21 @@
 import 'package:bloc/bloc.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_set_repository.dart';
 
 import 'bloc.dart';
 
 class MemoCardSetBloc
     extends Bloc<MemoCardSetEvent, MemoCardSetState> {
-  MemoCardSetBloc() : super(MemoCardSetEmpty()) {
+      final MemoCardSetRepository repository;
+  MemoCardSetBloc({required this.repository}) : super(MemoCardSetEmpty()) {
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
     on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
+
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    add(MemoCardSetUnchanged());
   }
 
   Future<void> _onMemoCardSetEvent(
@@ -15,21 +23,24 @@ class MemoCardSetBloc
     Emitter<MemoCardSetState> emit,
   ) async {
     if (event is MemoCardSetUnchanged) {
-      return emit(MemoCardSetChangeNothing(memoCards: state.memoCardSet));
+      final memoCards = await repository.getMemoCardSet();
+      return emit(MemoCardSetChangeNothing(memoCards: memoCards));
     }
 
     if (event is MemoCardSetCardAdded) {
-      state.memoCardSet.add(event.memoCard);
-      return emit(MemoCardSetAddSuccess(memoCards: state.memoCardSet));
+      await repository.addMemoCard(event.memoCard);
+      final memoCards = await repository.getMemoCardSet();
+
+      return emit(MemoCardSetAddSuccess(memoCards: memoCards));
     }
 
     if (event is MemoCardSetCardRemoved) {
-      if (state.memoCardSet.isEmpty) {
+      await repository.removeMemoCard(event.memoCard);
+      final memoCards = await repository.getMemoCardSet();
+      if (memoCards.isEmpty) {
         return emit(MemoCardSetEmpty());
       } else {
-        state.memoCardSet.add(event.memoCard);
-        state.memoCardSet.remove(event.memoCard);
-        return emit(MemoCardSetRemoveSuccess(memoCards: state.memoCardSet));
+        return emit(MemoCardSetRemoveSuccess(memoCards: memoCards));
       }
     }
   }
