@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../../../landing/presentation/pages/home_page.dart';
 import 'formosa_tree_inputs_page.dart';
 import 'hashviz_tree_inputs_page.dart';
 
 class KnowledgeTypesPage extends StatelessWidget {
-  static const routeName = 'knowledge_types';
+  static const routeName = 'knowledge';
 
   const KnowledgeTypesPage({
     super.key,
@@ -25,12 +24,6 @@ class KnowledgeTypesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tacit Knowledge Types'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go(HomePage.routeName);
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -50,7 +43,9 @@ class KnowledgeTypesPage extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/${entry.value}');
+                      context.go(
+                        '/${KnowledgeTypesPage.routeName}/${entry.value}',
+                      );
                     },
                     child: Text(entry.key),
                   ),

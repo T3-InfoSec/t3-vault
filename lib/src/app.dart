@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -12,8 +11,9 @@ import 'features/greatwall/presentation/blocs/blocs.dart';
 import 'features/greatwall/presentation/pages/confirmation_page.dart';
 import 'features/greatwall/presentation/pages/derivation_level_page.dart';
 import 'features/greatwall/presentation/pages/derivation_result_page.dart';
-import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
 import 'features/greatwall/presentation/pages/formosa_tree_inputs_page.dart';
+import 'features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
+import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
 import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
@@ -45,8 +45,11 @@ class T3Vault extends StatelessWidget {
             BlocProvider<AgreementBloc>(
               create: (BuildContext context) => AgreementBloc(),
             ),
+            BlocProvider<FormosaBloc>(
+              create: (BuildContext context) => FormosaBloc(),
+            ),
             BlocProvider<GreatWallBloc>(
-              create: (context) => GreatWallBloc(),
+              create: (BuildContext context) => GreatWallBloc(),
             ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) => MemoCardRatingBloc(),
@@ -219,37 +222,67 @@ class T3Vault extends StatelessWidget {
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.knowledge_types',
+                              restorationId: 'router.root.knowledge',
                               child: KnowledgeTypesPage(),
                             );
                           },
-                        ),
-                        GoRoute(
-                          path: FormosaTreeInputsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
-                            return MaterialPage(
-                              restorationId: 'router.root.formosa_tree_inputs',
-                              child: FormosaTreeInputsPage(),
-                            );
-                          },
-                        ),
-                        GoRoute(
-                          path: HashvizTreeInputsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
-                            return MaterialPage(
-                              restorationId: 'router.root.hashviz_tree_inputs',
-                              child: HashvizTreeInputsPage(),
-                            );
-                          },
+                          routes: <RouteBase>[
+                            GoRoute(
+                              path: FormosaTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.knowledge.formosa_inputs',
+                                  child: FormosaTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'formosa_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            GoRoute(
+                              path: HashvizTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.knowledge.hashviz_inputs',
+                                  child: HashvizTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'hashviz_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         GoRoute(
                           path: ConfirmationPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.derivation_seed',
+                              restorationId: 'router.root.confirmation',
                               child: ConfirmationPage(),
                             );
                           },
