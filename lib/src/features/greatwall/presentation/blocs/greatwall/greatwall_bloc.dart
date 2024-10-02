@@ -18,8 +18,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onDerivationStepMade(
       GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
-    emit(GreatWallDeriveInProgress(
-        progress: 0)); // TODO Fix GreatWallDeriveInProgress for step made
+    emit(GreatWallDeriveInProgress(progress: 0));
+    await Future.delayed(const Duration(milliseconds: 10));
 
     await Future<void>.delayed(
       const Duration(seconds: 1),
@@ -27,6 +27,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
       },
     );
+    emit(GreatWallDeriveInProgress(progress: 100));
+    await Future.delayed(const Duration(milliseconds: 10));
     if (event.choiceNumber == 0 && _currentLevel > 1) {
       _currentLevel--;
     } else {
@@ -62,14 +64,14 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress(progress: 0));
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 10));
 
     await _greatWall!.startDerivation(
       onProgress: (int progress) {
         emit(GreatWallDeriveInProgress(progress: progress));
       },
     );
-    await Future.delayed(const Duration(milliseconds: 50));
+    await Future.delayed(const Duration(milliseconds: 10));
 
     emit(
       GreatWallDeriveStepSuccess(
