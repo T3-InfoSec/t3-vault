@@ -19,7 +19,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   void _onDerivationStepMade(
       GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress(progress: 0));
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 25));
 
     await Future<void>.delayed(
       const Duration(seconds: 1),
@@ -64,7 +64,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress(progress: 0));
-    await Future.delayed(const Duration(milliseconds: 10));
+    await Future.delayed(const Duration(milliseconds: 25));
 
     await _greatWall!.startDerivation(
       onProgress: (int progress) {
