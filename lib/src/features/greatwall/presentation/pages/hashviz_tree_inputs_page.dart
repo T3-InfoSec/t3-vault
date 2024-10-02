@@ -19,6 +19,10 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _sizeController = TextEditingController();
   final TextEditingController _colorsNumberController = TextEditingController();
+  final TextEditingController _saturationController = TextEditingController();
+  final TextEditingController _brightnessController = TextEditingController();
+  final TextEditingController _minHueController = TextEditingController();
+  final TextEditingController _maxHueController = TextEditingController();
   HashvizTreeInputsPage({super.key});
 
   @override
@@ -52,199 +56,244 @@ class HashvizTreeInputsPage extends StatelessWidget {
             );
           }
         },
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: _arityController,
-                decoration: const InputDecoration(labelText: 'Tree Arity'),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  context.read<GreatWallBloc>().add(
-                        GreatWallArityChanged(_arityController.text),
-                      );
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _depthController,
-                decoration: const InputDecoration(labelText: 'Tree Depth'),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  context.read<GreatWallBloc>().add(
-                        GreatWallDepthChanged(_depthController.text),
-                      );
-                },
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _timeLockController,
-                decoration:
-                    const InputDecoration(labelText: 'Time Lock Puzzle Param'),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  context.read<GreatWallBloc>().add(
-                        GreatWallTimeLockChanged(_timeLockController.text),
-                      );
-                },
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _sizeController,
-                decoration:
-                    const InputDecoration(labelText: 'Hashviz block size'),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: _colorsNumberController,
-                decoration: const InputDecoration(labelText: 'Colors Number'),
-                keyboardType: TextInputType.number,
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder<GreatWallBloc, GreatWallState>(
-                builder: (context, state) {
-                  bool isSymmetric = false;
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _arityController,
+                  decoration: const InputDecoration(labelText: 'Tree Arity'),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    context.read<GreatWallBloc>().add(
+                          GreatWallArityChanged(_arityController.text),
+                        );
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _depthController,
+                  decoration: const InputDecoration(labelText: 'Tree Depth'),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    context.read<GreatWallBloc>().add(
+                          GreatWallDepthChanged(_depthController.text),
+                        );
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _timeLockController,
+                  decoration: const InputDecoration(
+                      labelText: 'Time Lock Puzzle Param'),
+                  keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    context.read<GreatWallBloc>().add(
+                          GreatWallTimeLockChanged(_timeLockController.text),
+                        );
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _sizeController,
+                  decoration:
+                      const InputDecoration(labelText: 'Hashviz block size'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _saturationController,
+                  decoration: const InputDecoration(labelText: 'Saturation'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _brightnessController,
+                  decoration: const InputDecoration(labelText: 'Brightness'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _minHueController,
+                  decoration: const InputDecoration(labelText: 'Min Hue'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _maxHueController,
+                  decoration: const InputDecoration(labelText: 'Max Hue'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: _colorsNumberController,
+                  decoration: const InputDecoration(labelText: 'Colors Number'),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 10),
+                BlocBuilder<GreatWallBloc, GreatWallState>(
+                  builder: (context, state) {
+                    bool isSymmetric = false;
 
-                  if (state is GreatWallHashvizInputInProgress) {
-                    isSymmetric = state.isSymmetric;
-                  }
+                    if (state is GreatWallHashvizInputInProgress) {
+                      isSymmetric = state.isSymmetric;
+                    }
 
-                  return Row(
-                    children: [
-                      Checkbox(
-                        value: isSymmetric,
-                        onChanged: (bool? value) {
-                          context.read<GreatWallBloc>().add(
-                                GreatWallSymmetricToggled(),
-                              );
-                        },
-                      ),
-                      const Text('Symmetric'),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 20),
-              BlocBuilder<GreatWallBloc, GreatWallState>(
-                builder: (context, state) {
-                  bool isPasswordVisible = false;
-
-                  if (state is GreatWallHashvizInputInProgress) {
-                    isPasswordVisible = state.isPasswordVisible;
-                  }
-
-                  return TextField(
-                    controller: _passwordController,
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      hintText: 'Password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                        onPressed: () {
-                          context
-                              .read<GreatWallBloc>()
-                              .add(GreatWallPasswordVisibilityToggled());
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-                builder: (context, memoCardSetState) {
-                  return ElevatedButton(
-                    onPressed: (memoCardSetState is MemoCardSetAddSuccess)
-                        ? null
-                        : () {
-                            final arity = int.parse(_arityController.text);
-                            final depth = int.parse(_depthController.text);
-                            final timeLock =
-                                int.parse(_timeLockController.text);
-                            final size = int.parse(_sizeController.text);
-                            final numColors =
-                                int.parse(_colorsNumberController.text);
-
-                            final state = context.read<GreatWallBloc>().state;
-                            final isSymmetric =
-                                state is GreatWallHashvizInputInProgress
-                                    ? state.isSymmetric
-                                    : false;
-
-                            context.read<MemoCardSetBloc>().add(
-                                  MemoCardSetCardAdded(
-                                    memoCard: MemoCard(
-                                      knowledge: {
-                                        'treeArity': arity,
-                                        'treeDepth': depth,
-                                        'timeLockPuzzleParam': timeLock,
-                                        'tacitKnowledgeType':
-                                            TacitKnowledgeTypes.hashviz,
-                                        'tacitKnowledgeConfigs': {
-                                          'size': size,
-                                          'isSymmetric': isSymmetric,
-                                          'numColors': numColors,
-                                        },
-                                        'secretSeed': _passwordController.text,
-                                      },
-                                    ),
-                                  ),
+                    return Row(
+                      children: [
+                        Checkbox(
+                          value: isSymmetric,
+                          onChanged: (bool? value) {
+                            context.read<GreatWallBloc>().add(
+                                  GreatWallSymmetricToggled(),
                                 );
                           },
-                    child: const Text('Save To Memorization Card'),
-                  );
-                },
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  final arity = int.parse(_arityController.text);
-                  final depth = int.parse(_depthController.text);
-                  final timeLock = int.parse(_timeLockController.text);
-                  final size = int.parse(_sizeController.text);
-                  final numColors = int.parse(_colorsNumberController.text);
+                        ),
+                        const Text('Symmetric'),
+                      ],
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                BlocBuilder<GreatWallBloc, GreatWallState>(
+                  builder: (context, state) {
+                    bool isPasswordVisible = false;
 
-                  final state = context.read<GreatWallBloc>().state;
-                  final isSymmetric = state is GreatWallHashvizInputInProgress
-                      ? state.isSymmetric
-                      : false;
+                    if (state is GreatWallHashvizInputInProgress) {
+                      isPasswordVisible = state.isPasswordVisible;
+                    }
 
-                  Future.delayed(
-                    const Duration(seconds: 1),
-                    () {
-                      if (!context.mounted) return;
-                      context.read<GreatWallBloc>().add(
-                            GreatWallInitialized(
-                              treeArity: arity,
-                              treeDepth: depth,
-                              timeLockPuzzleParam: timeLock,
-                              tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
-                              tacitKnowledgeConfigs: {
-                                'size': size,
-                                'isSymmetric': isSymmetric,
-                                'numColors': numColors,
-                              },
-                              secretSeed: _passwordController.text,
-                            ),
-                          );
-                      context.go(
-                        '/${ConfirmationPage.routeName}',
-                        extra: {
-                          'previousRoute': HashvizTreeInputsPage.routeName
-                        },
-                      );
-                    },
-                  );
-                },
-                child: const Text('Start Derivation'),
-              ),
-            ],
+                    return TextField(
+                      controller: _passwordController,
+                      obscureText: !isPasswordVisible,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            context
+                                .read<GreatWallBloc>()
+                                .add(GreatWallPasswordVisibilityToggled());
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+                  builder: (context, memoCardSetState) {
+                    return ElevatedButton(
+                      onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                          ? null
+                          : () {
+                              final arity = int.parse(_arityController.text);
+                              final depth = int.parse(_depthController.text);
+                              final timeLock =
+                                  int.parse(_timeLockController.text);
+                              final size = int.parse(_sizeController.text);
+                              final numColors =
+                                  int.parse(_colorsNumberController.text);
+                              final saturation =
+                                  double.parse(_saturationController.text);
+                              final brightness =
+                                  double.parse(_brightnessController.text);
+                              final minHue = int.parse(_minHueController.text);
+                              final maxHue = int.parse(_maxHueController.text);
+
+                              final state = context.read<GreatWallBloc>().state;
+                              final isSymmetric =
+                                  state is GreatWallHashvizInputInProgress
+                                      ? state.isSymmetric
+                                      : false;
+
+                              context.read<MemoCardSetBloc>().add(
+                                    MemoCardSetCardAdded(
+                                      memoCard: MemoCard(
+                                        knowledge: {
+                                          'treeArity': arity,
+                                          'treeDepth': depth,
+                                          'timeLockPuzzleParam': timeLock,
+                                          'tacitKnowledgeType':
+                                              TacitKnowledgeTypes.hashviz,
+                                          'tacitKnowledgeConfigs': {
+                                            'size': size,
+                                            'isSymmetric': isSymmetric,
+                                            'numColors': numColors,
+                                            'saturation': saturation,
+                                            'brightness': brightness,
+                                            'minHue': minHue,
+                                            'maxHue': maxHue,
+                                          },
+                                          'secretSeed':
+                                              _passwordController.text,
+                                        },
+                                      ),
+                                    ),
+                                  );
+                            },
+                      child: const Text('Save To Memorization Card'),
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    final arity = int.parse(_arityController.text);
+                    final depth = int.parse(_depthController.text);
+                    final timeLock = int.parse(_timeLockController.text);
+                    final size = int.parse(_sizeController.text);
+                    final numColors = int.parse(_colorsNumberController.text);
+                    final saturation = double.parse(_saturationController.text);
+                    final brightness = double.parse(_brightnessController.text);
+                    final minHue = int.parse(_minHueController.text);
+                    final maxHue = int.parse(_maxHueController.text);
+
+                    final state = context.read<GreatWallBloc>().state;
+                    final isSymmetric = state is GreatWallHashvizInputInProgress
+                        ? state.isSymmetric
+                        : false;
+
+                    Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        if (!context.mounted) return;
+                        context.read<GreatWallBloc>().add(
+                              GreatWallInitialized(
+                                treeArity: arity,
+                                treeDepth: depth,
+                                timeLockPuzzleParam: timeLock,
+                                tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
+                                tacitKnowledgeConfigs: {
+                                  'size': size,
+                                  'isSymmetric': isSymmetric,
+                                  'numColors': numColors,
+                                  'saturation': saturation,
+                                  'brightness': brightness,
+                                  'minHue': minHue,
+                                  'maxHue': maxHue,
+                                },
+                                secretSeed: _passwordController.text,
+                              ),
+                            );
+                        context.go(
+                          '/${ConfirmationPage.routeName}',
+                          extra: {
+                            'previousRoute': HashvizTreeInputsPage.routeName
+                          },
+                        );
+                      },
+                    );
+                  },
+                  child: const Text('Start Derivation'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

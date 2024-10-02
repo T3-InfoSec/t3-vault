@@ -144,6 +144,10 @@ class DerivationLevelPage extends StatelessWidget {
             imageData: imageData,
             size: tacitKnowledgeConfigs['size'] ?? 16,
             numColors: tacitKnowledgeConfigs['numColors'] ?? 3,
+            saturation: tacitKnowledgeConfigs['saturation'] ?? 0.7,
+            brightness: tacitKnowledgeConfigs['brightness'] ?? 0.8,
+            minHue: tacitKnowledgeConfigs['minHue'] ?? 90,
+            maxHue: tacitKnowledgeConfigs['maxHue'] ?? 150,
           ),
         ),
       );

@@ -14,6 +14,10 @@ class HashvizPainter extends CustomPainter {
   final List<int> imageData;
   final int size;
   final int numColors;
+  final double saturation;
+  final double brightness;
+  final int minHue;
+  final int maxHue;
 
   /// Creates an instance of [HashvizPainter].
   ///
@@ -21,10 +25,17 @@ class HashvizPainter extends CustomPainter {
   /// pattern to be drawn, while [size] defines the dimensions of the pattern grid
   /// (i.e., the number of rows and columns). The [numColors] parameter specifies
   /// how many colors will be generated for rendering the pattern.
+  /// The [saturation], [brightness], [minHue], and [maxHue] parameters control
+  /// the color generation with better control over luminosity, 
+  /// and are optional with default values of 0.7, 0.8, 90, and 150 respectively.
   HashvizPainter({
     required this.imageData,
     required this.size,
     required this.numColors,
+    this.saturation = 0.7,
+    this.brightness = 0.8,
+    this.minHue = 90,
+    this.maxHue = 150,
   });
 
   /// Paints the hash-based pattern onto the canvas.
@@ -81,14 +92,7 @@ class HashvizPainter extends CustomPainter {
   /// The hue (H) component will vary, and we will control the saturation (S)
   /// and brightness (V) components to keep the colors within a certain range.
   List<Color> generateDynamicColors() {
-    // Fixed values for saturation and brightness for better control over luminosity
-    const double fixedSaturation = 0.7; // Fixed saturation value
-    const double fixedBrightness = 0.8; // Fixed brightness value
     const int fixedAlpha = 255;
-
-    // Range for hue (H)
-    const double minHue = 90; // Lowest value for hue (Greenish range)
-    const double maxHue = 150; // Highest value for hue
 
     double step = (maxHue - minHue) / (numColors - 1);
 
@@ -98,8 +102,8 @@ class HashvizPainter extends CustomPainter {
       var color = HSVColor.fromAHSV(
         fixedAlpha / 255.0, // Alpha needs to be in the range 0.0 - 1.0
         hueValue,
-        fixedSaturation,
-        fixedBrightness,
+        saturation,
+        brightness,
       ).toColor(); // Convert HSV to Color (RGB)
       colors.add(color);
     }
