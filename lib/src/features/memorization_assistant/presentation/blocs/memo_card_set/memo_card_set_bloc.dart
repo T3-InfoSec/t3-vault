@@ -6,7 +6,7 @@ import 'bloc.dart';
 class MemoCardSetBloc
     extends Bloc<MemoCardSetEvent, MemoCardSetState> {
       final MemoCardSetRepository repository;
-  MemoCardSetBloc({required this.repository}) : super(MemoCardSetEmpty()) {
+  MemoCardSetBloc({required this.repository}) : super(const MemoCardSetEmpty()) {
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
     on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
@@ -38,7 +38,7 @@ class MemoCardSetBloc
       await repository.removeMemoCard(event.memoCard);
       final memoCards = await repository.getMemoCardSet();
       if (memoCards.isEmpty) {
-        return emit(MemoCardSetEmpty());
+        return emit(const MemoCardSetEmpty());
       } else {
         return emit(MemoCardSetRemoveSuccess(memoCards: memoCards));
       }
