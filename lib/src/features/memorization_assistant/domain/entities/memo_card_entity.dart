@@ -2,6 +2,11 @@ import 'package:hive/hive.dart';
 
 part 'memo_card_entity.g.dart';
 
+/// Database access object for Memorization Card
+///
+/// To generate the Hive adapter [MemoCardEntityAdapter], run the following command:
+/// `flutter packages pub run build_runner build`
+@HiveType(typeId: 0)
 @HiveType(typeId: 0)
 class MemoCardEntity extends HiveObject {
   @HiveField(0)

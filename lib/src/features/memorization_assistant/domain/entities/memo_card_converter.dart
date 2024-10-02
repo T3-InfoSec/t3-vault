@@ -1,8 +1,18 @@
 import 'memo_card_entity.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
+/// A utility class for converting between [MemoCard] and [MemoCardEntity].
+///
+/// It ensures that the conversion handles all necessary fields for the 
+/// memorization algorithm to work correctly across the application's data 
+/// layers.
 class MemoCardConverter {
 
+  /// Converts a [MemoCard] into a [MemoCardEntity].
+  ///
+  /// This method takes a [MemoCard] and extracts its fields to create 
+  /// a corresponding [MemoCardEntity]. This is used when 
+  /// saving the memorization card details to persistent storage.
   static MemoCardEntity toEntity(MemoCard memoCard) {
     return MemoCardEntity(
       knowledge: memoCard.knowledge,
@@ -18,7 +28,11 @@ class MemoCardConverter {
     );
   }
 
-
+  /// Converts a [MemoCardEntity] back into a [MemoCard].
+  ///
+  /// This method takes a [MemoCardEntity] and reconstructs a [MemoCard] 
+  /// object from it. This is used when retrieving stored 
+  /// memorization card details from a database.
   static MemoCard fromEntity(MemoCardEntity entity) {
     return MemoCard(
       knowledge: entity.knowledge,
