@@ -13,22 +13,9 @@ class ConfirmationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final previousRoute = (GoRouterState.of(context).extra
-        as Map<String, String>)['previousRoute'];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Confirmation'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (previousRoute != null) {
-              context.go('/$previousRoute');
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -53,7 +40,7 @@ class ConfirmationPage extends StatelessWidget {
                     'Tacit Knowledge',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(state.tacitKnowledgeType.value),
+                  Text(state.tacitKnowledge.toString()),
                   const SizedBox(height: 20),
                   const Text(
                     'Tree Arity',
@@ -67,7 +54,7 @@ class ConfirmationPage extends StatelessWidget {
                   ),
                   Text('${state.treeDepth}'),
                   const SizedBox(height: 20),
-                  ...state.tacitKnowledgeConfigs.entries.map((entry) {
+                  ...state.tacitKnowledge.configs.entries.map((entry) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -95,10 +82,7 @@ class ConfirmationPage extends StatelessWidget {
                           context
                               .read<GreatWallBloc>()
                               .add(GreatWallDerivationStarted());
-                          context.go(
-                            '/${DerivationLevelPage.routeName}',
-                            extra: {'previousRoute': previousRoute!},
-                          );
+                          context.go('/${DerivationLevelPage.routeName}');
                         },
                       );
                     },

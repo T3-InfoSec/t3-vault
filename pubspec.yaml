@@ -19,7 +19,7 @@ dependencies:
   t3_formosa:
     git:
       url: https://github.com/T3-InfoSec/t3-formosa-dart.git
-      ref: initial_commit
+      ref: development
   great_wall:
     git:
       url: https://github.com/T3-InfoSec/great-wall-dart.git
@@ -27,7 +27,7 @@ dependencies:
   t3_memassist:
     git:
       url: https://github.com/T3-InfoSec/t3-memassist.git
-      ref: migrate_main_logic
+      ref: development
 
 dev_dependencies:
   flutter_test:

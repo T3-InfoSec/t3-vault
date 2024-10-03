@@ -11,13 +11,14 @@ import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 
 class HashvizTreeInputsPage extends StatelessWidget {
-  static const routeName = 'hashviz_tree_inputs';
+  static const routeName = 'hashviz_inputs';
 
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _sizeController = TextEditingController();
+
   HashvizTreeInputsPage({super.key});
 
   @override
@@ -29,7 +30,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
-            context.go('/${KnowledgeTypesPage.routeName}');
+            context.pop();
           },
         ),
         actions: [
@@ -86,7 +87,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                           final arity = int.parse(_arityController.text);
                           final depth = int.parse(_depthController.text);
                           final timeLock = int.parse(_timeLockController.text);
-                          final size = int.parse(_sizeController.text);
+                          final hashvizSize = int.parse(_sizeController.text);
 
                           context.read<MemoCardSetBloc>().add(
                                 MemoCardSetCardAdded(
@@ -95,9 +96,9 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType':
-                                          TacitKnowledgeTypes.hashviz,
-                                      'tacitKnowledgeConfigs': {'size': size},
+                                      'tacitKnowledge': HashVizTacitKnowledge(
+                                        configs: {'hashvizSize': hashvizSize},
+                                      ),
                                       'secretSeed': _passwordController.text,
                                     },
                                   ),
@@ -114,7 +115,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 final arity = int.parse(_arityController.text);
                 final depth = int.parse(_depthController.text);
                 final timeLock = int.parse(_timeLockController.text);
-                final size = int.parse(_sizeController.text);
+                final hashvizSize = int.parse(_sizeController.text);
 
                 Future.delayed(
                   const Duration(seconds: 1),
@@ -125,16 +126,15 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             treeArity: arity,
                             treeDepth: depth,
                             timeLockPuzzleParam: timeLock,
-                            tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
-                            tacitKnowledgeConfigs: {
-                              'size': size,
-                            },
+                            tacitKnowledge: HashVizTacitKnowledge(
+                              configs: {'hashvizSize': hashvizSize},
+                            ),
                             secretSeed: _passwordController.text,
                           ),
                         );
                     context.go(
-                      '/${ConfirmationPage.routeName}',
-                      extra: {'previousRoute': HashvizTreeInputsPage.routeName},
+                      '/${KnowledgeTypesPage.routeName}/$routeName/'
+                      '${ConfirmationPage.routeName}',
                     );
                   },
                 );
