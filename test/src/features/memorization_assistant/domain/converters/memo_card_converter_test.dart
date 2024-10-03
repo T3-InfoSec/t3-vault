@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_converter.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_entity.dart';
 
 void main() {

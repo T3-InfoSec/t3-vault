@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_converter.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_entity.dart';
 
 /// Repository for managing a set of memorization cards.

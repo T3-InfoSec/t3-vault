@@ -12,7 +12,7 @@ import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 
 class FormosaTreeInputsPage extends StatelessWidget {
-  static const routeName = 'formosa_tree_inputs';
+  static const routeName = 'formosa_inputs';
 
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
@@ -30,7 +30,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
-            context.go('/${KnowledgeTypesPage.routeName}');
+            context.pop();
           },
         ),
         actions: [
@@ -46,16 +46,16 @@ class FormosaTreeInputsPage extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            BlocBuilder<GreatWallBloc, GreatWallState>(
+            BlocBuilder<FormosaBloc, FormosaState>(
               builder: (context, state) {
-                FormosaTheme? selectedOption;
+                FormosaTheme? selectedTheme;
 
-                if (state is GreatWallFormosaThemeSelectSuccess) {
-                  selectedOption = state.theme;
+                if (state is FormosaThemeSelectSuccess) {
+                  selectedTheme = state.theme;
                 }
 
                 return DropdownButton<FormosaTheme>(
-                  value: selectedOption,
+                  value: selectedTheme,
                   hint: const Text('Select Theme'),
                   items: FormosaTheme.values.map((FormosaTheme theme) {
                     return DropdownMenuItem<FormosaTheme>(
@@ -63,11 +63,11 @@ class FormosaTreeInputsPage extends StatelessWidget {
                       child: Text(theme.name),
                     );
                   }).toList(),
-                  onChanged: (newValue) {
-                    if (newValue != null) {
+                  onChanged: (selectedTheme) {
+                    if (selectedTheme != null) {
                       context
-                          .read<GreatWallBloc>()
-                          .add(GreatWallFormosaThemeSelected(newValue));
+                          .read<FormosaBloc>()
+                          .add(FormosaThemeSelected(theme: selectedTheme));
                     }
                   },
                 );
@@ -108,9 +108,8 @@ class FormosaTreeInputsPage extends StatelessWidget {
                           final arity = int.parse(_arityController.text);
                           final depth = int.parse(_depthController.text);
                           final timeLock = int.parse(_timeLockController.text);
-
-                          final theme = (context.read<GreatWallBloc>().state
-                                  as GreatWallFormosaThemeSelectSuccess)
+                          final theme = (context.read<FormosaBloc>().state
+                                  as FormosaThemeSelectSuccess)
                               .theme;
 
                           context.read<MemoCardSetBloc>().add(
@@ -120,11 +119,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                       'treeArity': arity,
                                       'treeDepth': depth,
                                       'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledgeType':
-                                          TacitKnowledgeTypes.formosa.value,
-                                      'tacitKnowledgeConfigs': {
-                                        'formosaTheme': theme.name
-                                      },
+                                      'tacitKnowledge': FormosaTacitKnowledge(
+                                        configs: {'formosaTheme': theme.name},
+                                      ),
                                       'secretSeed': _passwordController.text,
                                     },
                                   ),
@@ -138,44 +135,39 @@ class FormosaTreeInputsPage extends StatelessWidget {
             const SizedBox(height: 10),
             BlocBuilder<GreatWallBloc, GreatWallState>(
               builder: (context, state) {
-                if (state is GreatWallFormosaThemeSelectSuccess) {
-                  return ElevatedButton(
-                    onPressed: () {
-                      final arity = int.parse(_arityController.text);
-                      final depth = int.parse(_depthController.text);
-                      final timeLock = int.parse(_timeLockController.text);
+                return ElevatedButton(
+                  onPressed: () {
+                    final arity = int.parse(_arityController.text);
+                    final depth = int.parse(_depthController.text);
+                    final timeLock = int.parse(_timeLockController.text);
+                    final theme = (context.read<FormosaBloc>().state
+                            as FormosaThemeSelectSuccess)
+                        .theme;
 
-                      Future.delayed(
-                        const Duration(seconds: 1),
-                        () {
-                          if (!context.mounted) return;
-                          context.read<GreatWallBloc>().add(
-                                GreatWallInitialized(
-                                  treeArity: arity,
-                                  treeDepth: depth,
-                                  timeLockPuzzleParam: timeLock,
-                                  tacitKnowledgeType:
-                                      TacitKnowledgeTypes.formosa,
-                                  tacitKnowledgeConfigs: {
-                                    'formosaTheme': state.theme,
-                                  },
-                                  secretSeed: _passwordController.text,
+                    Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        if (!context.mounted) return;
+                        context.read<GreatWallBloc>().add(
+                              GreatWallInitialized(
+                                treeArity: arity,
+                                treeDepth: depth,
+                                timeLockPuzzleParam: timeLock,
+                                tacitKnowledge: FormosaTacitKnowledge(
+                                  configs: {'formosaTheme': theme},
                                 ),
-                              );
-                          context.go(
-                            '/${ConfirmationPage.routeName}',
-                            extra: {
-                              'previousRoute': FormosaTreeInputsPage.routeName
-                            },
-                          );
-                        },
-                      );
-                    },
-                    child: const Text('Start Derivation'),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
+                                secretSeed: _passwordController.text,
+                              ),
+                            );
+                        context.go(
+                          '/${KnowledgeTypesPage.routeName}/$routeName/'
+                          '${ConfirmationPage.routeName}',
+                        );
+                      },
+                    );
+                  },
+                  child: const Text('Start Derivation'),
+                );
               },
             ),
           ],

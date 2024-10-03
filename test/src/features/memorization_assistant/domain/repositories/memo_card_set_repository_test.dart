@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_test/hive_test.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_converter.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/entities/memo_card_entity.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_set_repository.dart';
 

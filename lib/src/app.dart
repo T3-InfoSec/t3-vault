@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_set_repository.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
@@ -13,8 +12,9 @@ import 'features/greatwall/presentation/blocs/blocs.dart';
 import 'features/greatwall/presentation/pages/confirmation_page.dart';
 import 'features/greatwall/presentation/pages/derivation_level_page.dart';
 import 'features/greatwall/presentation/pages/derivation_result_page.dart';
-import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
 import 'features/greatwall/presentation/pages/formosa_tree_inputs_page.dart';
+import 'features/greatwall/presentation/pages/hashviz_tree_inputs_page.dart';
+import 'features/greatwall/presentation/pages/knowledge_types_page.dart';
 import 'features/landing/presentation/blocs/blocs.dart';
 import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
@@ -48,8 +48,11 @@ class T3Vault extends StatelessWidget {
             BlocProvider<AgreementBloc>(
               create: (BuildContext context) => AgreementBloc(),
             ),
+            BlocProvider<FormosaBloc>(
+              create: (BuildContext context) => FormosaBloc(),
+            ),
             BlocProvider<GreatWallBloc>(
-              create: (context) => GreatWallBloc(),
+              create: (BuildContext context) => GreatWallBloc(),
             ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) => MemoCardRatingBloc(),
@@ -63,15 +66,15 @@ class T3Vault extends StatelessWidget {
               final agreementState = context.watch<AgreementBloc>().state;
 
               return MaterialApp.router(
-                // Providing a restorationScopeId allows the Navigator built by the
-                // MaterialApp to restore the navigation stack when a user leaves and
-                // returns to the app after it has been killed while running in the
-                // background.
+                // Providing a restorationScopeId allows the Navigator built
+                // by the MaterialApp to restore the navigation stack when a
+                // user leaves and returns to the app after it has been killed
+                // while running in the background.
                 restorationScopeId: 'T3Vault',
 
-                // Provide the generated AppLocalizations to the MaterialApp. This
-                // allows descendant Widgets to display the correct translations
-                // depending on the user's locale.
+                // Provide the generated AppLocalizations to the MaterialApp.
+                // This allows descendant Widgets to display the correct
+                // translations depending on the user's locale.
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -82,17 +85,17 @@ class T3Vault extends StatelessWidget {
                   Locale('en', ''), // English, no country code
                 ],
 
-                // Use AppLocalizations to configure the correct application title
-                // depending on the user's locale.
+                // Use AppLocalizations to configure the correct application
+                // title depending on the user's locale.
                 //
-                // The appTitle is defined in .arb files found in the localization
-                // directory.
+                // The appTitle is defined in .arb files found in the
+                // localization directory.
                 onGenerateTitle: (BuildContext context) =>
                     AppLocalizations.of(context)!.appTitle,
 
                 // Define a light and dark color theme. Then, read the user's
-                // preferred ThemeMode (light, dark, or system default) from the
-                // SettingsController to display the correct theme.
+                // preferred ThemeMode (light, dark, or system default) from
+                // the SettingsController to display the correct theme.
                 theme: ThemeData(
                   useMaterial3: true,
                   colorScheme: ColorScheme.fromSeed(
@@ -102,18 +105,21 @@ class T3Vault extends StatelessWidget {
                 darkTheme: ThemeData.dark(),
                 themeMode: settingsController.themeMode,
 
-                // Define a function to handle named routes in order to support
-                // Flutter web url navigation and deep linking.
+                // Define a function to handle named routes in order to
+                // support Flutter web url navigation and deep linking.
                 routerConfig: GoRouter(
                   restorationScopeId: 'router',
                   routes: <RouteBase>[
                     GoRoute(
                       path: HomePage.routeName,
-                      pageBuilder: (BuildContext context, GoRouterState state) {
+                      pageBuilder: (
+                        BuildContext context,
+                        GoRouterState state,
+                      ) {
                         return const MaterialPage(
-                          // If the user leaves and returns to the app after it has
-                          // been killed while running in the background, the
-                          // navigation stack is restored.
+                          // If the user leaves and returns to the app after
+                          // it has been killed while running in the
+                          // background, the navigation stack is restored.
                           restorationId: 'router.root',
                           child: HomePage(),
                         );
@@ -143,9 +149,6 @@ class T3Vault extends StatelessWidget {
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              // If the user leaves and returns to the app after it has
-                              // been killed while running in the background, the
-                              // navigation stack is restored.
                               restorationId: 'router.root.agreement',
                               child: AgreementPage(),
                             );
@@ -158,9 +161,6 @@ class T3Vault extends StatelessWidget {
                                 GoRouterState state,
                               ) {
                                 return const MaterialPage(
-                                  // If the user leaves and returns to the app after it has
-                                  // been killed while running in the background, the
-                                  // navigation stack is restored.
                                   restorationId:
                                       'router.root.agreement.content',
                                   child: PolicyPage(),
@@ -174,9 +174,6 @@ class T3Vault extends StatelessWidget {
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              // If the user leaves and returns to the app after it has
-                              // been killed while running in the background, the
-                              // navigation stack is restored.
                               restorationId: 'router.root.memoCards',
                               child: MemoCardsPage(),
                             );
@@ -192,9 +189,6 @@ class T3Vault extends StatelessWidget {
                                 final memoCard = state.extra as MemoCard;
 
                                 return MaterialPage(
-                                  // If the user leaves and returns to the app after it
-                                  // has been killed while running in the background, the
-                                  // navigation stack is restored.
                                   restorationId:
                                       'router.root.memoCards.details',
                                   child: MemoCardDetailsPage(
@@ -222,37 +216,67 @@ class T3Vault extends StatelessWidget {
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.knowledge_types',
+                              restorationId: 'router.root.knowledge',
                               child: KnowledgeTypesPage(),
                             );
                           },
-                        ),
-                        GoRoute(
-                          path: FormosaTreeInputsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
-                            return MaterialPage(
-                              restorationId: 'router.root.formosa_tree_inputs',
-                              child: FormosaTreeInputsPage(),
-                            );
-                          },
-                        ),
-                        GoRoute(
-                          path: HashvizTreeInputsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
-                            return MaterialPage(
-                              restorationId: 'router.root.hashviz_tree_inputs',
-                              child: HashvizTreeInputsPage(),
-                            );
-                          },
+                          routes: <RouteBase>[
+                            GoRoute(
+                              path: FormosaTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.knowledge.formosa_inputs',
+                                  child: FormosaTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'formosa_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            GoRoute(
+                              path: HashvizTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.knowledge.hashviz_inputs',
+                                  child: HashvizTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'hashviz_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         GoRoute(
                           path: ConfirmationPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.derivation_seed',
+                              restorationId: 'router.root.confirmation',
                               child: ConfirmationPage(),
                             );
                           },
