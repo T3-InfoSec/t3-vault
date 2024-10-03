@@ -36,7 +36,7 @@ dev_dependencies:
     sdk: flutter
   hive_generator: ^2.0.1
   build_runner: ^2.4.12
-  
+  hive_test: ^1.0.1
   flutter_lints: ^4.0.0
 
 flutter:
