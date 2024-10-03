@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../../../landing/presentation/pages/home_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 import 'memo_card_details_page.dart';
@@ -26,12 +25,6 @@ class MemoCardsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Memorization Cards'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go(HomePage.routeName);
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

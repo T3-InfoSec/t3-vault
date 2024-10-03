@@ -8,7 +8,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   int _currentLevel = 1;
 
   GreatWallBloc() : super(GreatWallInitial()) {
-    on<GreatWallFormosaThemeSelected>(_onGreatWallFormosaThemeSelected);
     on<GreatWallInitialized>(_onGreatWallInitialized);
     on<GreatWallReset>(_onGreatWallReset);
     on<GreatWallDerivationStarted>(_onGreatWallDerivationStarted);
@@ -34,10 +33,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallDeriveStepSuccess(
+        treeDepth: _greatWall!.treeDepth,
         currentLevel: _greatWall!.derivationLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        treeDepth: _greatWall!.treeDepth,
-        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
+        tacitKnowledge: _greatWall!.derivationTacitKnowledge,
       ),
     );
   }
@@ -71,17 +70,12 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallDeriveStepSuccess(
+        treeDepth: _greatWall!.treeDepth,
         currentLevel: _currentLevel,
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        treeDepth: _greatWall!.treeDepth,
-        tacitKnowledgeConfigs: _greatWall!.derivationTacitKnowledge.configs
+        tacitKnowledge: _greatWall!.derivationTacitKnowledge,
       ),
     );
-  }
-
-  void _onGreatWallFormosaThemeSelected(
-      GreatWallFormosaThemeSelected event, Emitter<GreatWallState> emit) {
-    emit(GreatWallFormosaThemeSelectSuccess(event.theme));
   }
 
   void _onGreatWallInitialized(
@@ -90,8 +84,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
       timeLockPuzzleParam: event.timeLockPuzzleParam,
-      tacitKnowledgeType: event.tacitKnowledgeType,
-      tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
+      tacitKnowledge: event.tacitKnowledge,
     );
 
     _greatWall!.seed0 = event.secretSeed;
@@ -101,15 +94,13 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         treeArity: event.treeArity,
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
-        tacitKnowledgeType: event.tacitKnowledgeType,
-        tacitKnowledgeConfigs: event.tacitKnowledgeConfigs,
+        tacitKnowledge: event.tacitKnowledge,
         secretSeed: event.secretSeed,
       ),
     );
   }
 
-  void _onGreatWallReset(
-      GreatWallReset event, Emitter<GreatWallState> emit) {
+  void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
     _greatWall = null;
     _currentLevel = 1;
 
