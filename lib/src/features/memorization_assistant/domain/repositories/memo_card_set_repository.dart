@@ -14,6 +14,7 @@ class MemoCardSetRepository {
   static const String boxName = 'memoCardSet';
 
   final Box<MemoCardEntity> box;
+  final Map<MemoCard, dynamic> _memoCardKeyMap = {};
 
   MemoCardSetRepository(this.box);
 
@@ -23,13 +24,24 @@ class MemoCardSetRepository {
   }
 
   Future<List<MemoCard>> getMemoCardSet() async {
-    final memoCardEntities = box.values.toList();
-    return memoCardEntities.map((e) => MemoCardConverter.fromEntity(e)).toList();
+    final memoCardEntities = box.toMap();
+    final memoCards = <MemoCard>[];
+
+    memoCardEntities.forEach((key, entity) {
+      final memoCard = MemoCardConverter.fromEntity(entity);
+      memoCards.add(memoCard);
+      _memoCardKeyMap[memoCard] = key;
+    });
+
+    return memoCards;
   }
 
   Future<void> removeMemoCard(MemoCard memoCard) async {
-    final memoCardEntity = MemoCardConverter.toEntity(memoCard);
-    await box.delete(memoCardEntity.key);
+    final key = _memoCardKeyMap[memoCard];
+    if (key != null) {
+      await box.delete(key);
+      _memoCardKeyMap.remove(memoCard);
+    } // else {} TODO: Implement error handling
   }
 
   Future<void> clearMemoCardSet() async {
