@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_painter.dart';
+import 'package:great_wall/great_wall.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
+import '../widgets/hashviz_widget.dart';
 import 'derivation_result_page.dart';
 
 class DerivationLevelPage extends StatelessWidget {
@@ -14,22 +15,9 @@ class DerivationLevelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final previousRoute = (GoRouterState.of(context).extra
-        as Map<String, String>)['previousRoute'];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Level'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (previousRoute != null) {
-              context.go('/$previousRoute');
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -58,10 +46,7 @@ class DerivationLevelPage extends StatelessWidget {
                         context
                             .read<GreatWallBloc>()
                             .add(GreatWallDerivationStepMade(0));
-                        context.go(
-                          '/${DerivationLevelPage.routeName}',
-                          extra: {'previousRoute': previousRoute!},
-                        );
+                        context.go('/${DerivationLevelPage.routeName}');
                       }
                     },
                     child: const Text('Previous Level'),
@@ -72,14 +57,14 @@ class DerivationLevelPage extends StatelessWidget {
                       padding: const EdgeInsets.all(10),
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, // Number of columns in the grid
+                        crossAxisCount: 4, // Number of columns in the grid
                         crossAxisSpacing: 10,
                         mainAxisSpacing: 10,
                         childAspectRatio: 1, // Aspect ratio for cells 1:1
                       ),
                       itemCount: state.knowledgePalettes.length,
                       itemBuilder: (context, index) {
-                        final value = state.knowledgePalettes[index];
+                        final TacitKnowledge tacitKnowledge = state.knowledgePalettes[index];
                         return ElevatedButton(
                           onPressed: () {
                             Future.delayed(
@@ -91,7 +76,6 @@ class DerivationLevelPage extends StatelessWidget {
                                 if (state.currentLevel < state.treeDepth) {
                                   context.go(
                                     '/${DerivationLevelPage.routeName}',
-                                    extra: {'previousRoute': previousRoute!},
                                   );
                                 } else {
                                   context
@@ -99,14 +83,29 @@ class DerivationLevelPage extends StatelessWidget {
                                       .add(GreatWallDerivationFinished());
                                   context.go(
                                     '/${DerivationResultPage.routeName}',
-                                    extra: {'previousRoute': previousRoute!},
                                   );
                                 }
                               },
                             );
                           },
-                          child: renderKnowledgeWidget(
-                              value, state.tacitKnowledgeConfigs),
+                          child: Builder(builder: (context) {
+                            if (tacitKnowledge is FormosaTacitKnowledge) {
+                              return Text(tacitKnowledge.knowledge!);
+                            } else if (tacitKnowledge
+                                is HashVizTacitKnowledge) {
+                              return HashvizWidget(
+                                imageData: tacitKnowledge.knowledge!,
+                                size: state.tacitKnowledge.configs['hashvizSize'],
+                                numColors: state.tacitKnowledge.configs['numColors'] ?? 3,
+                                saturation: state.tacitKnowledge.configs['saturation'] ?? 0.7,
+                                brightness: state.tacitKnowledge.configs['brightness'] ?? 0.8,
+                                minHue: state.tacitKnowledge.configs['minHue'] ?? 90,
+                                maxHue: state.tacitKnowledge.configs['maxHue'] ?? 150,
+                              );
+                            } else {
+                              return const Text('Unknown type');
+                            }
+                          }),
                         );
                       },
                     ),
@@ -122,37 +121,5 @@ class DerivationLevelPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  /// Renders a widget based on the type of [value.knowledge].
-  ///
-  /// - Parameters:
-  ///   - [value] An object containing the `knowledge` to be rendered.
-  ///   - [tacitKnowledgeConfigs] A dynamic configuration map used to determine the pattern grid size.
-  ///
-  /// - Returns: A [Widget] that represents the rendered knowledge based on the provided value.
-  Widget renderKnowledgeWidget(value, dynamic tacitKnowledgeConfigs) {
-    if (value.knowledge is String) {
-      return Text(value.knowledge);
-    } else if (value.knowledge is List<int>) {
-      List<int> imageData = value.knowledge as List<int>;
-      return SizedBox(
-        width: 256,
-        height: 256,
-        child: CustomPaint(
-          painter: HashvizPainter(
-            imageData: imageData,
-            size: tacitKnowledgeConfigs['size'] ?? 16,
-            numColors: tacitKnowledgeConfigs['numColors'] ?? 3,
-            saturation: tacitKnowledgeConfigs['saturation'] ?? 0.7,
-            brightness: tacitKnowledgeConfigs['brightness'] ?? 0.8,
-            minHue: tacitKnowledgeConfigs['minHue'] ?? 90,
-            maxHue: tacitKnowledgeConfigs['maxHue'] ?? 150,
-          ),
-        ),
-      );
-    } else {
-      return const Text('Unknown type');
-    }
   }
 }

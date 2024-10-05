@@ -9,7 +9,6 @@ import '../../../greatwall/presentation/blocs/blocs.dart';
 import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
-import 'memo_cards_page.dart';
 
 /// A page that displays the detailed view of a specific memory card.
 ///
@@ -38,12 +37,6 @@ class MemoCardDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Card Details'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.go('/${MemoCardsPage.routeName}');
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -129,11 +122,11 @@ class MemoCardDetailsPage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                TacitKnowledgeTypes tacitKnowledgeType = memoCard.knowledge['tacitKnowledgeType'];
                 int treeArity = memoCard.knowledge['treeArity'];
                 int treeDepth = memoCard.knowledge['treeDepth'];
                 int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
-                Map<String, dynamic> tacitKnowledgeConfigs = memoCard.knowledge['tacitKnowledgeConfigs'];
+                TacitKnowledge tacitKnowledge =
+                    memoCard.knowledge['tacitKnowledge'];
                 String secretSeed = memoCard.knowledge['secretSeed'];
 
                 context.read<GreatWallBloc>().add(
@@ -141,17 +134,12 @@ class MemoCardDetailsPage extends StatelessWidget {
                         treeArity: treeArity,
                         treeDepth: treeDepth,
                         timeLockPuzzleParam: timeLock,
-                        tacitKnowledgeType: tacitKnowledgeType,
-                        tacitKnowledgeConfigs: tacitKnowledgeConfigs,
+                        tacitKnowledge: tacitKnowledge,
                         secretSeed: secretSeed,
                       ),
                     );
                 context.go(
-                        '/${ConfirmationPage.routeName}',
-                        extra: {
-                          'previousRoute': MemoCardsPage.routeName
-                        },
-                      );
+                        '/${ConfirmationPage.routeName}');
               },
               child: const Text('Try protocol'),
             ),

@@ -11,7 +11,7 @@ import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 
 class HashvizTreeInputsPage extends StatelessWidget {
-  static const routeName = 'hashviz_tree_inputs';
+  static const routeName = 'hashviz_inputs';
 
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
@@ -34,7 +34,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
-            context.go('/${KnowledgeTypesPage.routeName}');
+            context.pop();
           },
         ),
         actions: [
@@ -196,7 +196,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                               final depth = int.parse(_depthController.text);
                               final timeLock =
                                   int.parse(_timeLockController.text);
-                              final size = int.parse(_sizeController.text);
+                              final hashvizSize = int.parse(_sizeController.text);
                               final numColors =
                                   int.parse(_colorsNumberController.text);
                               final saturation =
@@ -212,91 +212,87 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ? state.isSymmetric
                                       : false;
 
-                              context.read<MemoCardSetBloc>().add(
-                                    MemoCardSetCardAdded(
-                                      memoCard: MemoCard(
-                                        knowledge: {
-                                          'treeArity': arity,
-                                          'treeDepth': depth,
-                                          'timeLockPuzzleParam': timeLock,
-                                          'tacitKnowledgeType':
-                                              TacitKnowledgeTypes.hashviz,
-                                          'tacitKnowledgeConfigs': {
-                                            'size': size,
-                                            'isSymmetric': isSymmetric,
-                                            'numColors': numColors,
-                                            'saturation': saturation,
-                                            'brightness': brightness,
-                                            'minHue': minHue,
-                                            'maxHue': maxHue,
-                                          },
-                                          'secretSeed':
-                                              _passwordController.text,
+                          context.read<MemoCardSetBloc>().add(
+                                MemoCardSetCardAdded(
+                                  memoCard: MemoCard(
+                                    knowledge: {
+                                      'treeArity': arity,
+                                      'treeDepth': depth,
+                                      'timeLockPuzzleParam': timeLock,
+                                      'tacitKnowledge': HashVizTacitKnowledge(
+                                        configs: {
+                                          'hashvizSize': hashvizSize,
+                                          'isSymmetric': isSymmetric,
+                                          'numColors': numColors,
+                                          'saturation': saturation,
+                                          'brightness': brightness,
+                                          'minHue': minHue,
+                                          'maxHue': maxHue,
                                         },
                                       ),
-                                    ),
-                                  );
-                            },
-                      child: const Text('Save To Memorization Card'),
-                    );
-                  },
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    final arity = int.parse(_arityController.text);
-                    final depth = int.parse(_depthController.text);
-                    final timeLock = int.parse(_timeLockController.text);
-                    final size = int.parse(_sizeController.text);
-                    final numColors = int.parse(_colorsNumberController.text);
-                    final saturation = double.parse(_saturationController.text);
-                    final brightness = double.parse(_brightnessController.text);
-                    final minHue = int.parse(_minHueController.text);
-                    final maxHue = int.parse(_maxHueController.text);
-
-                    final state = context.read<GreatWallBloc>().state;
-                    final isSymmetric = state is GreatWallHashvizInputInProgress
-                        ? state.isSymmetric
-                        : false;
-
-                    Future.delayed(
-                      const Duration(seconds: 1),
-                      () {
-                        if (!context.mounted) return;
-                        context.read<GreatWallBloc>().add(
-                              GreatWallInitialized(
-                                treeArity: arity,
-                                treeDepth: depth,
-                                timeLockPuzzleParam: timeLock,
-                                tacitKnowledgeType: TacitKnowledgeTypes.hashviz,
-                                tacitKnowledgeConfigs: {
-                                  'size': size,
-                                  'isSymmetric': isSymmetric,
-                                  'numColors': numColors,
-                                  'saturation': saturation,
-                                  'brightness': brightness,
-                                  'minHue': minHue,
-                                  'maxHue': maxHue,
-                                },
-                                secretSeed: _passwordController.text,
-                              ),
-                            );
-                        context.go(
-                          '/${ConfirmationPage.routeName}',
-                          extra: {
-                            'previousRoute': HashvizTreeInputsPage.routeName
-                          },
-                        );
-                      },
-                    );
-                  },
-                  child: const Text('Start Derivation'),
-                ),
-              ],
+                                      'secretSeed': _passwordController.text,
+                                    },
+                                  ),
+                                ),
+                              );
+                        },
+                  child: const Text('Save To Memorization Card'),
+                );
+              },
             ),
-          ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                final arity = int.parse(_arityController.text);
+                final depth = int.parse(_depthController.text);
+                final timeLock = int.parse(_timeLockController.text);
+                final hashvizSize = int.parse(_sizeController.text);
+                final numColors = int.parse(_colorsNumberController.text);
+                final saturation = double.parse(_saturationController.text);
+                final brightness = double.parse(_brightnessController.text);
+                final minHue = int.parse(_minHueController.text);
+                final maxHue = int.parse(_maxHueController.text);
+
+                final state = context.read<GreatWallBloc>().state;
+                final isSymmetric = state is GreatWallHashvizInputInProgress
+                    ? state.isSymmetric
+                    : false;
+
+                Future.delayed(
+                  const Duration(seconds: 1),
+                  () {
+                    if (!context.mounted) return;
+                    context.read<GreatWallBloc>().add(
+                          GreatWallInitialized(
+                            treeArity: arity,
+                            treeDepth: depth,
+                            timeLockPuzzleParam: timeLock,
+                            tacitKnowledge: HashVizTacitKnowledge(
+                              configs: {
+                                'hashvizSize': hashvizSize,
+                                'isSymmetric': isSymmetric,
+                                'numColors': numColors,
+                                'saturation': saturation,
+                                'brightness': brightness,
+                                'minHue': minHue,
+                                'maxHue': maxHue,
+                              },
+                            ),
+                            secretSeed: _passwordController.text,
+                          ),
+                        );
+                    context.go(
+                      '/${KnowledgeTypesPage.routeName}/$routeName/'
+                      '${ConfirmationPage.routeName}',
+                    );
+                  },
+                );
+              },
+              child: const Text('Start Derivation'),
+            ),
+          ],
         ),
-      ),
+      ),),),
     );
   }
 }
