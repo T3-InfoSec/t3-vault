@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 
@@ -6,6 +8,9 @@ import 'bloc.dart';
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
   int _currentLevel = 1;
+
+    final StreamController<int> _progressController = StreamController<int>();
+  Stream<int> get progressStream => _progressController.stream;
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallInitialized>(_onGreatWallInitialized);
@@ -63,13 +68,11 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress(progress: 0));
-    await Future.delayed(const Duration(milliseconds: 25));
-
-    await _greatWall!.startDerivation(
-      onProgress: (int progress) {
-        emit(GreatWallDeriveInProgress(progress: progress));
-      },
-    );
+    _greatWall!.setOnProgress((int progress) {
+      emit(GreatWallDeriveInProgress(progress: progress));
+    });
+    await Future.delayed(const Duration(milliseconds: 10));
+    await _greatWall!.startDerivation();
     await Future.delayed(const Duration(milliseconds: 10));
 
     emit(
