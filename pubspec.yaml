@@ -16,6 +16,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   go_router: ^14.2.3
+  path_provider: ^2.1.4
   t3_formosa:
     git:
       url: https://github.com/T3-InfoSec/t3-formosa-dart.git
@@ -27,7 +28,7 @@ dependencies:
   t3_memassist:
     git:
       url: https://github.com/T3-InfoSec/t3-memassist.git
-      ref: development
+      ref: memo_cards_store
 
 dev_dependencies:
   flutter_test:

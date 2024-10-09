@@ -9,6 +9,7 @@ import '../../../greatwall/presentation/blocs/blocs.dart';
 import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
+import 'memo_cards_page.dart';
 
 /// A page that displays the detailed view of a specific memory card.
 ///
