@@ -121,6 +121,20 @@ class MemoCardDetailsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
+            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+              builder: (context, memoCardSetState) {
+                return ElevatedButton(
+                  onPressed: () {
+                    context.read<MemoCardSetBloc>().add(
+                      MemoCardSetCardRemoved(memoCard: memoCard),
+                    );
+                    context.go('/${MemoCardsPage.routeName}');
+                  },
+                  child: const Text('Delete Memorization Card'),
+                );
+              },
+            ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 int treeArity = memoCard.knowledge['treeArity'];
