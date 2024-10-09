@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:t3_memassist/memory_assistant.dart';
-
 import '../converters/memo_card_json_converter.dart';
 
 class MemoCardRepository {
@@ -10,26 +9,40 @@ class MemoCardRepository {
 
   MemoCardRepository({required this.filePath});
 
-  /// Reads memo cards from the JSON file.
-  Future<List<MemoCard>> readMemoCards() async {
+  /// Reads memo cards from the JSON file and returns a Map<MemoCard, String>.
+  Future<Map<String, MemoCard>> readMemoCards() async {
     try {
       final file = File(filePath);
       if (!await file.exists()) {
-        return <MemoCard>[];
+        return <String, MemoCard>{};
       }
       final contents = await file.readAsString();
       final jsonData = jsonDecode(contents) as List;
-      return jsonData.map((json) => MemoCardConverter.fromJson(json)).toList();
+
+      final memoCardMap = <String, MemoCard>{};
+      for (var json in jsonData) {
+        final memoCard = MemoCardConverter.fromJson(json);
+        final id = json['id'];
+        memoCardMap[id] = memoCard;
+      }
+      return memoCardMap;
     } catch (e) {
       // TODO: Handle file read errors
-      return <MemoCard>[];
+      return <String, MemoCard>{};
     }
   }
 
   /// Writes memo cards to the JSON file.
-  Future<void> writeMemoCards(List<MemoCard> memoCards) async {
+  Future<void> writeMemoCards(Map<String, MemoCard> memoCardMap) async {
     final file = File(filePath);
-    final jsonData = memoCards.map((card) => MemoCardConverter.toJson(card)).toList();
+
+    final jsonData = memoCardMap.entries
+        .map((entry) => {
+              ...MemoCardConverter.toJson(entry.value),
+              'id': entry.key,
+            })
+        .toList();
+
     await file.writeAsString(jsonEncode(jsonData));
   }
 }
