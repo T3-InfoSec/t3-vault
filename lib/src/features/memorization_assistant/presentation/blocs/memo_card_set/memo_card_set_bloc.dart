@@ -13,6 +13,7 @@ class MemoCardSetBloc
   Map<String, MemoCard> _memoCardIdMap = {};
   
   MemoCardSetBloc({required this.memoCardRepository}) : super(MemoCardSetEmpty()) {
+    on<MemoCardSetLoadRequested>(_onMemoCardSetEvent);
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
     on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
@@ -23,6 +24,11 @@ class MemoCardSetBloc
     MemoCardSetEvent event,
     Emitter<MemoCardSetState> emit,
   ) async {
+
+    if (event is MemoCardSetLoadRequested) {
+      await _loadMemoCardsFromRepository();
+      return emit(MemoCardSetChangeNothing(memoCards: _memoCardIdMap.values.toList()));
+    }
 
     if (event is MemoCardSetUnchanged) {
       return emit(MemoCardSetChangeNothing(memoCards: _memoCardIdMap.values.toList()));
