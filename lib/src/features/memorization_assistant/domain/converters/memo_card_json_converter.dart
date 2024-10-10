@@ -82,6 +82,11 @@ class MemoCardConverter {
     );
   }
 
+  /// Creates a configuration map including the Formosa theme name.
+  ///
+  /// Combines existing configurations from [tacitKnowledge] and adds 
+  /// [formosaThemeName], if provided, returning a map containing the
+  /// configurations.
   static Map<String, dynamic> _getConfigsWithFormosaThemeName(
       formosaThemeName, tacitKnowledge) {
     final configs = <String, dynamic>{};
@@ -94,6 +99,11 @@ class MemoCardConverter {
     return configs;
   }
 
+  /// Identifies the type of tacit knowledge.
+  ///
+  /// Checks if [tacitKnowledge] is of type [FormosaTacitKnowledge] or 
+  /// [HashVizTacitKnowledge] and returns a corresponding string or an 
+  /// empty string if unknown.
   static String _getTacitKnowledgeType(tacitKnowledge) {
     String tacitKnowledgeType;
     if (tacitKnowledge is FormosaTacitKnowledge) {
@@ -106,6 +116,7 @@ class MemoCardConverter {
     return tacitKnowledgeType;
   }
 
+  /// Returns a newly generated UUID as a string.
   static String generateId() {
     return _uuid.v4();
   }

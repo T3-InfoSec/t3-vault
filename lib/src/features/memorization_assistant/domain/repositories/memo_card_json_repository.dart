@@ -9,7 +9,15 @@ class MemoCardRepository {
 
   MemoCardRepository({required this.filePath});
 
-  /// Reads memo cards from the JSON file and returns a Map<MemoCard, String>.
+  /// Reads memo cards from a JSON file and returns a map of memo cards.
+  ///
+  /// This method attempts to read a JSON file located at [filePath]. If the file
+  /// does not exist, it returns an empty map. The contents of the file are 
+  /// expected to be a list of JSON objects representing memo cards.
+  ///
+  /// Each JSON object is converted to a [MemoCard] instance using 
+  /// [MemoCardConverter.fromJson], and a corresponding ID is extracted from 
+  /// the JSON object to serve as the key in the resulting map.
   Future<Map<String, MemoCard>> readMemoCards() async {
     try {
       final file = File(filePath);
@@ -32,7 +40,17 @@ class MemoCardRepository {
     }
   }
 
-  /// Writes memo cards to the JSON file.
+  /// Writes memo cards to a JSON file.
+  ///
+  /// This method takes a map of memo cards, [memoCardMap], and writes their 
+  /// details to a JSON file located at [filePath]. Each entry in the map is 
+  /// converted to JSON format using [MemoCardConverter.toJson], and an 
+  /// additional 'id' field is included for each memo card, corresponding to 
+  /// its key in the map.
+  ///
+  /// The resulting list of JSON objects is then encoded as a string and 
+  /// written to the specified file. If the file does not exist, it will be 
+  /// created.
   Future<void> writeMemoCards(Map<String, MemoCard> memoCardMap) async {
     final file = File(filePath);
 
