@@ -17,6 +17,7 @@ class MemoCardSetBloc
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
     on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
+    on<MemoCardSetCardUpdated>(_onMemoCardSetEvent);
     _loadMemoCardsFromRepository();
   }
 
@@ -51,6 +52,15 @@ class MemoCardSetBloc
           await memoCardRepository.writeMemoCards(_memoCardIdMap);
           return emit(MemoCardSetRemoveSuccess(memoCards: _memoCardIdMap.values.toList()));
         }
+      }
+    }
+
+    if (event is MemoCardSetCardUpdated) {
+      final memoCardId = _getMemoCardId(event.updatedMemoCard);
+      if (memoCardId != null) {
+        _memoCardIdMap[memoCardId] = event.updatedMemoCard;
+        await memoCardRepository.writeMemoCards(_memoCardIdMap);
+        return emit(MemoCardSetCardUpdatedSuccess(memoCards: _memoCardIdMap.values.toList()));
       }
     }
   }

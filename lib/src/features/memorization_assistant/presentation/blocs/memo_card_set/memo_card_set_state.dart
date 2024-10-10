@@ -25,3 +25,7 @@ final class MemoCardSetAddSuccess extends MemoCardSetState {
 final class MemoCardSetRemoveSuccess extends MemoCardSetState {
   const MemoCardSetRemoveSuccess({required List<MemoCard> memoCards}) : super(memoCardSet: memoCards);
 }
+
+final class MemoCardSetCardUpdatedSuccess extends MemoCardSetState {
+  const MemoCardSetCardUpdatedSuccess({required List<MemoCard> memoCards}) : super(memoCardSet: memoCards);
+}

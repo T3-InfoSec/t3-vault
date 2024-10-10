@@ -29,3 +29,9 @@ final class MemoCardSetCardRemoved extends MemoCardSetEvent {
   @override
   List<Object?> get props => [memoCard];
 }
+
+class MemoCardSetCardUpdated extends MemoCardSetEvent {
+  final MemoCard updatedMemoCard;
+
+  const MemoCardSetCardUpdated({required this.updatedMemoCard});
+}
