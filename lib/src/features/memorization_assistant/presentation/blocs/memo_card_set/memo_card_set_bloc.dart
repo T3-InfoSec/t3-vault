@@ -57,7 +57,6 @@ class MemoCardSetBloc
 
     if (event is MemoCardSetCardUpdated) {
       final memoCardId = _getMemoCardId(event.updatedMemoCard);
-print("updateMemoCard: ${event.updatedMemoCard}");
       if (memoCardId != null) {
         _memoCardIdMap[memoCardId] = event.updatedMemoCard;
         await memoCardRepository.writeMemoCards(_memoCardIdMap);
