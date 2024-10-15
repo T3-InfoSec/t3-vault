@@ -14,23 +14,10 @@ class DerivationResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final previousRoute = (GoRouterState.of(context).extra
-        as Map<String, String>)['previousRoute'];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Result'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.read<GreatWallBloc>().add(GreatWallReset());
-            if (previousRoute != null) {
-              context.go('/$previousRoute');
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
