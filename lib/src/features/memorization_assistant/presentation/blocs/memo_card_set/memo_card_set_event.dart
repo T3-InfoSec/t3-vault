@@ -8,6 +8,8 @@ sealed class MemoCardSetEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+final class MemoCardSetLoadRequested extends MemoCardSetEvent {}
+
 final class MemoCardSetUnchanged extends MemoCardSetEvent {}
 
 final class MemoCardSetCardAdded extends MemoCardSetEvent {
@@ -26,4 +28,10 @@ final class MemoCardSetCardRemoved extends MemoCardSetEvent {
 
   @override
   List<Object?> get props => [memoCard];
+}
+
+class MemoCardSetCardUpdated extends MemoCardSetEvent {
+  final MemoCard updatedMemoCard;
+
+  const MemoCardSetCardUpdated({required this.updatedMemoCard});
 }
