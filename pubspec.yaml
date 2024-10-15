@@ -20,16 +20,16 @@ dependencies:
   uuid: ^3.0.6
   t3_formosa:
     git:
-      url: https://github.com/T3-InfoSec/t3-formosa-dart.git
+      url: git@github.com:T3-InfoSec/t3-formosa-dart.git
       ref: development
   great_wall:
     git:
-      url: https://github.com/T3-InfoSec/great-wall-dart.git
+      url: git@github.com:T3-InfoSec/great-wall-dart.git
       ref: development
   t3_memassist:
     git:
-      url: https://github.com/T3-InfoSec/t3-memassist.git
-      ref: memo_cards_store
+      url: git@github.com:T3-InfoSec/t3-memassist.git
+      ref: development
 
 dev_dependencies:
   flutter_test:

@@ -15,15 +15,39 @@ and the Flutter guide for
 
 The T3 Vault cross platform application.
 
-
 ## Features
 
 TODO: List what your package can do. Maybe include images, gifs, or videos.
 
-## Getting started
+## Getting Started
+This section is a technical introduction for developers who want to try out the t3-vault Flutter application. Please make sure you have a valid SSH key generated and added to your GitHub account to be able to clone the project and fetch the necessary dependencies.
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+### Prerequisites
+Ensure that you have Git installed.
+Ensure that you have Flutter installed on your machine.
+Make sure you have an SSH key generated and added to your GitHub account.
+
+### Clone the Repository
+To clone the project repository, run the following command in your terminal:
+```bash
+git clone git@github.com:T3-InfoSec/t3-vault.git
+```
+Navigate to the Project Directory
+```bash
+cd t3-vault
+```
+
+### Install the Dependencies
+Once you're in the project directory, run the following command to fetch the necessary dependencies:
+```bash
+flutter pub get
+```
+
+### Run the Application
+After all dependencies have been installed, you can start the application by running:
+```bash
+flutter run
+```
 
 ## Usage
 
@@ -64,3 +88,4 @@ final memoCards = await memoCardRepository.readMemoCards();
 TODO: Tell users more about the package: where to find more information, how to
 contribute to the package, how to file issues, what response they can expect
 from the package authors, and more.
+
