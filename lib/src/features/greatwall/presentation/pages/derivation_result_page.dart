@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../../../landing/presentation/pages/home_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
 
@@ -15,23 +14,10 @@ class DerivationResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final previousRoute = (GoRouterState.of(context).extra
-        as Map<String, String>)['previousRoute'];
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Result'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            context.read<GreatWallBloc>().add(GreatWallReset());
-            if (previousRoute != null) {
-              context.go('/$previousRoute');
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -92,7 +78,7 @@ class DerivationResultPage extends StatelessWidget {
                           .read<MemoCardSetBloc>()
                           .add(MemoCardSetUnchanged());
                       context.read<GreatWallBloc>().add(GreatWallReset());
-                      context.go(HomePage.routeName);
+                      context.pop();
                     },
                     child: const Text('Reset'),
                   ),

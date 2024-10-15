@@ -33,7 +33,7 @@ class RatingButton extends StatelessWidget {
       onPressed: () {
         memoCard.rateCard(text.toLowerCase());
         context.read<MemoCardRatingBloc>().add(
-              MemoCardRatingPressed(rating: text),
+              MemoCardRatingPressed(rating: text, memoCard: memoCard),
             );
       },
       child: Text(

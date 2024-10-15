@@ -25,8 +25,8 @@ class HashvizWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 64,
-      height: 64,
+      width: 128,
+      height: 128,
       child: CustomPaint(
         painter: HashvizPainter(
           imageData: imageData,

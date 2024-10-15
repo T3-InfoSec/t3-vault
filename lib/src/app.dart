@@ -19,6 +19,7 @@ import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
 import 'features/landing/presentation/pages/splash_page.dart';
+import 'features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
 import 'features/memorization_assistant/presentation/blocs/blocs.dart';
 import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
@@ -26,10 +27,12 @@ import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart'
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
+  final MemoCardRepository memoCardRepository;
 
   const T3Vault({
     super.key,
     required this.settingsController,
+    required this.memoCardRepository,
   });
 
   @override
@@ -51,11 +54,14 @@ class T3Vault extends StatelessWidget {
             BlocProvider<GreatWallBloc>(
               create: (BuildContext context) => GreatWallBloc(),
             ),
-            BlocProvider<MemoCardRatingBloc>(
-              create: (BuildContext context) => MemoCardRatingBloc(),
-            ),
             BlocProvider<MemoCardSetBloc>(
-              create: (BuildContext context) => MemoCardSetBloc(),
+              create: (BuildContext context) => MemoCardSetBloc(memoCardRepository: memoCardRepository),
+            ),
+            BlocProvider<MemoCardRatingBloc>(
+              create: (BuildContext context) {
+                final memoCardSetBloc = context.read<MemoCardSetBloc>();
+                return MemoCardRatingBloc(memoCardSetBloc: memoCardSetBloc);
+              },
             ),
           ],
           child: Builder(

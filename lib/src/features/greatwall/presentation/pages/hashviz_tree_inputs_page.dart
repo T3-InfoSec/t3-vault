@@ -136,7 +136,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   builder: (context, state) {
                     bool isSymmetric = false;
 
-                    if (state is GreatWallHashvizInputInProgress) {
+                    if (state is GreatWallInputsInProgress) {
                       isSymmetric = state.isSymmetric;
                     }
 
@@ -160,7 +160,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   builder: (context, state) {
                     bool isPasswordVisible = false;
 
-                    if (state is GreatWallHashvizInputInProgress) {
+                    if (state is GreatWallInputsInProgress) {
                       isPasswordVisible = state.isPasswordVisible;
                     }
 
@@ -208,7 +208,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
 
                               final state = context.read<GreatWallBloc>().state;
                               final isSymmetric =
-                                  state is GreatWallHashvizInputInProgress
+                                  state is GreatWallInputsInProgress
                                       ? state.isSymmetric
                                       : false;
 
@@ -254,7 +254,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 final maxHue = int.parse(_maxHueController.text);
 
                 final state = context.read<GreatWallBloc>().state;
-                final isSymmetric = state is GreatWallHashvizInputInProgress
+                final isSymmetric = state is GreatWallInputsInProgress
                     ? state.isSymmetric
                     : false;
 

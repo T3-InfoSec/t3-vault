@@ -22,6 +22,10 @@ class MemoCardsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MemoCardSetBloc>().add(MemoCardSetLoadRequested());
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Memorization Cards'),

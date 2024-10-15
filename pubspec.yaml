@@ -16,9 +16,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   go_router: ^14.2.3
+  path_provider: ^2.1.4
+  uuid: ^3.0.6
   t3_formosa:
     git:
-      url: https://github.com/T3-InfoSec/t3-formosa-dart.git
+      url: git@github.com:T3-InfoSec/t3-formosa-dart.git
       ref: development
   great_wall:
     git:
@@ -26,7 +28,7 @@ dependencies:
       ref: hashviz_enhacement_features
   t3_memassist:
     git:
-      url: https://github.com/T3-InfoSec/t3-memassist.git
+      url: git@github.com:T3-InfoSec/t3-memassist.git
       ref: development
 
 dev_dependencies:

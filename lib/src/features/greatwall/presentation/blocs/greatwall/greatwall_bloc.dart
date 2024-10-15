@@ -87,21 +87,21 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onPasswordVisibilityToggled(
       GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
-    if (state is GreatWallHashvizInputInProgress) {
-      final currentState = state as GreatWallHashvizInputInProgress;
-      emit(GreatWallHashvizInputInProgress(currentState.isSymmetric, !currentState.isPasswordVisible));
+    if (state is GreatWallInputsInProgress) {
+      final currentState = state as GreatWallInputsInProgress;
+      emit(GreatWallInputsInProgress(currentState.isSymmetric, !currentState.isPasswordVisible));
     } else {
-      emit(GreatWallHashvizInputInProgress(true, true));
+      emit(GreatWallInputsInProgress(true, false));
     }
   }
 
   void _onGreatWallSymmetricToggled(
       GreatWallSymmetricToggled event, Emitter<GreatWallState> emit) {
-    if (state is GreatWallHashvizInputInProgress) {
-      final currentState = state as GreatWallHashvizInputInProgress;
-      emit(GreatWallHashvizInputInProgress(!currentState.isSymmetric, currentState.isPasswordVisible));
+    if (state is GreatWallInputsInProgress) {
+      final currentState = state as GreatWallInputsInProgress;
+      emit(GreatWallInputsInProgress(!currentState.isSymmetric, currentState.isPasswordVisible));
     } else {
-      emit(GreatWallHashvizInputInProgress(true, true));
+      emit(GreatWallInputsInProgress(true, false));
     }
   }
 

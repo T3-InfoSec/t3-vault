@@ -48,11 +48,11 @@ class GreatWallInitialSuccess extends GreatWallState {
       [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledge, secretSeed];
 }
 
-final class GreatWallHashvizInputInProgress extends GreatWallState {
+final class GreatWallInputsInProgress extends GreatWallState {
   final bool isSymmetric;
   final bool isPasswordVisible;
 
-  GreatWallHashvizInputInProgress(this.isSymmetric, this.isPasswordVisible);
+  GreatWallInputsInProgress(this.isSymmetric, this.isPasswordVisible);
 
   @override
   List<Object> get props => [isSymmetric, isPasswordVisible];
