@@ -21,6 +21,12 @@ class MemoCardSetBloc
     _loadMemoCardsFromRepository();
   }
 
+  @override
+  Future<void> close() {
+    print('MemoCardRatingBloc is being closed');
+    return super.close();
+  }
+
   Future<void> _onMemoCardSetEvent(
     MemoCardSetEvent event,
     Emitter<MemoCardSetState> emit,

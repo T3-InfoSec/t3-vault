@@ -12,6 +12,12 @@ class MemoCardRatingBloc
     on<MemoCardRatingPressed>(_onMemoCardRatingEvent);
   }
 
+  @override
+  Future<void> close() {
+    print('MemoCardRatingBloc is being closed');
+    return super.close();
+  }
+
   Future<void> _onMemoCardRatingEvent(
     MemoCardRatingPressed event,
     Emitter<MemoCardRatingState> emit,
