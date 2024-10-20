@@ -15,12 +15,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
   }
 
-  @override
-  Future<void> close() {
-    print('GreatWallBloc is being closed');
-    return super.close();
-  }
-
   void _onDerivationStepMade(
       GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress());

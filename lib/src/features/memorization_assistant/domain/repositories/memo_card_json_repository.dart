@@ -6,20 +6,9 @@ import '../converters/memo_card_json_converter.dart';
 
 class MemoCardRepository {
   final String filePath;
-  final Map<String, MemoCard> _memoCardIdMap = {};
+  Map<String, MemoCard> _memoCardIdMap = {};
 
-  MemoCardRepository({required this.filePath}) {
-    _loadMemoCardsFromFile();
-  }
-
-  /// Load memo cards from json file
-  /// 
-  /// This method initialises the map of ids and memocards
-  /// with the persisted values using the internal logic 
-  /// of the [readMemoCards] method.
-  Future<void> _loadMemoCardsFromFile() async {
-    await readMemoCards();
-  }
+  MemoCardRepository({required this.filePath});
 
   /// Reads memo cards from a JSON file and returns a map of memo cards.
   ///
@@ -51,30 +40,70 @@ class MemoCardRepository {
     }
   }
 
-  /// Writes memo cards to a JSON file.
+  /// Adds a new memo card to the repository.
   ///
-  /// This method takes a list of memo cards, [memoCards], and writes their 
-  /// details to a JSON file located at [filePath]. Each memo card in the 
-  /// list is converted to JSON format using [MemoCardConverter.toJson], 
-  /// and a unique 'id' field is generated for each memo card.
+  /// This method generates a unique ID for the provided [memoCard] and adds 
+  /// it to the internal map [_memoCardIdMap]. The updated map is then written 
+  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
+  Future<void> addMemoCard(MemoCard memoCard) async {
+    final id = MemoCardConverter.generateId();
+    _memoCardIdMap[id] = memoCard;
+    
+    await _writeMemoCards();
+  }
+
+  /// Removes a memo card from the repository.
   ///
-  /// The resulting list of JSON objects is then encoded as a string and 
-  /// written to the specified file. If the file does not exist, it will be 
-  /// created.
-  Future<void> writeMemoCards(List<MemoCard> memoCards) async {
-    final file = File(filePath);
+  /// This method identifies the ID of the provided [memoCard] from 
+  /// [_memoCardIdMap] and removes it from the map. The updated map is then 
+  /// written to the JSON file at [filePath] using [_writeMemoCard] method.
+  Future<void> removeMemoCard(MemoCard memoCard) async {
+    final id = _getMemoCardId(memoCard);
+    if (id != null) {
+      _memoCardIdMap.remove(id);
+    }
+    
+    await _writeMemoCards();
+  }
 
-    _memoCardIdMap.clear();
-
-    final jsonData = memoCards.map((memoCard) {
-      final id = MemoCardConverter.generateId();
+  /// Updates an existing memo card in the repository.
+  ///
+  /// This method locates the ID of the provided [memoCard] in [_memoCardIdMap] 
+  /// and updates its content. The updated map is then written 
+  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
+  Future<void> updateMemoCard(MemoCard memoCard) async {
+    final id = _getMemoCardId(memoCard);
+    if (id != null) {
       _memoCardIdMap[id] = memoCard;
-      return {
-        ...MemoCardConverter.toJson(memoCard),
-        'id': id,
-      };
-    }).toList();
+    }
 
+    await _writeMemoCards();
+  }
+
+  /// Writes the current state of memo cards to the JSON file.
+  ///
+  /// This private method converts the current entries in [_memoCardIdMap] 
+  /// to JSON format using [MemoCardConverter.toJson], adds their corresponding 
+  /// IDs, and writes the resulting list to the file located at [filePath].
+  ///
+  /// If the file does not exist, it will be created.  
+  Future<void> _writeMemoCards() async {
+    final file = File(filePath);
+    final jsonData = _memoCardIdMap.entries.map((entry) => {
+      ...MemoCardConverter.toJson(entry.value),
+      'id': entry.key,
+    }).toList();
     await file.writeAsString(jsonEncode(jsonData));
+  }
+
+  Map<String, MemoCard> get memoCardIdMap => _memoCardIdMap;
+
+  /// Retrieves the ID of a memo card.
+  ///
+  /// This private method searches [_memoCardIdMap] for the provided [memoCard] 
+  /// and returns its corresponding ID. If the memo card is not found, the method 
+  /// returns `null`.
+  String? _getMemoCardId(MemoCard memoCard) {
+    return _memoCardIdMap.entries.firstWhere((entry) => entry.value == memoCard).key;
   }
 }
