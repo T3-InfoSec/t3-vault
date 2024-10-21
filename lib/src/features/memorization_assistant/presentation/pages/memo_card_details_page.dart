@@ -144,7 +144,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                 int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
                 TacitKnowledge tacitKnowledge =
                     memoCard.knowledge['tacitKnowledge'];
-                String secretSeed = memoCard.knowledge['secretSeed'];
+                String secretSeed = "not_implemented_yet"; // TODO: Implement password promt.
 
                 context.read<GreatWallBloc>().add(
                       GreatWallInitialized(
