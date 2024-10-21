@@ -58,10 +58,7 @@ class T3Vault extends StatelessWidget {
               create: (BuildContext context) => MemoCardSetBloc(memoCardRepository: memoCardRepository),
             ),
             BlocProvider<MemoCardRatingBloc>(
-              create: (BuildContext context) {
-                final memoCardSetBloc = context.read<MemoCardSetBloc>();
-                return MemoCardRatingBloc(memoCardSetBloc: memoCardSetBloc);
-              },
+              create: (BuildContext context) => MemoCardRatingBloc(memoCardRepository: memoCardRepository),
             ),
           ],
           child: Builder(

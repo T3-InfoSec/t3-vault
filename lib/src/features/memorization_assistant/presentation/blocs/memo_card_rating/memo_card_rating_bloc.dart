@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
 
 import 'package:t3_vault/src/features/memorization_assistant/presentation/blocs/blocs.dart';
 
 class MemoCardRatingBloc
     extends Bloc<MemoCardRatingEvent, MemoCardRatingState> {
-  final MemoCardSetBloc memoCardSetBloc;
+  final MemoCardRepository memoCardRepository;
 
-  MemoCardRatingBloc({required this.memoCardSetBloc})
+  MemoCardRatingBloc({required this.memoCardRepository})
       : super(MemoCardRatedAgain()) {
     on<MemoCardRatingPressed>(_onMemoCardRatingEvent);
   }
@@ -16,8 +16,6 @@ class MemoCardRatingBloc
     MemoCardRatingPressed event,
     Emitter<MemoCardRatingState> emit,
   ) async {
-
-    MemoCard updatedMemoCard = event.memoCard;
     
     if (event.rating == 'Again') {
       emit(MemoCardRatedAgain());
@@ -35,6 +33,6 @@ class MemoCardRatingBloc
       emit(MemoCardRatedEasy());
     }
 
-    memoCardSetBloc.add(MemoCardSetCardUpdated(updatedMemoCard: updatedMemoCard));
+    memoCardRepository.updateMemoCard(event.memoCard);
   }
 }
