@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -170,33 +171,41 @@ class T3Vault extends StatelessWidget {
                           ],
                         ),
                         GoRoute(
-                          path: MemoCardsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
+                          path: MemoCardDecksPage.routeName,
+                          pageBuilder: (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.memoCards',
-                              child: MemoCardsPage(),
+                              restorationId: 'router.root.decks',
+                              child: MemoCardDecksPage(),
                             );
                           },
                           routes: <RouteBase>[
                             GoRoute(
-                              path:
-                                  '${MemoCardDetailsPage.routeName}/:cardName',
-                              pageBuilder:
-                                  (BuildContext context, GoRouterState state) {
-                                final cardName = int.parse(
-                                    state.pathParameters['cardName']!);
-                                final memoCard = state.extra as MemoCard;
+                              path: MemoCardsPage.routeName,
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final memoCards = state.extra as List<MemoCard>? ?? [];
 
                                 return MaterialPage(
-                                  restorationId:
-                                      'router.root.memoCards.details',
-                                  child: MemoCardDetailsPage(
-                                    cardName: cardName,
-                                    memoCard: memoCard,
-                                  ),
+                                  restorationId: 'router.root.decks.memoCards',
+                                  child: MemoCardsPage(memoCards: memoCards),
                                 );
                               },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: '${MemoCardDetailsPage.routeName}/:cardName',
+                                  pageBuilder: (BuildContext context, GoRouterState state) {
+                                    final cardName = int.parse(state.pathParameters['cardName']!);
+                                    final memoCard = state.extra as MemoCard;
+
+                                    return MaterialPage(
+                                      restorationId: 'router.root.decks.memoCards.details',
+                                      child: MemoCardDetailsPage(
+                                        cardName: cardName,
+                                        memoCard: memoCard,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),

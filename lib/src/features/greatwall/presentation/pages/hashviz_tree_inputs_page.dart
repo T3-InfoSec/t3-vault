@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -82,21 +83,25 @@ class HashvizTreeInputsPage extends StatelessWidget {
                           final depth = int.parse(_depthController.text);
                           final timeLock = int.parse(_timeLockController.text);
                           final hashvizSize = int.parse(_sizeController.text);
-
-                          context.read<MemoCardSetBloc>().add(
-                                MemoCardSetCardAdded(
-                                  memoCard: MemoCard(
-                                    knowledge: {
-                                      'treeArity': arity,
-                                      'treeDepth': depth,
-                                      'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledge': HashVizTacitKnowledge(
-                                        configs: {'hashvizSize': hashvizSize},
-                                      ),
-                                    },
-                                  ),
+                          final deck = const Uuid().v4();
+                          
+                          for (int i = 1; i <= depth; i++) {
+                            context.read<MemoCardSetBloc>().add(
+                              MemoCardSetCardAdded(
+                                memoCard: MemoCard(
+                                  knowledge: {
+                                    'treeArity': arity,
+                                    'treeDepth': i,
+                                    'timeLockPuzzleParam': timeLock,
+                                    'tacitKnowledge': HashVizTacitKnowledge(
+                                      configs: {'hashvizSize': hashvizSize},
+                                    ),
+                                  },
+                                  deck: deck, 
                                 ),
-                              );
+                              ),
+                            );
+                          }
                         },
                   child: const Text('Save To Memorization Card'),
                 );

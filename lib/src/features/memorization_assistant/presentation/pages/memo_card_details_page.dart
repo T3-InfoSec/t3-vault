@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -10,7 +11,6 @@ import '../../../greatwall/presentation/blocs/blocs.dart';
 import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
-import 'memo_cards_page.dart';
 
 /// A page that displays the detailed view of a specific memory card.
 ///
@@ -131,7 +131,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     context.read<MemoCardSetBloc>().add(
                           MemoCardSetCardRemoved(memoCard: memoCard),
                         );
-                    context.go('/${MemoCardsPage.routeName}');
+                    context.go('/${MemoCardDecksPage.routeName}');
                   },
                   child: const Text('Delete Memorization Card'),
                 );
