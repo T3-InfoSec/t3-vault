@@ -60,7 +60,7 @@ class MemoCardsPage extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {
                         context.go(
-                          '/${MemoCardDecksPage.routeName}/$routeName/${MemoCardDetailsPage.routeName}/$levelNumber',
+                          '/${MemoCardDetailsPage.routeName}/$levelNumber',
                           extra: memoCard,
                         );
                       },
