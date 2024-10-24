@@ -170,37 +170,42 @@ class T3Vault extends StatelessWidget {
                             ),
                           ],
                         ),
-                        // TODO: Fix cast issue and use nested navigation
                         GoRoute(
                           path: MemoCardDecksPage.routeName,
                           pageBuilder: (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
+                              restorationId: 'router.root.decks',
                               child: MemoCardDecksPage(),
                             );
                           },
-                        ),
-                        GoRoute(
-                          path: MemoCardsPage.routeName,
-                          pageBuilder: (BuildContext context, GoRouterState state) {
-                            final memoCards = state.extra as List<MemoCard>? ?? [];
-                            return MaterialPage(
-                              child: MemoCardsPage(memoCards: memoCards),
-                            );
-                          },
-                        ),
-                        GoRoute(
-                          path: '${MemoCardDetailsPage.routeName}/:cardName',
-                          pageBuilder: (BuildContext context, GoRouterState state) {
-                            final cardName = int.parse(state.pathParameters['cardName']!);
-                            final memoCard = state.extra as MemoCard;
+                          routes: <RouteBase>[
+                            GoRoute(
+                              path: MemoCardsPage.routeName,
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final memoCards = state.extra as List<MemoCard>? ?? [];
 
-                            return MaterialPage(
-                              child: MemoCardDetailsPage(
-                                cardName: cardName,
-                                memoCard: memoCard,
-                              ),
-                            );
-                          },
+                                return MaterialPage(
+                                  restorationId: 'router.root.decks.memoCards',
+                                  child: MemoCardsPage(memoCards: memoCards),
+                                );
+                              },
+                            ),
+                            GoRoute(
+                              path: '${MemoCardDetailsPage.routeName}/:cardName',
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final cardName = int.parse(state.pathParameters['cardName']!);
+                                final memoCard = state.extra as MemoCard;
+
+                                return MaterialPage(
+                                  restorationId: 'router.root.decks.memoCards.details',
+                                  child: MemoCardDetailsPage(
+                                    cardName: cardName,
+                                    memoCard: memoCard,
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
                         GoRoute(
                           path: SettingsPage.routeName,
