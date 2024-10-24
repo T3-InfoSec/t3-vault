@@ -26,12 +26,10 @@ dependencies:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
       ref: development
-  # t3_memassist:
-  #   git:
-  #     url: git@github.com:T3-InfoSec/t3-memassist.git
-  #     ref: development
   t3_memassist:
-    path: ../../dart/t3-memassist
+    git:
+      url: git@github.com:T3-InfoSec/t3-memassist.git
+      ref: issue70_add_deck
 
 dev_dependencies:
   flutter_test:
