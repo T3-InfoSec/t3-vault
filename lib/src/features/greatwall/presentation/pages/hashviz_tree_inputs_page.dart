@@ -99,7 +99,6 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       'tacitKnowledge': HashVizTacitKnowledge(
                                         configs: {'hashvizSize': hashvizSize},
                                       ),
-                                      'secretSeed': _passwordController.text,
                                     },
                                   ),
                                 ),

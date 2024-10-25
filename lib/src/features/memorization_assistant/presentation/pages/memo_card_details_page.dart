@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/blocs/blocs.dart';
@@ -138,24 +139,32 @@ class MemoCardDetailsPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
-                int treeArity = memoCard.knowledge['treeArity'];
-                int treeDepth = memoCard.knowledge['treeDepth'];
-                int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
-                TacitKnowledge tacitKnowledge =
-                    memoCard.knowledge['tacitKnowledge'];
-                String secretSeed = memoCard.knowledge['secretSeed'];
+              onPressed: () async {
+                String? password = await showDialog<String>(
+                  context: context,
+                  builder: (context) => const PasswordPrompt(),
+                );
 
-                context.read<GreatWallBloc>().add(
-                      GreatWallInitialized(
-                        treeArity: treeArity,
-                        treeDepth: treeDepth,
-                        timeLockPuzzleParam: timeLock,
-                        tacitKnowledge: tacitKnowledge,
-                        secretSeed: secretSeed,
-                      ),
-                    );
-                context.go('/${ConfirmationPage.routeName}');
+                if (password != null && password.isNotEmpty) {
+                  if (!context.mounted) return;
+                  
+                  int treeArity = memoCard.knowledge['treeArity'];
+                  int treeDepth = memoCard.knowledge['treeDepth'];
+                  int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
+                  TacitKnowledge tacitKnowledge =
+                      memoCard.knowledge['tacitKnowledge'];
+
+                  context.read<GreatWallBloc>().add(
+                        GreatWallInitialized(
+                          treeArity: treeArity,
+                          treeDepth: treeDepth,
+                          timeLockPuzzleParam: timeLock,
+                          tacitKnowledge: tacitKnowledge,
+                          secretSeed: password,
+                        ),
+                      );
+                  context.go('/${ConfirmationPage.routeName}');
+                }
               },
               child: const Text('Try protocol'),
             ),
