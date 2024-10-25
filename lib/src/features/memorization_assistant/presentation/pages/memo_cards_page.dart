@@ -23,7 +23,7 @@ class MemoCardsPage extends StatelessWidget {
     final ThemeData themeData = Theme.of(context);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MemoCardSetBloc>().add(MemoCardSetLoadRequested());
+      context.read<ProfilesBloc>().add(ProfileSetLoadRequested());
     });
 
     return Scaffold(
@@ -42,9 +42,9 @@ class MemoCardsPage extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+            child: BlocBuilder<ProfilesBloc, ProfileSetState>(
               builder: (context, memoCardSetState) {
-                if (memoCardSetState.memoCardSet.isEmpty) {
+                if (memoCardSetState.profiles.isEmpty) {
                   return const Text('No Memorization Card Yet!');
                 }
                 return BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
@@ -56,10 +56,10 @@ class MemoCardsPage extends StatelessWidget {
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children:
-                          memoCardSetState.memoCardSet.asMap().entries.map(
+                          memoCardSetState.profiles.asMap().entries.map(
                         (entry) {
                           int levelNumber = entry.key;
-                          MemoCard memoCard = entry.value;
+                          MemoCard memoCard = entry.value.memoCard;
                           return GestureDetector(
                             onTap: () {
                               context.go(

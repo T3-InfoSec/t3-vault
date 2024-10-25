@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -33,7 +34,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
+            context.read<ProfilesBloc>().add(ProfileSetUnchanged());
             context.pop();
           },
         ),
@@ -186,10 +187,10 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 10),
-                BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+                BlocBuilder<ProfilesBloc, ProfileSetState>(
                   builder: (context, memoCardSetState) {
                     return ElevatedButton(
-                      onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                      onPressed: (memoCardSetState is ProfileSetAddSuccess)
                           ? null
                           : () {
                               final arity = int.parse(_arityController.text);
@@ -212,32 +213,37 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ? state.isSymmetric
                                       : false;
 
-                          context.read<MemoCardSetBloc>().add(
-                                MemoCardSetCardAdded(
-                                  memoCard: MemoCard(
-                                    knowledge: {
-                                      'treeArity': arity,
-                                      'treeDepth': depth,
-                                      'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledge': HashVizTacitKnowledge(
-                                        configs: {
-                                          'hashvizSize': hashvizSize,
-                                          'isSymmetric': isSymmetric,
-                                          'numColors': numColors,
-                                          'saturation': saturation,
-                                          'brightness': brightness,
-                                          'minHue': minHue,
-                                          'maxHue': maxHue,
+                          context.read<ProfilesBloc>().add(
+                                ProfileSetAdded(
+                                  profile: Profile(
+                                    memoCard:
+                                      MemoCard(
+                                        knowledge: {
+                                          'treeArity': arity,
+                                          'treeDepth': depth,
+                                          'timeLockPuzzleParam': timeLock,
+                                          'tacitKnowledge': HashVizTacitKnowledge(
+                                            configs: {
+                                              'hashvizSize': hashvizSize,
+                                              'isSymmetric': isSymmetric,
+                                              'numColors': numColors,
+                                              'saturation': saturation,
+                                              'brightness': brightness,
+                                              'minHue': minHue,
+                                              'maxHue': maxHue,
+                                            },
+                                          ),
+                                          'secretSeed': _passwordController.text,
                                         },
                                       ),
-                                      'secretSeed': _passwordController.text,
-                                    },
+                                    seedPA0: "encrypted_6-words_formosa_seed"
                                   ),
                                 ),
-                              );
+                          );
                         },
                   child: const Text('Save To Memorization Card'),
                 );
+
               },
             ),
             const SizedBox(height: 10),

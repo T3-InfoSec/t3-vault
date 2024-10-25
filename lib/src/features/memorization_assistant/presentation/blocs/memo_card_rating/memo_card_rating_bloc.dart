@@ -5,7 +5,7 @@ import 'package:t3_vault/src/features/memorization_assistant/presentation/blocs/
 
 class MemoCardRatingBloc
     extends Bloc<MemoCardRatingEvent, MemoCardRatingState> {
-  final MemoCardRepository memoCardRepository;
+  final ProfileRepository memoCardRepository;
 
   MemoCardRatingBloc({required this.memoCardRepository})
       : super(MemoCardRatedAgain()) {

@@ -27,7 +27,7 @@ import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart'
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
-  final MemoCardRepository memoCardRepository;
+  final ProfileRepository memoCardRepository;
 
   const T3Vault({
     super.key,
@@ -54,8 +54,8 @@ class T3Vault extends StatelessWidget {
             BlocProvider<GreatWallBloc>(
               create: (BuildContext context) => GreatWallBloc(),
             ),
-            BlocProvider<MemoCardSetBloc>(
-              create: (BuildContext context) => MemoCardSetBloc(memoCardRepository: memoCardRepository),
+            BlocProvider<ProfilesBloc>(
+              create: (BuildContext context) => ProfilesBloc(memoCardRepository: memoCardRepository),
             ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) => MemoCardRatingBloc(memoCardRepository: memoCardRepository),

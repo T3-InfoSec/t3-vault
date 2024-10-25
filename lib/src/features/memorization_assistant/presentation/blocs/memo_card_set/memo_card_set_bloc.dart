@@ -4,49 +4,49 @@ import 'package:bloc/bloc.dart';
 
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
 
-class MemoCardSetBloc
-    extends Bloc<MemoCardSetEvent, MemoCardSetState> {
-  final MemoCardRepository memoCardRepository;
+class ProfilesBloc
+    extends Bloc<ProfileSetEvent, ProfileSetState> {
+  final ProfileRepository memoCardRepository;
   
-  MemoCardSetBloc({required this.memoCardRepository}) : super(MemoCardSetEmpty()) {
-    on<MemoCardSetLoadRequested>(_onMemoCardSetEvent);
-    on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
-    on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
-    on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
+  ProfilesBloc({required this.memoCardRepository}) : super(ProfileSetEmpty()) {
+    on<ProfileSetLoadRequested>(_onMemoCardSetEvent);
+    on<ProfileSetUnchanged>(_onMemoCardSetEvent);
+    on<ProfileSetAdded>(_onMemoCardSetEvent);
+    on<MemoProfileSetMemoCardRemoved>(_onMemoCardSetEvent);
     _loadMemoCardsFromRepository();
   }
 
   Future<void> _onMemoCardSetEvent(
-    MemoCardSetEvent event,
-    Emitter<MemoCardSetState> emit,
+    ProfileSetEvent event,
+    Emitter<ProfileSetState> emit,
   ) async {
 
-    if (event is MemoCardSetLoadRequested) {
+    if (event is ProfileSetLoadRequested) {
       await _loadMemoCardsFromRepository();
-      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+      return emit(ProfileSetChangeNothing(profiles: memoCardRepository.profileIdMap.values.toList()));
     }
 
-    if (event is MemoCardSetUnchanged) {
-      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+    if (event is ProfileSetUnchanged) {
+      return emit(ProfileSetChangeNothing(profiles: memoCardRepository.profileIdMap.values.toList()));
     }
 
-    if (event is MemoCardSetCardAdded) {
-      await memoCardRepository.addMemoCard(event.memoCard);
-      return emit(MemoCardSetAddSuccess(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+    if (event is ProfileSetAdded) {
+      await memoCardRepository.addMemoCard(event.profile);
+      return emit(ProfileSetAddSuccess(profiles: memoCardRepository.profileIdMap.values.toList()));
     }
 
-    if (event is MemoCardSetCardRemoved) {
+    if (event is MemoProfileSetMemoCardRemoved) {
       await memoCardRepository.removeMemoCard(event.memoCard);
-      if (memoCardRepository.memoCardIdMap.isEmpty) {
-        return emit(MemoCardSetEmpty());
+      if (memoCardRepository.profileIdMap.isEmpty) {
+        return emit(ProfileSetEmpty());
       } else {
-        return emit(MemoCardSetRemoveSuccess(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+        return emit(ProfileSetRemoveSuccess(profiles: memoCardRepository.profileIdMap.values.toList()));
       }
     }
   }
 
   Future<void> _loadMemoCardsFromRepository() async {
-      await memoCardRepository.readMemoCards();
+      await memoCardRepository.readProfiles();
   }
 
 }

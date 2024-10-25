@@ -123,12 +123,12 @@ class MemoCardDetailsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+            BlocBuilder<ProfilesBloc, ProfileSetState>(
               builder: (context, memoCardSetState) {
                 return ElevatedButton(
                   onPressed: () {
-                    context.read<MemoCardSetBloc>().add(
-                          MemoCardSetCardRemoved(memoCard: memoCard),
+                    context.read<ProfilesBloc>().add(
+                          MemoProfileSetMemoCardRemoved(memoCard: memoCard),
                         );
                     context.go('/${MemoCardsPage.routeName}');
                   },

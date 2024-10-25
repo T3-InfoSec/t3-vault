@@ -115,9 +115,4 @@ class MemoCardConverter {
     }
     return tacitKnowledgeType;
   }
-
-  /// Returns a newly generated UUID as a string.
-  static String generateId() {
-    return _uuid.v4();
-  }
 }

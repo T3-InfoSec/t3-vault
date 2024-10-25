@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -29,7 +30,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
+            context.read<ProfilesBloc>().add(ProfileSetUnchanged());
             context.pop();
           },
         ),
@@ -148,10 +149,10 @@ class FormosaTreeInputsPage extends StatelessWidget {
               },
             ),
             const SizedBox(height: 10),
-            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+            BlocBuilder<ProfilesBloc, ProfileSetState>(
               builder: (context, memoCardSetState) {
                 return ElevatedButton(
-                  onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                  onPressed: (memoCardSetState is ProfileSetAddSuccess)
                       ? null
                       : () {
                           final arity = int.parse(_arityController.text);
@@ -162,19 +163,22 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                   as FormosaThemeSelectSuccess)
                               .theme;
 
-                          context.read<MemoCardSetBloc>().add(
-                                MemoCardSetCardAdded(
-                                  memoCard: MemoCard(
-                                    knowledge: {
-                                      'treeArity': arity,
-                                      'treeDepth': depth,
-                                      'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledge': FormosaTacitKnowledge(
-                                        configs: {'formosaTheme': theme},
-                                      ),
-                                      'secretSeed': _passwordController.text,
-                                    },
-                                  ),
+                          context.read<ProfilesBloc>().add(
+                                ProfileSetAdded(
+                                  profile: Profile(
+                                    memoCard: MemoCard(
+                                      knowledge: {
+                                        'treeArity': arity,
+                                        'treeDepth': depth,
+                                        'timeLockPuzzleParam': timeLock,
+                                        'tacitKnowledge': FormosaTacitKnowledge(
+                                          configs: {'formosaTheme': theme},
+                                        ),
+                                        'secretSeed': _passwordController.text,
+                                      },
+                                    ),
+                                    seedPA0: "encrypted_6-words_hashviz_seed"
+                                  )
                                 ),
                               );
                         },
