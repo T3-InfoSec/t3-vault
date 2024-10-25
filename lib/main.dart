@@ -7,10 +7,12 @@ import 'src/common/settings/domain/entities/settings_service.dart';
 import 'src/common/settings/domain/usecases/settings_controller.dart';
 
 void main() async {
+  //
+  WidgetsFlutterBinding.ensureInitialized();
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());
-  
+
   // Get the application documents directory, which is a suitable location
   // to store user-specific documents and files for this application.
   final directory = await getApplicationDocumentsDirectory();
@@ -32,6 +34,6 @@ void main() async {
   // SettingsView.
   runApp(T3Vault(
     settingsController: settingsController,
-    memoCardRepository: memoCardRepository,)
-  );
+    memoCardRepository: memoCardRepository,
+  ));
 }
