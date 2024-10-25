@@ -34,6 +34,8 @@ class GreatWallInitialSuccess extends GreatWallState {
   final int timeLockPuzzleParam;
   final TacitKnowledge tacitKnowledge;
   final String secretSeed;
+  final String eka;
+  final List<String> ekaUx;
 
   GreatWallInitialSuccess({
     required this.treeArity,
@@ -41,11 +43,12 @@ class GreatWallInitialSuccess extends GreatWallState {
     required this.timeLockPuzzleParam,
     required this.tacitKnowledge,
     required this.secretSeed,
+    required this.eka,
+    required this.ekaUx,
   });
 
   @override
-  List<Object> get props =>
-      [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledge, secretSeed];
+  List<Object> get props => [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledge, secretSeed];
 }
 
 final class GreatWallInputsInProgress extends GreatWallState {
@@ -74,8 +77,7 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
   });
 
   @override
-  List<Object> get props =>
-      [treeDepth, currentLevel, knowledgePalettes, tacitKnowledge];
+  List<Object> get props => [treeDepth, currentLevel, knowledgePalettes, tacitKnowledge];
 }
 
 final class GreatWallFinishSuccess extends GreatWallState {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_widgets.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -74,6 +75,9 @@ class ConfirmationPage extends StatelessWidget {
                     ),
                     const Text('****'),
                     const SizedBox(height: 20),
+                    CopyEkaCodeWidget(ekaUxChunks: state.ekaUx),
+                    const SizedBox(height: 20),
+
                     ElevatedButton(
                       onPressed: () {
                         Future.delayed(
