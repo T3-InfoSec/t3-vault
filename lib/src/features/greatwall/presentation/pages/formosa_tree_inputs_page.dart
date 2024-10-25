@@ -122,7 +122,6 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                       'tacitKnowledge': FormosaTacitKnowledge(
                                         configs: {'formosaTheme': theme},
                                       ),
-                                      'secretSeed': _passwordController.text,
                                     },
                                   ),
                                 ),
