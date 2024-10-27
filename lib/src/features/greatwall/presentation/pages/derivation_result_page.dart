@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_formosa/formosa.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -74,23 +73,6 @@ class DerivationResultPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () async {
-                      // Copy the seed to the clipboard for a limited time
-                      Clipboard.setData(ClipboardData(text: bip39Derivation(state.derivationHashResult)));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Seed copied to clipboard')),
-                      );
-
-                      // Allow copying for 10 seconds, then disable
-                      await Future.delayed(const Duration(seconds: 10));
-
-                      // Clear clipboard after the time limit
-                      Clipboard.setData(const ClipboardData(text: ''));
-                    },
-                    child: const Text('Generate and copy seed'),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
                     onPressed: () {
                       context
                           .read<MemoCardSetBloc>()
@@ -108,18 +90,5 @@ class DerivationResultPage extends StatelessWidget {
         ),
       ),
     );
-  }
-  
-  String bip39Derivation(String key) {
-    // Convert the derivation hash result to a Uint8List
-    Uint8List derivationHashResultBytes = Uint8List.fromList(
-      key
-      .codeUnits
-      .take(16)
-      .toList(), // Take the first 16 bytes
-    );
-
-    Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
-    return formosa.toFormosa(derivationHashResultBytes);
   }
 }
