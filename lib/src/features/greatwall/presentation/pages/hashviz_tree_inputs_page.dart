@@ -18,6 +18,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _sizeController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   HashvizTreeInputsPage({super.key});
 
@@ -72,6 +73,31 @@ class HashvizTreeInputsPage extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration:
+                        const InputDecoration(hintText: 'Password'),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.sync),
+                  onPressed: () async {
+                    String? seed = await showDialog<String>(
+                      context: context,
+                      builder: (context) => const Pa0SeedPromtWidget(),
+                    );
+                    if (seed != null && seed.isNotEmpty) {
+                      _passwordController.text = seed;
+                    }
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
               builder: (context, memoCardSetState) {
                 return ElevatedButton(
@@ -105,38 +131,32 @@ class HashvizTreeInputsPage extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () async {
-                String? sixWordsSeed = await showDialog<String>(
-                  context: context,
-                  builder: (context) => const Pa0SeedPromtWidget(),
-                );
-                if (sixWordsSeed != null && sixWordsSeed.isNotEmpty) {
-                  final arity = int.parse(_arityController.text);
-                  final depth = int.parse(_depthController.text);
-                  final timeLock = int.parse(_timeLockController.text);
-                  final hashvizSize = int.parse(_sizeController.text);
+                final arity = int.parse(_arityController.text);
+                final depth = int.parse(_depthController.text);
+                final timeLock = int.parse(_timeLockController.text);
+                final hashvizSize = int.parse(_sizeController.text);
 
-                  Future.delayed(
-                    const Duration(seconds: 1),
-                    () {
-                      if (!context.mounted) return;
-                      context.read<GreatWallBloc>().add(
-                            GreatWallInitialized(
-                              treeArity: arity,
-                              treeDepth: depth,
-                              timeLockPuzzleParam: timeLock,
-                              tacitKnowledge: HashVizTacitKnowledge(
-                                configs: {'hashvizSize': hashvizSize},
-                              ),
-                              secretSeed: sixWordsSeed,
+                Future.delayed(
+                  const Duration(seconds: 1),
+                  () {
+                    if (!context.mounted) return;
+                    context.read<GreatWallBloc>().add(
+                          GreatWallInitialized(
+                            treeArity: arity,
+                            treeDepth: depth,
+                            timeLockPuzzleParam: timeLock,
+                            tacitKnowledge: HashVizTacitKnowledge(
+                              configs: {'hashvizSize': hashvizSize},
                             ),
-                          );
-                      context.go(
-                        '/${KnowledgeTypesPage.routeName}/$routeName/'
-                        '${ConfirmationPage.routeName}',
-                      );
-                    },
-                  );
-                }
+                            secretSeed: _passwordController.text,
+                          ),
+                        );
+                    context.go(
+                      '/${KnowledgeTypesPage.routeName}/$routeName/'
+                      '${ConfirmationPage.routeName}',
+                    );
+                  },
+                );
               },
               child: const Text('Start Derivation'),
             ),

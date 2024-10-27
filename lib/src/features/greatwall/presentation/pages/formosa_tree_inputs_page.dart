@@ -18,6 +18,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   FormosaTreeInputsPage({super.key});
 
@@ -93,6 +94,31 @@ class FormosaTreeInputsPage extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration:
+                        const InputDecoration(hintText: 'Password'),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.sync),
+                  onPressed: () async {
+                    String? seed = await showDialog<String>(
+                      context: context,
+                      builder: (context) => const Pa0SeedPromtWidget(),
+                    );
+                    if (seed != null && seed.isNotEmpty) {
+                      _passwordController.text = seed;
+                    }
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
             BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
               builder: (context, memoCardSetState) {
                 return ElevatedButton(
@@ -130,41 +156,34 @@ class FormosaTreeInputsPage extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                   onPressed: () async {
-                    String? sixWordsSeed = await showDialog<String>(
-                      context: context,
-                      builder: (context) => const Pa0SeedPromtWidget(),
-                    );
-                    if (sixWordsSeed != null && sixWordsSeed.isNotEmpty) {
-                      if (!context.mounted) return;
-                      final arity = int.parse(_arityController.text);
-                      final depth = int.parse(_depthController.text);
-                      final timeLock = int.parse(_timeLockController.text);
-                      final theme = (context.read<FormosaBloc>().state
-                              as FormosaThemeSelectSuccess)
-                          .theme;
+                    final arity = int.parse(_arityController.text);
+                    final depth = int.parse(_depthController.text);
+                    final timeLock = int.parse(_timeLockController.text);
+                    final theme = (context.read<FormosaBloc>().state
+                            as FormosaThemeSelectSuccess)
+                        .theme;
 
-                      Future.delayed(
-                        const Duration(seconds: 1),
-                        () {
-                          if (!context.mounted) return;
-                          context.read<GreatWallBloc>().add(
-                                GreatWallInitialized(
-                                  treeArity: arity,
-                                  treeDepth: depth,
-                                  timeLockPuzzleParam: timeLock,
-                                  tacitKnowledge: FormosaTacitKnowledge(
-                                    configs: {'formosaTheme': theme},
-                                  ),
-                                  secretSeed: sixWordsSeed,
+                    Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        if (!context.mounted) return;
+                        context.read<GreatWallBloc>().add(
+                              GreatWallInitialized(
+                                treeArity: arity,
+                                treeDepth: depth,
+                                timeLockPuzzleParam: timeLock,
+                                tacitKnowledge: FormosaTacitKnowledge(
+                                  configs: {'formosaTheme': theme},
                                 ),
-                              );
-                          context.go(
-                            '/${KnowledgeTypesPage.routeName}/$routeName/'
-                            '${ConfirmationPage.routeName}',
-                          );
-                        },
-                      );
-                    }
+                                secretSeed: _passwordController.text,
+                              ),
+                            );
+                        context.go(
+                          '/${KnowledgeTypesPage.routeName}/$routeName/'
+                          '${ConfirmationPage.routeName}',
+                        );
+                      },
+                    );
                   },
                   child: const Text('Start Derivation'),
                 );
