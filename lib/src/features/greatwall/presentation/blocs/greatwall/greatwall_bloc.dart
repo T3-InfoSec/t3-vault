@@ -1,18 +1,13 @@
-import 'dart:math';
-
 import 'package:convert/convert.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
-import 'package:t3_vault/src/features/greatwall/utils/eka.dart';
 
 import 'bloc.dart';
 
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
   int _currentLevel = 1;
-  final ekaUtil = Eka();
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallSymmetricToggled>(_onGreatWallSymmetricToggled);
@@ -28,7 +23,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
   }
 
-  void _onDerivationStepMade(GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
+  void _onDerivationStepMade(
+      GreatWallDerivationStepMade event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress());
 
     await Future<void>.delayed(
@@ -53,7 +49,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
   }
 
-  Future<void> _onGreatWallDerivationFinished(GreatWallDerivationFinished event, Emitter<GreatWallState> emit) async {
+  Future<void> _onGreatWallDerivationFinished(
+      GreatWallDerivationFinished event, Emitter<GreatWallState> emit) async {
     await Future<void>.delayed(
       const Duration(seconds: 1),
       () {
@@ -62,11 +59,13 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
 
     emit(
-      GreatWallFinishSuccess(hex.encode(_greatWall!.derivationHashResult!), false),
+      GreatWallFinishSuccess(
+          hex.encode(_greatWall!.derivationHashResult!), false),
     );
   }
 
-  Future<void> _onGreatWallDerivationStarted(GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
+  Future<void> _onGreatWallDerivationStarted(
+      GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress());
 
     await Future<void>.delayed(
@@ -86,7 +85,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
   }
 
-  void _onPasswordVisibilityToggled(GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
+  void _onPasswordVisibilityToggled(
+      GreatWallPasswordVisibilityToggled event, Emitter<GreatWallState> emit) {
     if (state is GreatWallInputsInProgress) {
       final currentState = state as GreatWallInputsInProgress;
       emit(GreatWallInputsInProgress(currentState.isSymmetric, !currentState.isPasswordVisible));
@@ -95,7 +95,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onGreatWallSymmetricToggled(GreatWallSymmetricToggled event, Emitter<GreatWallState> emit) {
+  void _onGreatWallSymmetricToggled(
+      GreatWallSymmetricToggled event, Emitter<GreatWallState> emit) {
     if (state is GreatWallInputsInProgress) {
       final currentState = state as GreatWallInputsInProgress;
       emit(GreatWallInputsInProgress(!currentState.isSymmetric, currentState.isPasswordVisible));
@@ -104,7 +105,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onGreatWallArityChanged(GreatWallArityChanged event, Emitter<GreatWallState> emit) {
+  void _onGreatWallArityChanged(
+      GreatWallArityChanged event, Emitter<GreatWallState> emit) {
     final errors = <String, String>{};
 
     final arityError = TreeInputValidator.validateArity(event.arity);
@@ -119,7 +121,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onGreatWallDepthChanged(GreatWallDepthChanged event, Emitter<GreatWallState> emit) {
+  void _onGreatWallDepthChanged(
+      GreatWallDepthChanged event, Emitter<GreatWallState> emit) {
     final errors = <String, String>{};
 
     final depthError = TreeInputValidator.validateDepth(event.depth);
@@ -134,7 +137,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onGreatWallTimeLockChanged(GreatWallTimeLockChanged event, Emitter<GreatWallState> emit) {
+  void _onGreatWallTimeLockChanged(
+      GreatWallTimeLockChanged event, Emitter<GreatWallState> emit) {
     final errors = <String, String>{};
 
     final timeLockError = TreeInputValidator.validateTimeLock(event.timeLock);
@@ -149,13 +153,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     }
   }
 
-  void _onGreatWallInitialized(GreatWallInitialized event, Emitter<GreatWallState> emit) {
-    // generate eka on initialization
-    final eka = ekaUtil.generate();
-    if (kDebugMode) {
-      print('eka: $eka and UX ${ekaUtil.toUxChunks(eka)}');
-    }
-    
+  void _onGreatWallInitialized(
+      GreatWallInitialized event, Emitter<GreatWallState> emit) {
     _greatWall = GreatWall(
       treeArity: event.treeArity,
       treeDepth: event.treeDepth,
@@ -176,10 +175,12 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
   }
 
-  void _onKAVisibilityToggled(GreatWallKAVisibilityToggled event, Emitter<GreatWallState> emit) {
+  void _onKAVisibilityToggled(
+      GreatWallKAVisibilityToggled event, Emitter<GreatWallState> emit) {
     if (state is GreatWallFinishSuccess) {
       final currentState = state as GreatWallFinishSuccess;
-      emit(GreatWallFinishSuccess(currentState.derivationHashResult, !currentState.isKAVisible));
+      emit(GreatWallFinishSuccess(
+          currentState.derivationHashResult, !currentState.isKAVisible));
     }
   }
 
