@@ -230,7 +230,6 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                           'maxHue': maxHue,
                                         },
                                       ),
-                                      'secretSeed': _passwordController.text,
                                     },
                                   ),
                                 ),
