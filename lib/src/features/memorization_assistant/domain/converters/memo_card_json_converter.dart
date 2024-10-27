@@ -21,7 +21,6 @@ class MemoCardConverter {
         'treeArity': knowledge['treeArity'],
         'treeDepth': knowledge['treeDepth'],
         'timeLockPuzzleParam': knowledge['timeLockPuzzleParam'],
-        'secretSeed': knowledge['secretSeed'],
         'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
         'tacitKnowledgeType': tacitKnowledgeType,
       },
