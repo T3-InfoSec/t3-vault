@@ -1,6 +1,6 @@
 name: t3_vault
 description: The T3 Vault cross platform application.
-version: 0.1.0-dev
+version: 1.0.0-dev
 homepage: https://t3infosecurity.com
 publish_to: 'none'
 
