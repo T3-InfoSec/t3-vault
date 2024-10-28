@@ -150,9 +150,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             BlocBuilder<ProfilesBloc, ProfileSetState>(
-              builder: (context, memoCardSetState) {
+              builder: (context, profileSetState) {
                 return ElevatedButton(
-                  onPressed: (memoCardSetState is ProfileSetAddSuccess)
+                  onPressed: (profileSetState is ProfileSetAddSuccess)
                       ? null
                       : () {
                           final arity = int.parse(_arityController.text);
