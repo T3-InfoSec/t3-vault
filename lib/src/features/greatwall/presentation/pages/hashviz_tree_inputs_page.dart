@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -24,6 +27,9 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _brightnessController = TextEditingController();
   final TextEditingController _minHueController = TextEditingController();
   final TextEditingController _maxHueController = TextEditingController();
+
+  final encryptionService = EncryptionService();
+
   HashvizTreeInputsPage({super.key});
 
   @override
@@ -192,7 +198,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                     return ElevatedButton(
                       onPressed: (profileSetState is ProfileSetAddSuccess)
                           ? null
-                          : () {
+                          : () async {
                               final arity = int.parse(_arityController.text);
                               final depth = int.parse(_depthController.text);
                               final timeLock =
@@ -213,6 +219,12 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ? state.isSymmetric
                                       : false;
 
+                          // TODO: Use auto-generated real keys.
+                          String eka = "EphemeralKeyMock";
+                          String pa0 = "encrypted_6-words_hashviz_seed";
+                          var encryptedPA0 = await encryptionService.encryptPA0(pa0, eka);
+
+                          if (!context.mounted) return;
                           context.read<ProfilesBloc>().add(
                                 ProfileSetAdded(
                                   profile: Profile(
@@ -236,7 +248,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                           'secretSeed': _passwordController.text,
                                         },
                                       ),
-                                    seedPA0: "encrypted_6-words_formosa_seed"
+                                    seedPA0: base64Encode(encryptedPA0)
                                   ),
                                 ),
                           );

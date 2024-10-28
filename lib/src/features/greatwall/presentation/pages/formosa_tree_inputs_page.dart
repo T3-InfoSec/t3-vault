@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -19,6 +22,8 @@ class FormosaTreeInputsPage extends StatelessWidget {
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final encryptionService = EncryptionService();
 
   FormosaTreeInputsPage({super.key});
 
@@ -154,7 +159,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                 return ElevatedButton(
                   onPressed: (profileSetState is ProfileSetAddSuccess)
                       ? null
-                      : () {
+                      : () async {
                           final arity = int.parse(_arityController.text);
                           final depth = int.parse(_depthController.text);
                           final timeLock = int.parse(_timeLockController.text);
@@ -163,6 +168,12 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                   as FormosaThemeSelectSuccess)
                               .theme;
 
+                          // TODO: Use auto-generated real keys.
+                          String eka = "EphemeralKeyMock";
+                          String pa0 = "encrypted_6-words_hashviz_seed";
+                          var encryptedPA0 = await encryptionService.encryptPA0(pa0, eka);
+
+                          if (!context.mounted) return;
                           context.read<ProfilesBloc>().add(
                                 ProfileSetAdded(
                                   profile: Profile(
@@ -176,7 +187,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                         ),
                                       },
                                     ),
-                                    seedPA0: "encrypted_6-words_hashviz_seed"
+                                    seedPA0: base64Encode(encryptedPA0)
                                   )
                                 ),
                               );
