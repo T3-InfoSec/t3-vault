@@ -16,16 +16,16 @@ void main() {
     });
 
     test('encryptPA0 should encrypt pa0 with AES-GCM and produce concatenated data', () async {
-      final encryptedData = await encryptionService.encryptPA0(pa0, eka);
+      final encryptedData = await encryptionService.encrypt(pa0, eka);
 
       expect(encryptedData, isNotNull);
       expect(encryptedData.length, greaterThan(12 + 16));
     });
 
     test('decryptPA0 should decrypt encrypted data back to original pa0', () async {
-      final encryptedData = await encryptionService.encryptPA0(pa0, eka);
+      final encryptedData = await encryptionService.encrypt(pa0, eka);
 
-      final decryptedData = await encryptionService.decryptPA0(encryptedData, eka);
+      final decryptedData = await encryptionService.decrypt(encryptedData, eka);
 
       expect(decryptedData, pa0);
     });

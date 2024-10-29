@@ -3,10 +3,10 @@ import 'package:cryptography/cryptography.dart';
 
 class EncryptionService {
 
-  /// Encrypts a string [pa0] using AES-GCM with the derived ephemeral key [eka].
+  /// Encrypts a string [plainText] using AES-GCM with the derived ephemeral key [key].
   ///
-  /// This method is designed to securely encrypt the string data [pa0] by first
-  /// deriving a 256-bit AES encryption key from the provided [eka] using a 
+  /// This method is designed to securely encrypt the string data [plainText] by first
+  /// deriving a 256-bit AES encryption key from the provided [key] using a 
   /// key derivation function. The [AesGcm.with256bits()] algorithm is employed 
   /// for encryption, ensuring both confidentiality and authenticity of the 
   /// resulting encrypted data.
@@ -15,35 +15,36 @@ class EncryptionService {
   /// a nonce (randomly generated for each encryption operation), and a MAC 
   /// (Message Authentication Code) that protects the integrity and authenticity 
   /// of the encrypted data.
-  Future<List<int>> encryptPA0(String pa0, String eka) async {
-    final key = await deriveKey(eka);
+  Future<List<int>> encrypt(String plainText, String key) async {
+    final derivedKey = await deriveKey(key);
     final algorithm = AesGcm.with256bits();
 
     final secretBox = await algorithm.encrypt(
-      utf8.encode(pa0),
-      secretKey: key,
+      utf8.encode(plainText),
+      secretKey: derivedKey,
+      // TODO: Review randomness for nonce
     );
 
     return secretBox.concatenation();
   }
 
-  /// Decrypts an encrypted string [pa0Encrypted] using AES-GCM with the derived ephemeral key [eka].
+  /// Decrypts an encrypted string [cipherText] using AES-GCM with the derived ephemeral key [key].
   ///
-  /// The [pa0Encrypted] parameter is expected to be a single byte list containing a concatenation
+  /// The [cipherText] parameter is expected to be a single byte list containing a concatenation
   /// of the nonce, ciphertext, and MAC (Message Authentication Code). This byte structure allows
   /// easy storage and transmission, ensuring all necessary components for decryption are present.
   ///
-  /// This method extracts the `nonce` from the first 12 bytes of [pa0Encrypted], as AES-GCM requires a
+  /// This method extracts the `nonce` from the first 12 bytes of [cipherText], as AES-GCM requires a
   /// unique nonce for each encryption to maintain security. Then retrieves the `ciphertext` and `MAC` 
   /// from the remaining bytes. It creates a `SecretBox` object with the extracted nonce, ciphertext, 
   /// and MAC, which the AES-GCM algorithm requires for decryption. And finally, the method decrypts 
   /// the data and returns the original string [pa0].
-  Future<String> decryptPA0(List<int> pa0Encrypted, String eka) async {
-    final key = await deriveKey(eka);
+  Future<String> decrypt(List<int> cipherText, String key) async {
+    final derivedKey = await deriveKey(key);
     final algorithm = AesGcm.with256bits();
 
-    final nonce = pa0Encrypted.sublist(0, 12);
-    final ciphertextWithMac = pa0Encrypted.sublist(12);
+    final nonce = cipherText.sublist(0, 12);
+    final ciphertextWithMac = cipherText.sublist(12);
 
     final secretBox = SecretBox(
       ciphertextWithMac.sublist(0, ciphertextWithMac.length - 16),
@@ -53,7 +54,7 @@ class EncryptionService {
 
     final decryptedBytes = await algorithm.decrypt(
       secretBox,
-      secretKey: key,
+      secretKey: derivedKey,
     );
 
     return utf8.decode(decryptedBytes);
