@@ -26,7 +26,7 @@ dependencies:
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: hashviz_enhacement_features
+      ref: development
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
