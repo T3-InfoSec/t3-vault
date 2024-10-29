@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -93,10 +94,29 @@ class FormosaTreeInputsPage extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 10),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(hintText: 'Password'),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration:
+                        const InputDecoration(hintText: 'Password'),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.sync),
+                  onPressed: () async {
+                    String? seed = await showDialog<String>(
+                      context: context,
+                      builder: (context) => const Pa0SeedPromtWidget(),
+                    );
+                    if (seed != null && seed.isNotEmpty) {
+                      _passwordController.text = seed;
+                    }
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 10),
             BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
@@ -135,7 +155,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
             BlocBuilder<GreatWallBloc, GreatWallState>(
               builder: (context, state) {
                 return ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     final arity = int.parse(_arityController.text);
                     final depth = int.parse(_depthController.text);
                     final timeLock = int.parse(_timeLockController.text);
