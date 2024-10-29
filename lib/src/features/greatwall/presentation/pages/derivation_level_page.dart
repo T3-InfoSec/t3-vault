@@ -18,6 +18,13 @@ class DerivationLevelPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Level'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<GreatWallBloc>().add(GreatWallReset());
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
