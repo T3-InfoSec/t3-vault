@@ -59,57 +59,64 @@ class DerivationLevelPage extends StatelessWidget {
                     child: const Text('Previous Level'),
                   ),
                   const SizedBox(height: 10),
-                  ...state.knowledgePalettes.asMap().entries.map(
-                    (entry) {
-                      int index = entry.key + 1;
-                      TacitKnowledge tacitKnowledge = entry.value;
-
-                      return Column(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Future.delayed(
-                                const Duration(seconds: 1),
-                                () {
-                                  if (!context.mounted) return;
+                  Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(10),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, // Number of columns in the grid
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 1, // Aspect ratio for cells 1:1
+                      ),
+                      itemCount: state.knowledgePalettes.length,
+                      itemBuilder: (context, index) {
+                        final TacitKnowledge tacitKnowledge = state.knowledgePalettes[index];
+                        return ElevatedButton(
+                          onPressed: () {
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                              () {
+                                if (!context.mounted) return;
+                                context.read<GreatWallBloc>().add(
+                                    GreatWallDerivationStepMade(index + 1));
+                                if (state.currentLevel < state.treeDepth) {
+                                  context.go(
+                                    '/${DerivationLevelPage.routeName}',
+                                  );
+                                } else {
                                   context
                                       .read<GreatWallBloc>()
-                                      .add(GreatWallDerivationStepMade(index));
-                                  if (state.currentLevel < state.treeDepth) {
-                                    context.go(
-                                      '/${DerivationLevelPage.routeName}',
-                                    );
-                                  } else {
-                                    context
-                                        .read<GreatWallBloc>()
-                                        .add(GreatWallDerivationFinished());
-                                    context.go(
-                                      '/${DerivationResultPage.routeName}',
-                                    );
-                                  }
-                                },
+                                      .add(GreatWallDerivationFinished());
+                                  context.go(
+                                    '/${DerivationResultPage.routeName}',
+                                  );
+                                }
+                              },
+                            );
+                          },
+                          child: Builder(builder: (context) {
+                            if (tacitKnowledge is FormosaTacitKnowledge) {
+                              return Text(tacitKnowledge.knowledge!);
+                            } else if (tacitKnowledge
+                                is HashVizTacitKnowledge) {
+                              return HashvizWidget(
+                                imageData: tacitKnowledge.knowledge!,
+                                size: state.tacitKnowledge.configs['hashvizSize'],
+                                numColors: state.tacitKnowledge.configs['numColors'] ?? 3,
+                                saturation: state.tacitKnowledge.configs['saturation'] ?? 0.7,
+                                brightness: state.tacitKnowledge.configs['brightness'] ?? 0.8,
+                                minHue: state.tacitKnowledge.configs['minHue'] ?? 90,
+                                maxHue: state.tacitKnowledge.configs['maxHue'] ?? 150,
                               );
-                            },
-                            child: Builder(builder: (context) {
-                              if (tacitKnowledge is FormosaTacitKnowledge) {
-                                return Text(tacitKnowledge.knowledge!);
-                              } else if (tacitKnowledge
-                                  is HashVizTacitKnowledge) {
-                                return HashvizWidget(
-                                  imageData: tacitKnowledge.knowledge!,
-                                  size: state
-                                      .tacitKnowledge.configs['hashvizSize'],
-                                );
-                              } else {
-                                return const Text('Unknown type');
-                              }
-                            }),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      );
-                    },
-                  ),
+                            } else {
+                              return const Text('Unknown type');
+                            }
+                          }),
+                        );
+                      },
+                    ),
+                  )
                 ],
               );
             } else {

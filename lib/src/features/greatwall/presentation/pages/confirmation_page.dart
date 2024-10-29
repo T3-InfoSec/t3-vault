@@ -32,63 +32,65 @@ class ConfirmationPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           } else if (state is GreatWallInitialSuccess) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Tacit Knowledge',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(state.tacitKnowledge.toString()),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Tree Arity',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text('${state.treeArity}'),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Tree Depth',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text('${state.treeDepth}'),
-                  const SizedBox(height: 20),
-                  ...state.tacitKnowledge.configs.entries.map((entry) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          entry.key,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text('${entry.value}'),
-                        const SizedBox(height: 20),
-                      ],
-                    );
-                  }),
-                  const Text(
-                    'Password',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const Text('****'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Future.delayed(
-                        const Duration(seconds: 1),
-                        () {
-                          if (!context.mounted) return;
-                          context
-                              .read<GreatWallBloc>()
-                              .add(GreatWallDerivationStarted());
-                          context.go('/${DerivationLevelPage.routeName}');
-                        },
+            return SingleChildScrollView(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Tacit Knowledge',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(state.tacitKnowledge.toString()),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Tree Arity',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('${state.treeArity}'),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'Tree Depth',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('${state.treeDepth}'),
+                    const SizedBox(height: 20),
+                    ...state.tacitKnowledge.configs.entries.map((entry) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            entry.key,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('${entry.value}'),
+                          const SizedBox(height: 20),
+                        ],
                       );
-                    },
-                    child: const Text('Confirm'),
-                  ),
-                ],
+                    }),
+                    const Text(
+                      'Password',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const Text('****'),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        Future.delayed(
+                          const Duration(seconds: 1),
+                          () {
+                            if (!context.mounted) return;
+                            context
+                                .read<GreatWallBloc>()
+                                .add(GreatWallDerivationStarted());
+                            context.go('/${DerivationLevelPage.routeName}');
+                          },
+                        );
+                      },
+                      child: const Text('Confirm'),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {

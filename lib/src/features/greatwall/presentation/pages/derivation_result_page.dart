@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../../../landing/presentation/pages/home_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
 
@@ -37,10 +37,39 @@ class DerivationResultPage extends StatelessWidget {
                   const SizedBox(height: 10),
                   const Text('KA Result:'),
                   const SizedBox(height: 10),
-                  TextField(
-                    controller:
-                        TextEditingController(text: state.derivationHashResult),
-                    readOnly: true,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: TextEditingController(
+                              text: state.derivationHashResult),
+                          readOnly: true,
+                          obscureText: !state.isKAVisible,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                state.isKAVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                              onPressed: () {
+                                context
+                                    .read<GreatWallBloc>()
+                                    .add(GreatWallKAVisibilityToggled());
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: state.derivationHashResult));
+                        },
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
@@ -49,7 +78,7 @@ class DerivationResultPage extends StatelessWidget {
                           .read<MemoCardSetBloc>()
                           .add(MemoCardSetUnchanged());
                       context.read<GreatWallBloc>().add(GreatWallReset());
-                      context.go(HomePage.routeName);
+                      context.pop();
                     },
                     child: const Text('Reset'),
                   ),

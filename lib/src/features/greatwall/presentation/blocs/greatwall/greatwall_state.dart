@@ -6,6 +6,17 @@ sealed class GreatWallState extends Equatable {
   List<Object> get props => [];
 }
 
+class GreatWallInputValid extends GreatWallState {}
+
+class GreatWallInputInvalid extends GreatWallState {
+  final Map<String, String> errors;
+
+  GreatWallInputInvalid(this.errors);
+
+  @override
+  List<Object> get props => [errors];
+}
+
 final class GreatWallInitial extends GreatWallState {}
 
 final class GreatWallTacitKnowledgeSelectSuccess extends GreatWallState {
@@ -37,6 +48,16 @@ class GreatWallInitialSuccess extends GreatWallState {
       [treeArity, treeDepth, timeLockPuzzleParam, tacitKnowledge, secretSeed];
 }
 
+final class GreatWallInputsInProgress extends GreatWallState {
+  final bool isSymmetric;
+  final bool isPasswordVisible;
+
+  GreatWallInputsInProgress(this.isSymmetric, this.isPasswordVisible);
+
+  @override
+  List<Object> get props => [isSymmetric, isPasswordVisible];
+}
+
 final class GreatWallDeriveInProgress extends GreatWallState {}
 
 final class GreatWallDeriveStepSuccess extends GreatWallState {
@@ -59,11 +80,12 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
 
 final class GreatWallFinishSuccess extends GreatWallState {
   final String derivationHashResult;
+  final bool isKAVisible;
 
-  GreatWallFinishSuccess(this.derivationHashResult);
+  GreatWallFinishSuccess(this.derivationHashResult, this.isKAVisible);
 
   @override
-  List<Object> get props => [derivationHashResult];
+  List<Object> get props => [derivationHashResult, isKAVisible];
 }
 
 // class GreatWallLoadedArityIndexes extends GreatWallState {

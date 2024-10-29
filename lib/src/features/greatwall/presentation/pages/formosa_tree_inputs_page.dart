@@ -43,153 +43,203 @@ class FormosaTreeInputsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            BlocBuilder<FormosaBloc, FormosaState>(
-              builder: (context, state) {
-                FormosaTheme? selectedTheme;
+      body: BlocListener<GreatWallBloc, GreatWallState>(
+        listener: (context, state) {
+          if (state is GreatWallInputInvalid) {
+            final errors = state.errors;
+            final errorMessage = errors.values.join('\n');
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(errorMessage)),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              BlocBuilder<FormosaBloc, FormosaState>(
+                builder: (context, state) {
+                  FormosaTheme? selectedTheme;
 
-                if (state is FormosaThemeSelectSuccess) {
-                  selectedTheme = state.theme;
+                  if (state is FormosaThemeSelectSuccess) {
+                    selectedTheme = state.theme;
+                  }
+
+                  return DropdownButton<FormosaTheme>(
+                    value: selectedTheme,
+                    hint: const Text('Select Theme'),
+                    items: FormosaTheme.values.map((FormosaTheme theme) {
+                      return DropdownMenuItem<FormosaTheme>(
+                        value: theme,
+                        child: Text(theme.name),
+                      );
+                    }).toList(),
+                    onChanged: (selectedTheme) {
+                      if (selectedTheme != null) {
+                        context
+                            .read<FormosaBloc>()
+                            .add(FormosaThemeSelected(theme: selectedTheme));
+                      }
+                    },
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _arityController,
+                decoration: const InputDecoration(labelText: 'Tree Arity'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallArityChanged(_arityController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _depthController,
+                decoration: const InputDecoration(labelText: 'Tree Depth'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallDepthChanged(_depthController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: _timeLockController,
+                decoration:
+                    const InputDecoration(labelText: 'Time Lock Puzzle Param'),
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  context.read<GreatWallBloc>().add(
+                        GreatWallTimeLockChanged(_timeLockController.text),
+                      );
+                },
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<GreatWallBloc, GreatWallState>(
+                  builder: (context, state) {
+                bool isPasswordVisible = false;
+
+                if (state is GreatWallInputsInProgress) {
+                  isPasswordVisible = state.isPasswordVisible;
                 }
 
-                return DropdownButton<FormosaTheme>(
-                  value: selectedTheme,
-                  hint: const Text('Select Theme'),
-                  items: FormosaTheme.values.map((FormosaTheme theme) {
-                    return DropdownMenuItem<FormosaTheme>(
-                      value: theme,
-                      child: Text(theme.name),
-                    );
-                  }).toList(),
-                  onChanged: (selectedTheme) {
-                    if (selectedTheme != null) {
-                      context
-                          .read<FormosaBloc>()
-                          .add(FormosaThemeSelected(theme: selectedTheme));
-                    }
-                  },
+                return Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _passwordController,
+                        obscureText: !isPasswordVisible,
+                        decoration: InputDecoration(
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              context
+                                  .read<GreatWallBloc>()
+                                  .add(GreatWallPasswordVisibilityToggled());
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.sync),
+                      onPressed: () async {
+                        String? seed = await showDialog<String>(
+                          context: context,
+                          builder: (context) => const Pa0SeedPromtWidget(),
+                        );
+                        if (seed != null && seed.isNotEmpty) {
+                          _passwordController.text = seed;
+                        }
+                      },
+                    ),
+                  ],
                 );
-              },
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _arityController,
-              decoration: const InputDecoration(labelText: 'Tree Arity'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _depthController,
-              decoration: const InputDecoration(labelText: 'Tree Depth'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _timeLockController,
-              decoration:
-                  const InputDecoration(labelText: 'Time Lock Puzzle Param'),
-              keyboardType: TextInputType.number,
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration:
-                        const InputDecoration(hintText: 'Password'),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.sync),
-                  onPressed: () async {
-                    String? seed = await showDialog<String>(
-                      context: context,
-                      builder: (context) => const Pa0SeedPromtWidget(),
-                    );
-                    if (seed != null && seed.isNotEmpty) {
-                      _passwordController.text = seed;
-                    }
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-              builder: (context, memoCardSetState) {
-                return ElevatedButton(
-                  onPressed: (memoCardSetState is MemoCardSetAddSuccess)
-                      ? null
-                      : () {
-                          final arity = int.parse(_arityController.text);
-                          final depth = int.parse(_depthController.text);
-                          final timeLock = int.parse(_timeLockController.text);
-                          final theme = (context.read<FormosaBloc>().state
-                                  as FormosaThemeSelectSuccess)
-                              .theme;
+              }),
+              const SizedBox(height: 10),
+              BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
+                builder: (context, memoCardSetState) {
+                  return ElevatedButton(
+                    onPressed: (memoCardSetState is MemoCardSetAddSuccess)
+                        ? null
+                        : () {
+                            final arity = int.parse(_arityController.text);
+                            final depth = int.parse(_depthController.text);
+                            final timeLock =
+                                int.parse(_timeLockController.text);
 
-                          context.read<MemoCardSetBloc>().add(
-                                MemoCardSetCardAdded(
-                                  memoCard: MemoCard(
-                                    knowledge: {
-                                      'treeArity': arity,
-                                      'treeDepth': depth,
-                                      'timeLockPuzzleParam': timeLock,
-                                      'tacitKnowledge': FormosaTacitKnowledge(
-                                        configs: {'formosaTheme': theme},
-                                      ),
-                                    },
+                            final theme = (context.read<FormosaBloc>().state
+                                    as FormosaThemeSelectSuccess)
+                                .theme;
+
+                            context.read<MemoCardSetBloc>().add(
+                                  MemoCardSetCardAdded(
+                                    memoCard: MemoCard(
+                                      knowledge: {
+                                        'treeArity': arity,
+                                        'treeDepth': depth,
+                                        'timeLockPuzzleParam': timeLock,
+                                        'tacitKnowledge': FormosaTacitKnowledge(
+                                          configs: {'formosaTheme': theme},
+                                        ),
+                                      },
+                                    ),
                                   ),
+                                );
+                          },
+                    child: const Text('Save To Memorization Card'),
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              BlocBuilder<GreatWallBloc, GreatWallState>(
+                builder: (context, state) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      final arity = int.parse(_arityController.text);
+                      final depth = int.parse(_depthController.text);
+                      final timeLock = int.parse(_timeLockController.text);
+                      final theme = (context.read<FormosaBloc>().state
+                              as FormosaThemeSelectSuccess)
+                          .theme;
+
+                      Future.delayed(
+                        const Duration(seconds: 1),
+                        () {
+                          if (!context.mounted) return;
+                          context.read<GreatWallBloc>().add(
+                                GreatWallInitialized(
+                                  treeArity: arity,
+                                  treeDepth: depth,
+                                  timeLockPuzzleParam: timeLock,
+                                  tacitKnowledge: FormosaTacitKnowledge(
+                                    configs: {'formosaTheme': theme},
+                                  ),
+                                  secretSeed: _passwordController.text,
                                 ),
                               );
+                          context.go(
+                            '/${KnowledgeTypesPage.routeName}/$routeName/'
+                            '${ConfirmationPage.routeName}',
+                          );
                         },
-                  child: const Text('Save To Memorization Card'),
-                );
-              },
-            ),
-            const SizedBox(height: 10),
-            BlocBuilder<GreatWallBloc, GreatWallState>(
-              builder: (context, state) {
-                return ElevatedButton(
-                  onPressed: () async {
-                    final arity = int.parse(_arityController.text);
-                    final depth = int.parse(_depthController.text);
-                    final timeLock = int.parse(_timeLockController.text);
-                    final theme = (context.read<FormosaBloc>().state
-                            as FormosaThemeSelectSuccess)
-                        .theme;
-
-                    Future.delayed(
-                      const Duration(seconds: 1),
-                      () {
-                        if (!context.mounted) return;
-                        context.read<GreatWallBloc>().add(
-                              GreatWallInitialized(
-                                treeArity: arity,
-                                treeDepth: depth,
-                                timeLockPuzzleParam: timeLock,
-                                tacitKnowledge: FormosaTacitKnowledge(
-                                  configs: {'formosaTheme': theme},
-                                ),
-                                secretSeed: _passwordController.text,
-                              ),
-                            );
-                        context.go(
-                          '/${KnowledgeTypesPage.routeName}/$routeName/'
-                          '${ConfirmationPage.routeName}',
-                        );
-                      },
-                    );
-                  },
-                  child: const Text('Start Derivation'),
-                );
-              },
-            ),
-          ],
+                      );
+                    },
+                    child: const Text('Start Derivation'),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
