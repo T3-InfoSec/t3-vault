@@ -21,7 +21,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
-  
+
   final TextEditingController _sizeController = TextEditingController();
   final TextEditingController _colorsNumberController = TextEditingController();
   final TextEditingController _saturationController = TextEditingController();
@@ -239,10 +239,9 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ? state.isSymmetric
                                       : false;
 
-                          // TODO: Use auto-generated real keys.
+                          // TODO: Use real auto-generated eka.
                           String eka = "EphemeralKeyMock";
-                          String pa0 = "encrypted_6-words_hashviz_seed";
-                          var encryptedPA0 = await encryptionService.encrypt(pa0, eka);
+                          var encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
 
                           if (!context.mounted) return;
                           context.read<ProfilesBloc>().add(

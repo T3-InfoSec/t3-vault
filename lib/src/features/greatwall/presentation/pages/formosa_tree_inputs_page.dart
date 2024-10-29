@@ -187,10 +187,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                     as FormosaThemeSelectSuccess)
                                 .theme;
 
-                          // TODO: Use auto-generated real keys.
+                          // TODO: Use real auto-generated eka.
                           String eka = "EphemeralKeyMock";
-                          String pa0 = "encrypted_6-words_hashviz_seed";
-                          var encryptedPA0 = await encryptionService.encrypt(pa0, eka);
+                          var encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
 
                           if (!context.mounted) return;
                           context.read<ProfilesBloc>().add(
