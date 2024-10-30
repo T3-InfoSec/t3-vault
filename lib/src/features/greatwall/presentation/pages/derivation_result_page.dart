@@ -15,7 +15,6 @@ class DerivationResultPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('GreatWall Derivation Result'),
@@ -76,9 +75,11 @@ class DerivationResultPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
-                      Clipboard.setData(ClipboardData(text: bip39Derivation(state.derivationHashResult)));
+                      Clipboard.setData(ClipboardData(
+                          text: bip39Derivation(state.derivationHashResult)));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Seed copied to clipboard')),
+                        const SnackBar(
+                            content: Text('Seed copied to clipboard')),
                       );
 
                       // Allow copying for 10 seconds, then disable
@@ -109,14 +110,11 @@ class DerivationResultPage extends StatelessWidget {
       ),
     );
   }
-  
+
   String bip39Derivation(String key) {
     // Convert the derivation hash result to a Uint8List
     Uint8List derivationHashResultBytes = Uint8List.fromList(
-      key
-      .codeUnits
-      .take(16)
-      .toList(), // Take the first 16 bytes
+      key.codeUnits.take(16).toList(), // Take the first 16 bytes
     );
 
     Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
