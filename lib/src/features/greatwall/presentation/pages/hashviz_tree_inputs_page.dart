@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 
@@ -218,77 +219,83 @@ class HashvizTreeInputsPage extends StatelessWidget {
                       onPressed: (profileSetState is ProfileSetAddSuccess)
                           ? null
                           : () async {
-                              final arity = int.parse(_arityController.text);
-                              final depth = int.parse(_depthController.text);
-                              final timeLock =
-                                  int.parse(_timeLockController.text);
-                              final hashvizSize =
-                                  int.parse(_sizeController.text);
-                              final numColors =
-                                  int.parse(_colorsNumberController.text);
-                              final saturation =
-                                  double.parse(_saturationController.text);
-                              final brightness =
-                                  double.parse(_brightnessController.text);
-                              final minHue = int.parse(_minHueController.text);
-                              final maxHue = int.parse(_maxHueController.text);
+                              final eka = await showDialog<String>(
+                                context: context,
+                                builder: (context) => const EKAPromptWidget(),
+                              );
+                              if (eka != null) {
+                                final arity = int.parse(_arityController.text);
+                                final depth = int.parse(_depthController.text);
+                                final timeLock =
+                                    int.parse(_timeLockController.text);
+                                final hashvizSize =
+                                    int.parse(_sizeController.text);
+                                final numColors =
+                                    int.parse(_colorsNumberController.text);
+                                final saturation =
+                                    double.parse(_saturationController.text);
+                                final brightness =
+                                    double.parse(_brightnessController.text);
+                                final minHue =
+                                    int.parse(_minHueController.text);
+                                final maxHue =
+                                    int.parse(_maxHueController.text);
+                                final encryptedPA0 = await encryptionService
+                                    .encrypt(_passwordController.text, eka);
+                                if (!context.mounted) return;
+                                final state =
+                                    context.read<GreatWallBloc>().state;
+                                final isSymmetric =
+                                    state is GreatWallInputsInProgress
+                                        ? state.isSymmetric
+                                        : false;
 
-                              final state = context.read<GreatWallBloc>().state;
-                              final isSymmetric =
-                                  state is GreatWallInputsInProgress
-                                      ? state.isSymmetric
-                                      : false;
-
-                          // TODO: Use real auto-generated eka.
-                          String eka = "EphemeralKeyMock";
-                          var encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
-
-                          if (!context.mounted) return;
-                          context.read<ProfilesBloc>().add(
-                                ProfileSetAdded(
-                                  profile: Profile(
-                                    memoCard:
-                                      MemoCard(
-                                        knowledge: {
-                                          'treeArity': arity,
-                                          'treeDepth': depth,
-                                          'timeLockPuzzleParam': timeLock,
-                                          'tacitKnowledge': HashVizTacitKnowledge(
-                                            configs: {
-                                              'hashvizSize': hashvizSize,
-                                              'isSymmetric': isSymmetric,
-                                              'numColors': numColors,
-                                              'saturation': saturation,
-                                              'brightness': brightness,
-                                              'minHue': minHue,
-                                              'maxHue': maxHue,
-                                            },
-                                          ),
-                                          'secretSeed': _passwordController.text,
-                                        },
+                                context.read<ProfilesBloc>().add(
+                                      ProfileSetAdded(
+                                        profile: Profile(
+                                            memoCard: MemoCard(
+                                              knowledge: {
+                                                'treeArity': arity,
+                                                'treeDepth': depth,
+                                                'timeLockPuzzleParam': timeLock,
+                                                'tacitKnowledge':
+                                                    HashVizTacitKnowledge(
+                                                  configs: {
+                                                    'hashvizSize': hashvizSize,
+                                                    'isSymmetric': isSymmetric,
+                                                    'numColors': numColors,
+                                                    'saturation': saturation,
+                                                    'brightness': brightness,
+                                                    'minHue': minHue,
+                                                    'maxHue': maxHue,
+                                                  },
+                                                ),
+                                                'secretSeed':
+                                                    _passwordController.text,
+                                              },
+                                            ),
+                                            seedPA0:
+                                                base64Encode(encryptedPA0)),
                                       ),
-                                    seedPA0: base64Encode(encryptedPA0)
-                                  ),
-                                ),
-                          );
-                        },
-                  child: const Text('Save To Memorization Card'),
-                );
-
-              },
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                final arity = int.parse(_arityController.text);
-                final depth = int.parse(_depthController.text);
-                final timeLock = int.parse(_timeLockController.text);
-                final hashvizSize = int.parse(_sizeController.text);
-                final numColors = int.parse(_colorsNumberController.text);
-                final saturation = double.parse(_saturationController.text);
-                final brightness = double.parse(_brightnessController.text);
-                final minHue = int.parse(_minHueController.text);
-                final maxHue = int.parse(_maxHueController.text);
+                                    );
+                              }
+                            },
+                      child: const Text('Save To Memorization Card'),
+                    );
+                  },
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    final arity = int.parse(_arityController.text);
+                    final depth = int.parse(_depthController.text);
+                    final timeLock = int.parse(_timeLockController.text);
+                    final hashvizSize = int.parse(_sizeController.text);
+                    final numColors = int.parse(_colorsNumberController.text);
+                    final saturation = double.parse(_saturationController.text);
+                    final brightness = double.parse(_brightnessController.text);
+                    final minHue = int.parse(_minHueController.text);
+                    final maxHue = int.parse(_maxHueController.text);
 
                     final state = context.read<GreatWallBloc>().state;
                     final isSymmetric = state is GreatWallInputsInProgress

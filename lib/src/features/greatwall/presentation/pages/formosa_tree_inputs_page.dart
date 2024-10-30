@@ -7,6 +7,7 @@ import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 
@@ -178,37 +179,38 @@ class FormosaTreeInputsPage extends StatelessWidget {
                     onPressed: (profileSetState is ProfileSetAddSuccess)
                         ? null
                         : () async {
+                          final eka = await showDialog<String>(
+                            context: context,
+                            builder: (context) => const EKAPromptWidget(),
+                          );
+                          if (eka != null) {
                             final arity = int.parse(_arityController.text);
                             final depth = int.parse(_depthController.text);
-                            final timeLock =
-                                int.parse(_timeLockController.text);
-
+                            final timeLock = int.parse(_timeLockController.text);
+                            final encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
+                            if (!context.mounted) return;
                             final theme = (context.read<FormosaBloc>().state
                                     as FormosaThemeSelectSuccess)
                                 .theme;
 
-                          // TODO: Use real auto-generated eka.
-                          String eka = "EphemeralKeyMock";
-                          var encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
-
-                          if (!context.mounted) return;
-                          context.read<ProfilesBloc>().add(
-                                ProfileSetAdded(
-                                  profile: Profile(
-                                    memoCard: MemoCard(
-                                      knowledge: {
-                                        'treeArity': arity,
-                                        'treeDepth': depth,
-                                        'timeLockPuzzleParam': timeLock,
-                                        'tacitKnowledge': FormosaTacitKnowledge(
-                                          configs: {'formosaTheme': theme},
-                                        ),
-                                      },
-                                    ),
-                                    seedPA0: base64Encode(encryptedPA0)
-                                  )
-                                ),
-                              );
+                            context.read<ProfilesBloc>().add(
+                                  ProfileSetAdded(
+                                    profile: Profile(
+                                      memoCard: MemoCard(
+                                        knowledge: {
+                                          'treeArity': arity,
+                                          'treeDepth': depth,
+                                          'timeLockPuzzleParam': timeLock,
+                                          'tacitKnowledge': FormosaTacitKnowledge(
+                                            configs: {'formosaTheme': theme},
+                                          ),
+                                        },
+                                      ),
+                                      seedPA0: base64Encode(encryptedPA0)
+                                    )
+                                  ),
+                            );
+                          }
                         },
                   child: const Text('Save To Memorization Card'),
                 );
