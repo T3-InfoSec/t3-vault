@@ -1,10 +1,8 @@
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:uuid/uuid.dart';
 
 class MemoCardConverter {
-  static const _uuid = Uuid();
 
   /// Converts a MemoCard object to JSON format.
   static Map<String, dynamic> toJson(MemoCard memoCard) {
