@@ -32,10 +32,11 @@ class MemoCardRepository {
         final memoCard = MemoCardConverter.fromJson(json);
         final id = json['id'];
         _memoCardIdMap[id] = memoCard;
-      }
+      } 
       return _memoCardIdMap.values.toList();
-    } catch (e) {
+    } catch (e, stackTrace) {
       // TODO: Handle file read errors
+      print("Error: $e $stackTrace");
       return [];
     }
   }

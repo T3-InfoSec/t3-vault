@@ -197,7 +197,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             context.read<MemoCardSetBloc>().add(
                               MemoCardSetCardAdded(
                                 memoCard: MemoCard(
-                                  knowledge: 'Try to remember where you saved your ephemeral ka',
+                                  knowledge: {
+                                    'eka': 'Try to remember where you saved your ephemeral ka',
+                                  },
                                   deck: deck,
                                 ),
                               ),
@@ -206,7 +208,9 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             context.read<MemoCardSetBloc>().add(
                               MemoCardSetCardAdded(
                                 memoCard: MemoCard(
-                                  knowledge: base64Encode(encryptedPA0),
+                                  knowledge: {
+                                    'pa0': base64Encode(encryptedPA0),
+                                  },
                                   deck: deck,
                                 ),
                               ),

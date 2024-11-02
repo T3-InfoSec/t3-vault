@@ -8,16 +8,17 @@ class MemoCardConverter {
 
   /// Converts a MemoCard object to JSON format.
   static Map<String, dynamic> toJson(MemoCard memoCard) {
-    return memoCard.isTacitKnowledgeCard() 
-    ? generateTacitKnowledgeJson(memoCard) 
-    : generateBasicKnowledgeJson(memoCard);
+    return memoCard.isTacitKnowledgeCard()
+        ? generateTacitKnowledgeJson(memoCard)
+        : generateBasicKnowledgeJson(memoCard);
   }
 
   /// Converts JSON to a MemoCard object.
   static MemoCard fromJson(Map<String, dynamic> json) {
     final knowledge = json['knowledge'];
 
-    TacitKnowledge? tacitKnowledge = getTacitKnowledge(knowledge);
+    TacitKnowledge? tacitKnowledge =
+        isTacitKnowledge(knowledge) ? getTacitKnowledge(knowledge) : null;
 
     return MemoCard(
       knowledge: {
@@ -36,7 +37,6 @@ class MemoCardConverter {
       stateIndex: json['stateIndex'],
     );
   }
-
 
   static Map<String, dynamic> generateBasicKnowledgeJson(MemoCard memoCard) {
     return {
@@ -59,8 +59,9 @@ class MemoCardConverter {
     final tacitKnowledge = knowledge['tacitKnowledge'];
     final formosaThemeName = tacitKnowledge.configs['formosaTheme']?.name;
     final tacitKnowledgeType = _getTacitKnowledgeType(tacitKnowledge);
-    final tacitKnowledgeConfigs = _getConfigsWithFormosaThemeName(formosaThemeName, tacitKnowledge);
-    
+    final tacitKnowledgeConfigs =
+        _getConfigsWithFormosaThemeName(formosaThemeName, tacitKnowledge);
+
     return {
       'knowledge': {
         'treeArity': knowledge['treeArity'],
@@ -83,9 +84,11 @@ class MemoCardConverter {
     };
   }
 
+  static bool isTacitKnowledge(knowledge) => knowledge is Map<String, dynamic>;
+
   /// Creates a configuration map including the Formosa theme name.
   ///
-  /// Combines existing configurations from [tacitKnowledge] and adds 
+  /// Combines existing configurations from [tacitKnowledge] and adds
   /// [formosaThemeName], if provided, returning a map containing the
   /// configurations.
   static Map<String, dynamic> _getConfigsWithFormosaThemeName(
@@ -102,8 +105,8 @@ class MemoCardConverter {
 
   /// Identifies the type of tacit knowledge.
   ///
-  /// Checks if [tacitKnowledge] is of type [FormosaTacitKnowledge] or 
-  /// [HashVizTacitKnowledge] and returns a corresponding string or an 
+  /// Checks if [tacitKnowledge] is of type [FormosaTacitKnowledge] or
+  /// [HashVizTacitKnowledge] and returns a corresponding string or an
   /// empty string if unknown.
   static String _getTacitKnowledgeType(tacitKnowledge) {
     String tacitKnowledgeType;
@@ -122,18 +125,18 @@ class MemoCardConverter {
     return _uuid.v4();
   }
 
-    static TacitKnowledge? getTacitKnowledge(knowledge) {
+  static TacitKnowledge? getTacitKnowledge(knowledge) {
     TacitKnowledge? tacitKnowledge;
-    
+
     if (knowledge.containsKey('tacitKnowledgeConfigs')) {
       final tacitKnowledgeConfigs = knowledge['tacitKnowledgeConfigs'];
       final tacitKnowledgeType = knowledge['tacitKnowledgeType'];
-    
+
       // Create TacitKnowledge instance based on its type
       if (tacitKnowledgeType == 'FormosaTacitKnowledge') {
         final formosaThemeName = tacitKnowledgeConfigs['formosaTheme'];
         FormosaTheme? formosaTheme;
-    
+
         if (formosaThemeName != null) {
           formosaTheme = FormosaTheme.values
               .firstWhere((theme) => theme.name == formosaThemeName);
