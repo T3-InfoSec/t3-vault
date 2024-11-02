@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -27,7 +28,7 @@ import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart'
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
-  final ProfileRepository memoCardRepository;
+  final MemoCardRepository memoCardRepository;
 
   const T3Vault({
     super.key,
@@ -54,8 +55,8 @@ class T3Vault extends StatelessWidget {
             BlocProvider<GreatWallBloc>(
               create: (BuildContext context) => GreatWallBloc(),
             ),
-            BlocProvider<ProfilesBloc>(
-              create: (BuildContext context) => ProfilesBloc(memoCardRepository: memoCardRepository),
+            BlocProvider<MemoCardSetBloc>(
+              create: (BuildContext context) => MemoCardSetBloc(memoCardRepository: memoCardRepository),
             ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) => MemoCardRatingBloc(memoCardRepository: memoCardRepository),
@@ -170,27 +171,33 @@ class T3Vault extends StatelessWidget {
                           ],
                         ),
                         GoRoute(
-                          path: MemoCardsPage.routeName,
-                          pageBuilder:
-                              (BuildContext context, GoRouterState state) {
+                          path: MemoCardDecksPage.routeName,
+                          pageBuilder: (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.memoCards',
-                              child: MemoCardsPage(),
+                              restorationId: 'router.root.decks',
+                              child: MemoCardDecksPage(),
                             );
                           },
                           routes: <RouteBase>[
                             GoRoute(
-                              path:
-                                  '${MemoCardDetailsPage.routeName}/:cardName',
-                              pageBuilder:
-                                  (BuildContext context, GoRouterState state) {
-                                final cardName = int.parse(
-                                    state.pathParameters['cardName']!);
+                              path: MemoCardsPage.routeName,
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final memoCards = state.extra as List<MemoCard>? ?? [];
+
+                                return MaterialPage(
+                                  restorationId: 'router.root.decks.memoCards',
+                                  child: MemoCardsPage(memoCards: memoCards),
+                                );
+                              },
+                            ),
+                            GoRoute(
+                              path: '${MemoCardDetailsPage.routeName}/:cardName',
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final cardName = int.parse(state.pathParameters['cardName']!);
                                 final memoCard = state.extra as MemoCard;
 
                                 return MaterialPage(
-                                  restorationId:
-                                      'router.root.memoCards.details',
+                                  restorationId: 'router.root.decks.memoCards.details',
                                   child: MemoCardDetailsPage(
                                     cardName: cardName,
                                     memoCard: memoCard,

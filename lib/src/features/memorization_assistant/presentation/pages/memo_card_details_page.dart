@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -77,8 +78,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       Text(
                         style: TextStyle(
                           fontSize: themeData.textTheme.bodySmall!.fontSize,
-                          fontWeight:
-                              themeData.textTheme.bodySmall!.fontWeight,
+                          fontWeight: themeData.textTheme.bodySmall!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
                         'State: ${memoCard.state}',
@@ -86,8 +86,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       Text(
                         style: TextStyle(
                           fontSize: themeData.textTheme.bodySmall!.fontSize,
-                          fontWeight:
-                              themeData.textTheme.bodySmall!.fontWeight,
+                          fontWeight: themeData.textTheme.bodySmall!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
                         'Due: ${memoCard.due.toLocal()}',
@@ -124,49 +123,57 @@ class MemoCardDetailsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            BlocBuilder<ProfilesBloc, ProfileSetState>(
+            BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
               builder: (context, memoCardSetState) {
                 return ElevatedButton(
                   onPressed: () {
-                    context.read<ProfilesBloc>().add(
-                          MemoProfileSetMemoCardRemoved(memoCard: memoCard),
+                    context.read<MemoCardSetBloc>().add(
+                          MemoCardSetCardRemoved(memoCard: memoCard),
                         );
-                    context.go('/${MemoCardsPage.routeName}');
+                    context.go('/${MemoCardDecksPage.routeName}');
                   },
                   child: const Text('Delete Memorization Card'),
                 );
               },
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                String? password = await showDialog<String>(
-                  context: context,
-                  builder: (context) => const PasswordPrompt(),
-                );
+            Opacity(
+              opacity: memoCard.isTacitKnowledgeCard()
+                  ? 1.0
+                  : 0.5, // Ajustar la opacidad
+              child: ElevatedButton(
+                onPressed: memoCard.isTacitKnowledgeCard()
+                    ? () async {
+                        String? password = await showDialog<String>(
+                          context: context,
+                          builder: (context) => const PasswordPrompt(),
+                        );
 
-                if (password != null && password.isNotEmpty) {
-                  if (!context.mounted) return;
-                  
-                  int treeArity = memoCard.knowledge['treeArity'];
-                  int treeDepth = memoCard.knowledge['treeDepth'];
-                  int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
-                  TacitKnowledge tacitKnowledge =
-                      memoCard.knowledge['tacitKnowledge'];
+                        if (password != null && password.isNotEmpty) {
+                          if (!context.mounted) return;
 
-                  context.read<GreatWallBloc>().add(
-                        GreatWallInitialized(
-                          treeArity: treeArity,
-                          treeDepth: treeDepth,
-                          timeLockPuzzleParam: timeLock,
-                          tacitKnowledge: tacitKnowledge,
-                          secretSeed: password,
-                        ),
-                      );
-                  context.go('/${ConfirmationPage.routeName}');
-                }
-              },
-              child: const Text('Try protocol'),
+                          int treeArity = memoCard.knowledge['treeArity'];
+                          int treeDepth = memoCard.knowledge['treeDepth'];
+                          int timeLock =
+                              memoCard.knowledge['timeLockPuzzleParam'];
+                          TacitKnowledge tacitKnowledge =
+                              memoCard.knowledge['tacitKnowledge'];
+
+                          context.read<GreatWallBloc>().add(
+                                GreatWallInitialized(
+                                  treeArity: treeArity,
+                                  treeDepth: treeDepth,
+                                  timeLockPuzzleParam: timeLock,
+                                  tacitKnowledge: tacitKnowledge,
+                                  secretSeed: password,
+                                ),
+                              );
+                          context.go('/${ConfirmationPage.routeName}');
+                        }
+                      }
+                    : null,
+                child: const Text('Try protocol'),
+              ),
             ),
           ],
         ),

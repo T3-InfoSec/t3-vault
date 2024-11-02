@@ -21,7 +21,7 @@ void main() async {
 
   // Initialize the MemoCardRepository with the specified file path, allowing
   // the application to read and write memo card data to the JSON file.
-  final memoCardRepository = ProfileRepository(filePath: filePath);
+  final memoCardRepository = MemoCardRepository(filePath: filePath);
 
   // Load the user's preferred theme while the splash screen is displayed.
   // This prevents a sudden theme change when the app is first displayed.

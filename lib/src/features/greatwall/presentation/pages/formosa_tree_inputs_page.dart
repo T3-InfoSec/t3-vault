@@ -8,8 +8,8 @@ import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -37,7 +37,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            context.read<ProfilesBloc>().add(ProfileSetUnchanged());
+            context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
             context.pop();
           },
         ),
@@ -173,10 +173,10 @@ class FormosaTreeInputsPage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 10),
-              BlocBuilder<ProfilesBloc, ProfileSetState>(
+              BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
                 builder: (context, profileSetState) {
                   return ElevatedButton(
-                    onPressed: (profileSetState is ProfileSetAddSuccess)
+                    onPressed: (profileSetState is MemoCardSetAddSuccess)
                         ? null
                         : () async {
                           final eka = await showDialog<String>(
@@ -188,27 +188,44 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             final depth = int.parse(_depthController.text);
                             final timeLock = int.parse(_timeLockController.text);
                             final encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
+                            final deck = const Uuid().v4();
                             if (!context.mounted) return;
                             final theme = (context.read<FormosaBloc>().state
                                     as FormosaThemeSelectSuccess)
                                 .theme;
 
-                            context.read<ProfilesBloc>().add(
-                                  ProfileSetAdded(
-                                    profile: Profile(
-                                      memoCard: MemoCard(
-                                        knowledge: {
-                                          'treeArity': arity,
-                                          'treeDepth': depth,
-                                          'timeLockPuzzleParam': timeLock,
-                                          'tacitKnowledge': FormosaTacitKnowledge(
-                                            configs: {'formosaTheme': theme},
-                                          ),
-                                        },
-                                      ),
-                                      seedPA0: base64Encode(encryptedPA0)
-                                    )
-                                  ),
+                            context.read<MemoCardSetBloc>().add(
+                              MemoCardSetCardAdded(
+                                memoCard: MemoCard(
+                                  knowledge: 'Try to remember where you saved your ephemeral ka',
+                                  deck: deck,
+                                ),
+                              ),
+                            );
+
+                            context.read<MemoCardSetBloc>().add(
+                              MemoCardSetCardAdded(
+                                memoCard: MemoCard(
+                                  knowledge: base64Encode(encryptedPA0),
+                                  deck: deck,
+                                ),
+                              ),
+                            );
+
+                            context.read<MemoCardSetBloc>().add(
+                                  MemoCardSetCardAdded(
+                                    memoCard: MemoCard(
+                                      knowledge: {
+                                        'treeArity': arity,
+                                        'treeDepth': depth,
+                                        'timeLockPuzzleParam': timeLock,
+                                        'tacitKnowledge': FormosaTacitKnowledge(
+                                          configs: {'formosaTheme': theme},
+                                        ),
+                                      },
+                                      deck: deck,
+                                    ),
+                                  )  
                             );
                           }
                         },

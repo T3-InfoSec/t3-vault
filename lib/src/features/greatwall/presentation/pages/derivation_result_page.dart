@@ -94,8 +94,8 @@ class DerivationResultPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       context
-                          .read<ProfilesBloc>()
-                          .add(ProfileSetUnchanged());
+                          .read<MemoCardSetBloc>()
+                          .add(MemoCardSetUnchanged());
                       context.read<GreatWallBloc>().add(GreatWallReset());
                       context.pop();
                     },

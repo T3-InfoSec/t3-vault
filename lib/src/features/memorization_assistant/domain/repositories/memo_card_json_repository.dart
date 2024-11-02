@@ -2,112 +2,108 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/converters/profile_json_converter.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
+import '../converters/memo_card_json_converter.dart';
 
-class ProfileRepository {
+class MemoCardRepository {
   final String filePath;
-  Map<String, Profile> _profileIdMap = {};
+  Map<String, MemoCard> _memoCardIdMap = {};
 
-  ProfileRepository({required this.filePath});
+  MemoCardRepository({required this.filePath});
 
-  /// Reads profiles from a JSON file and returns a map of profiles.
+  /// Reads memo cards from a JSON file and returns a map of memo cards.
   ///
   /// This method attempts to read a JSON file located at [filePath]. If the file
   /// does not exist, it returns an empty map. The contents of the file are 
   /// expected to be a list of JSON objects representing memo cards.
   ///
-  /// Each JSON object is converted to a [Profile] instance using 
-  /// [ProfileJsonConverter.fromJson], and a corresponding ID is extracted from 
+  /// Each JSON object is converted to a [MemoCard] instance using 
+  /// [MemoCardConverter.fromJson], and a corresponding ID is extracted from 
   /// the JSON object to serve as the key in the resulting map.
-  Future<List> readProfiles() async {
+  Future<List> readMemoCards() async {
     try {
       final file = File(filePath);
       if (!await file.exists()) {
         return [];
       }
       final contents = await file.readAsString();
-      final profilesJson = jsonDecode(contents) as List;
+      final jsonData = jsonDecode(contents) as List;
 
-      for (var profileJson in profilesJson) {
-        final profile = ProfileJsonConverter.fromJson(profileJson);
-        final id = profileJson['id'];
-        _profileIdMap[id] = profile;
+      for (var json in jsonData) {
+        final memoCard = MemoCardConverter.fromJson(json);
+        final id = json['id'];
+        _memoCardIdMap[id] = memoCard;
       }
-      return _profileIdMap.values.toList();
+      return _memoCardIdMap.values.toList();
     } catch (e) {
       // TODO: Handle file read errors
       return [];
     }
   }
 
-  /// Adds a new profile to the repository.
+  /// Adds a new memo card to the repository.
   ///
-  /// This method generates a unique ID for the provided [profile] and adds 
-  /// it to the internal map [_profileIdMap]. The updated map is then written 
-  /// to the JSON file located at [filePath] using [_writeProfiles] method.
-  Future<void> addMemoCard(Profile profile) async {
-    final id = ProfileJsonConverter.generateId();
-    _profileIdMap[id] = profile;
+  /// This method generates a unique ID for the provided [memoCard] and adds 
+  /// it to the internal map [_memoCardIdMap]. The updated map is then written 
+  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
+  Future<void> addMemoCard(MemoCard memoCard) async {
+    final id = MemoCardConverter.generateId();
+    _memoCardIdMap[id] = memoCard;
     
-    await _writeProfiles();
+    await _writeMemoCards();
   }
 
-  /// Removes a profile containing the specified memo card.
+  /// Removes a memo card from the repository.
   ///
-  /// This method identifies the ID of the profile from 
-  /// [_profileIdMap] tha contains the given [memoCard] and removes the profile from the map.
-  /// After removal, the updated map is saved to the JSON file at [filePath] 
-  /// using the [_writeProfiles] method.
+  /// This method identifies the ID of the provided [memoCard] from 
+  /// [_memoCardIdMap] and removes it from the map. The updated map is then 
+  /// written to the JSON file at [filePath] using [_writeMemoCard] method.
   Future<void> removeMemoCard(MemoCard memoCard) async {
-    final id = _getProfileIdByMemoCard(memoCard);
+    final id = _getMemoCardId(memoCard);
     if (id != null) {
-      _profileIdMap.remove(id);
+      _memoCardIdMap.remove(id);
     }
     
-    await _writeProfiles();
+    await _writeMemoCards();
   }
 
-  /// Updates an existing profile containing the specified memo card.
+  /// Updates an existing memo card in the repository.
   ///
-  /// This method locates the ID of profile from [_profileIdMap] tha contains the given [memoCard]
-  /// and updates its content.
-  /// The updated map is saved to the JSON file at [filePath] using the [_writeProfiles] method.
+  /// This method locates the ID of the provided [memoCard] in [_memoCardIdMap] 
+  /// and updates its content. The updated map is then written 
+  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
   Future<void> updateMemoCard(MemoCard memoCard) async {
-    final id = _getProfileIdByMemoCard(memoCard);
+    final id = _getMemoCardId(memoCard);
     if (id != null) {
-      var profile = _profileIdMap[id];
-      profile!.memoCard = memoCard;
-      _profileIdMap[id] = profile;
+      _memoCardIdMap[id] = memoCard;
     }
 
-    await _writeProfiles();
+    await _writeMemoCards();
   }
 
-  /// Writes the current state of profiles to the JSON file.
+  /// Writes the current state of memo cards to the JSON file.
   ///
-  /// This private method converts the current entries in [_profileIdMap] 
-  /// to JSON format using [ProfileJsonConverter.toJson], adds their corresponding 
+  /// This private method converts the current entries in [_memoCardIdMap] 
+  /// to JSON format using [MemoCardConverter.toJson], adds their corresponding 
   /// IDs, and writes the resulting list to the file located at [filePath].
   ///
   /// If the file does not exist, it will be created.  
-  Future<void> _writeProfiles() async {
+  Future<void> _writeMemoCards() async {
     final file = File(filePath);
-    final jsonData = _profileIdMap.entries.map((entry) => {
-      ...ProfileJsonConverter.toJson(entry.value),
+    final jsonData = _memoCardIdMap.entries.map((entry) => {
+      ...MemoCardConverter.toJson(entry.value),
       'id': entry.key,
     }).toList();
     await file.writeAsString(jsonEncode(jsonData));
   }
 
-  Map<String, Profile> get profileIdMap => _profileIdMap;
+  Map<String, MemoCard> get memoCardIdMap => _memoCardIdMap;
 
-  /// Retrieves the ID of a profile.
+  /// Retrieves the ID of a memo card.
   ///
-  /// This private method searches [_profileIdMap] for the provided [memoCard] 
+  /// This private method searches [_memoCardIdMap] for the provided [memoCard] 
   /// and returns its corresponding ID. If the memo card is not found, the method 
   /// returns `null`.
-  String? _getProfileIdByMemoCard(MemoCard memoCard) {
-    return _profileIdMap.entries.firstWhere((entry) => entry.value.memoCard == memoCard).key;
+  String? _getMemoCardId(MemoCard memoCard) {
+    return _memoCardIdMap.entries.firstWhere((entry) => entry.value == memoCard).key;
   }
 }

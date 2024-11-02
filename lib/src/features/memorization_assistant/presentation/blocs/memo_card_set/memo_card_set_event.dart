@@ -1,31 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/models/profile_model.dart';
 
-sealed class ProfileSetEvent extends Equatable {
-  const ProfileSetEvent();
+sealed class MemoCardSetEvent extends Equatable {
+  const MemoCardSetEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-final class ProfileSetLoadRequested extends ProfileSetEvent {}
+final class MemoCardSetLoadRequested extends MemoCardSetEvent {}
 
-final class ProfileSetUnchanged extends ProfileSetEvent {}
+final class MemoCardSetUnchanged extends MemoCardSetEvent {}
 
-final class ProfileSetAdded extends ProfileSetEvent {
-  final Profile profile;
-
-  const ProfileSetAdded({required this.profile});
-
-  @override
-  List<Object?> get props => [profile];
-}
-
-final class MemoProfileSetMemoCardRemoved extends ProfileSetEvent {
+final class MemoCardSetCardAdded extends MemoCardSetEvent {
   final MemoCard memoCard;
 
-  const MemoProfileSetMemoCardRemoved({required this.memoCard});
+  const MemoCardSetCardAdded({required this.memoCard});
+
+  @override
+  List<Object?> get props => [memoCard];
+}
+
+final class MemoCardSetCardRemoved extends MemoCardSetEvent {
+  final MemoCard memoCard;
+
+  const MemoCardSetCardRemoved({required this.memoCard});
 
   @override
   List<Object?> get props => [memoCard];
