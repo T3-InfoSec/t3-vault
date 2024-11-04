@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
