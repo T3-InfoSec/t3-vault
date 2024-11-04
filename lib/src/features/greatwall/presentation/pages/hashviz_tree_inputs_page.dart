@@ -214,9 +214,9 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-                  builder: (context, profileSetState) {
+                  builder: (context, memoCardSetState) {
                     return ElevatedButton(
-                      onPressed: (profileSetState is MemoCardSetAddSuccess)
+                      onPressed: (memoCardSetState is MemoCardSetAddSuccess)
                           ? null
                           : () async {
                               final eka = await showDialog<String>(

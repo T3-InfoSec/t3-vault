@@ -13,7 +13,6 @@ class MemoCardSetBloc
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
     on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
-    // _loadMemoCardsFromRepository();
   }
 
   Future<void> _onMemoCardSetEvent(
