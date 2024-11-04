@@ -273,30 +273,32 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                   ),
                                 );
 
-                                context.read<MemoCardSetBloc>().add(
-                                  MemoCardSetCardAdded(
-                                    memoCard: MemoCard(
-                                      knowledge: {
-                                        'treeArity': arity,
-                                        'treeDepth': depth,
-                                        'timeLockPuzzleParam': timeLock,
-                                        'tacitKnowledge':
-                                            HashVizTacitKnowledge(
-                                          configs: {
-                                            'hashvizSize': hashvizSize,
-                                            'isSymmetric': isSymmetric,
-                                            'numColors': numColors,
-                                            'saturation': saturation,
-                                            'brightness': brightness,
-                                            'minHue': minHue,
-                                            'maxHue': maxHue,
-                                          },
-                                        ),
-                                      },
-                                      deck: deck,
+                                for (int i = 1; i <= depth; i++) {
+                                  context.read<MemoCardSetBloc>().add(
+                                    MemoCardSetCardAdded(
+                                      memoCard: MemoCard(
+                                        knowledge: {
+                                          'treeArity': arity,
+                                          'treeDepth': i,
+                                          'timeLockPuzzleParam': timeLock,
+                                          'tacitKnowledge':
+                                              HashVizTacitKnowledge(
+                                            configs: {
+                                              'hashvizSize': hashvizSize,
+                                              'isSymmetric': isSymmetric,
+                                              'numColors': numColors,
+                                              'saturation': saturation,
+                                              'brightness': brightness,
+                                              'minHue': minHue,
+                                              'maxHue': maxHue,
+                                            },
+                                          ),
+                                        },
+                                        deck: deck,
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               }
                             },
                       child: const Text('Save To Memorization Card'),

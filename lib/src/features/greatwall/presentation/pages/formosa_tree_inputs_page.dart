@@ -216,21 +216,23 @@ class FormosaTreeInputsPage extends StatelessWidget {
                               ),
                             );
 
-                            context.read<MemoCardSetBloc>().add(
-                                  MemoCardSetCardAdded(
-                                    memoCard: MemoCard(
-                                      knowledge: {
-                                        'treeArity': arity,
-                                        'treeDepth': depth,
-                                        'timeLockPuzzleParam': timeLock,
-                                        'tacitKnowledge': FormosaTacitKnowledge(
-                                          configs: {'formosaTheme': theme},
-                                        ),
-                                      },
-                                      deck: deck,
-                                    ),
-                                  )  
-                            );
+                            for (int i = 1; i <= depth; i++) {
+                              context.read<MemoCardSetBloc>().add(
+                                    MemoCardSetCardAdded(
+                                      memoCard: MemoCard(
+                                        knowledge: {
+                                          'treeArity': arity,
+                                          'treeDepth': i,
+                                          'timeLockPuzzleParam': timeLock,
+                                          'tacitKnowledge': FormosaTacitKnowledge(
+                                            configs: {'formosaTheme': theme},
+                                          ),
+                                        },
+                                        deck: deck,
+                                      ),
+                                    )  
+                              );
+                            }
                           }
                         },
                   child: const Text('Save To Memorization Card'),
