@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
-import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 import 'memo_card_details_page.dart';
 
@@ -16,15 +15,19 @@ import 'memo_card_details_page.dart';
 class MemoCardsPage extends StatelessWidget {
   static const routeName = 'memo_cards';
 
-  const MemoCardsPage({super.key});
+  final List<MemoCard> memoCards;
+
+  /// Creates all memo cards of a deck view.
+  ///
+  /// [memoCards] all cards from a deck
+  const MemoCardsPage({
+    super.key, 
+    required this.memoCards
+  });
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<MemoCardSetBloc>().add(MemoCardSetLoadRequested());
-    });
 
     return Scaffold(
       appBar: AppBar(
@@ -42,45 +45,34 @@ class MemoCardsPage extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-              builder: (context, memoCardSetState) {
-                if (memoCardSetState.memoCardSet.isEmpty) {
-                  return const Text('No Memorization Card Yet!');
-                }
-                return BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
-                  builder: (context, ratingState) {
-                    return Wrap(
-                      spacing: 5.0,
-                      runSpacing: 5.0,
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children:
-                          memoCardSetState.memoCardSet.asMap().entries.map(
-                        (entry) {
-                          int levelNumber = entry.key;
-                          MemoCard memoCard = entry.value;
-                          return GestureDetector(
-                            onTap: () {
-                              context.go(
-                                '/$routeName/${MemoCardDetailsPage.routeName}'
-                                '/$levelNumber',
-                                extra: memoCard,
-                              );
-                            },
-                            child: MemoCardViewer(
-                              themeData: themeData,
-                              levelNumber: levelNumber,
-                              memoCard: memoCard,
-                            ),
-                          );
-                        },
-                      ).toList(),
+            child: memoCards.isEmpty 
+            ? const Text('No Memorization Cards in this deck!') 
+            : Wrap(
+                spacing: 5.0,
+                runSpacing: 5.0,
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: memoCards.asMap().entries.map(
+                  (entry) {
+                    int levelNumber = entry.key;
+                    MemoCard memoCard = entry.value;
+                    return GestureDetector(
+                      onTap: () {
+                        context.go(
+                          '/${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}/$levelNumber',
+                          extra: memoCard,
+                        );
+                      },
+                      child: MemoCardViewer(
+                        themeData: themeData,
+                        levelNumber: levelNumber,
+                        memoCard: memoCard,
+                      ),
                     );
                   },
-                );
-              },
-            ),
+                ).toList(),
+              ),
           ),
         ),
       ),

@@ -48,5 +48,4 @@ class MemoCardSetBloc
   Future<void> _loadMemoCardsFromRepository() async {
       await memoCardRepository.readMemoCards();
   }
-
 }

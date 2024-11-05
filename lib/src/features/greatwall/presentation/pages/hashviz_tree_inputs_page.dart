@@ -1,9 +1,17 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -17,14 +25,16 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
-  final TextEditingController _sizeController = TextEditingController();
 
+  final TextEditingController _sizeController = TextEditingController();
   final TextEditingController _colorsNumberController = TextEditingController();
   final TextEditingController _saturationController = TextEditingController();
   final TextEditingController _brightnessController = TextEditingController();
   final TextEditingController _minHueController = TextEditingController();
   final TextEditingController _maxHueController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final encryptionService = EncryptionService();
 
   HashvizTreeInputsPage({super.key});
 
@@ -192,12 +202,19 @@ class HashvizTreeInputsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.sync),
                           onPressed: () async {
-                            String? seed = await showDialog<String>(
+                            Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
+                            Uint8List randomEntropy = Uint8List(8);
+                            Random random = Random();
+                            for (int i = 0; i < randomEntropy.length; i++) {
+                              randomEntropy[i] = random.nextInt(256); // Generates a number between 0 and 255
+                            }
+                            String pa0Seed = formosa.toFormosa(randomEntropy);
+                            await showDialog<String>(
                               context: context,
-                              builder: (context) => const Pa0SeedPromtWidget(),
+                              builder: (context) => Pa0SeedPromtWidget(pa0Seed: pa0Seed),
                             );
-                            if (seed != null && seed.isNotEmpty) {
-                              _passwordController.text = seed;
+                            if (pa0Seed.isNotEmpty) {
+                              _passwordController.text = pa0Seed;
                             }
                           },
                         ),
@@ -211,34 +228,64 @@ class HashvizTreeInputsPage extends StatelessWidget {
                     return ElevatedButton(
                       onPressed: (memoCardSetState is MemoCardSetAddSuccess)
                           ? null
-                          : () {
-                              final arity = int.parse(_arityController.text);
-                              final depth = int.parse(_depthController.text);
-                              final timeLock =
-                                  int.parse(_timeLockController.text);
-                              final hashvizSize =
-                                  int.parse(_sizeController.text);
-                              final numColors =
-                                  int.parse(_colorsNumberController.text);
-                              final saturation =
-                                  double.parse(_saturationController.text);
-                              final brightness =
-                                  double.parse(_brightnessController.text);
-                              final minHue = int.parse(_minHueController.text);
-                              final maxHue = int.parse(_maxHueController.text);
+                          : () async {
+                              final eka = await showDialog<String>(
+                                context: context,
+                                builder: (context) => const EKAPromptWidget(),
+                              );
+                              if (eka != null) {
+                                final arity = int.parse(_arityController.text);
+                                final depth = int.parse(_depthController.text);
+                                final timeLock =
+                                    int.parse(_timeLockController.text);
+                                final hashvizSize =
+                                    int.parse(_sizeController.text);
+                                final numColors =
+                                    int.parse(_colorsNumberController.text);
+                                final saturation =
+                                    double.parse(_saturationController.text);
+                                final brightness =
+                                    double.parse(_brightnessController.text);
+                                final minHue =
+                                    int.parse(_minHueController.text);
+                                final maxHue =
+                                    int.parse(_maxHueController.text);
+                                final encryptedPA0 = await encryptionService
+                                    .encrypt(_passwordController.text, eka);
+                                if (!context.mounted) return;
+                                final state =
+                                    context.read<GreatWallBloc>().state;
+                                final isSymmetric =
+                                    state is GreatWallInputsInProgress
+                                        ? state.isSymmetric
+                                        : false;
+                                final deck = const Uuid().v4();
 
-                              final state = context.read<GreatWallBloc>().state;
-                              final isSymmetric =
-                                  state is GreatWallInputsInProgress
-                                      ? state.isSymmetric
-                                      : false;
+                                context.read<MemoCardSetBloc>().add(
+                                  MemoCardSetCardAdded(
+                                    memoCard: EkaMemoCard(
+                                      eka: 'question',
+                                      deck: deck,
+                                    ),
+                                  ),
+                                );
 
-                              context.read<MemoCardSetBloc>().add(
+                                context.read<MemoCardSetBloc>().add(
+                                  MemoCardSetCardAdded(
+                                    memoCard: Pa0MemoCard(
+                                      pa0: base64Encode(encryptedPA0),
+                                      deck: deck,
+                                    ),
+                                  ),
+                                );
+
+                                for (int i = 1; i <= depth; i++) {
+                                  context.read<MemoCardSetBloc>().add(
                                     MemoCardSetCardAdded(
-                                      memoCard: MemoCard(
+                                      memoCard: TacitKnowledgeMemoCard(
                                         knowledge: {
                                           'treeArity': arity,
-                                          'treeDepth': depth,
+                                          'treeDepth': i,
                                           'timeLockPuzzleParam': timeLock,
                                           'tacitKnowledge':
                                               HashVizTacitKnowledge(
@@ -253,9 +300,12 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                             },
                                           ),
                                         },
+                                        deck: deck,
                                       ),
                                     ),
                                   );
+                                }
+                              }
                             },
                       child: const Text('Save To Memorization Card'),
                     );
@@ -263,7 +313,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () {
                     final arity = int.parse(_arityController.text);
                     final depth = int.parse(_depthController.text);
                     final timeLock = int.parse(_timeLockController.text);

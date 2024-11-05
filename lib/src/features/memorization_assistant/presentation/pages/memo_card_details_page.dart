@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -10,7 +17,6 @@ import '../../../greatwall/presentation/blocs/blocs.dart';
 import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
-import 'memo_cards_page.dart';
 
 /// A page that displays the detailed view of a specific memory card.
 ///
@@ -22,11 +28,13 @@ class MemoCardDetailsPage extends StatelessWidget {
   final int cardName;
   final MemoCard memoCard;
 
+  final encryptionService = EncryptionService();
+
   /// Creates a detailed view of a memory card.
   ///
   /// [cardName] identify the position of the card in the knowledge
   /// tree and [memoCard] to provide the card's data.
-  const MemoCardDetailsPage({
+  MemoCardDetailsPage({
     super.key,
     required this.cardName,
     required this.memoCard,
@@ -77,8 +85,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       Text(
                         style: TextStyle(
                           fontSize: themeData.textTheme.bodySmall!.fontSize,
-                          fontWeight:
-                              themeData.textTheme.bodySmall!.fontWeight,
+                          fontWeight: themeData.textTheme.bodySmall!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
                         'State: ${memoCard.state}',
@@ -86,8 +93,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       Text(
                         style: TextStyle(
                           fontSize: themeData.textTheme.bodySmall!.fontSize,
-                          fontWeight:
-                              themeData.textTheme.bodySmall!.fontWeight,
+                          fontWeight: themeData.textTheme.bodySmall!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
                         'Due: ${memoCard.due.toLocal()}',
@@ -131,43 +137,72 @@ class MemoCardDetailsPage extends StatelessWidget {
                     context.read<MemoCardSetBloc>().add(
                           MemoCardSetCardRemoved(memoCard: memoCard),
                         );
-                    context.go('/${MemoCardsPage.routeName}');
+                    context.go('/${MemoCardDecksPage.routeName}');
                   },
                   child: const Text('Delete Memorization Card'),
                 );
               },
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () async {
-                String? password = await showDialog<String>(
-                  context: context,
-                  builder: (context) => const PasswordPrompt(),
-                );
+            if (memoCard is TacitKnowledgeMemoCard)
+              ElevatedButton(
+                onPressed: () async {
+                  String? password = await showDialog<String>(
+                    context: context,
+                    builder: (context) => const PasswordPrompt(),
+                  );
 
-                if (password != null && password.isNotEmpty) {
-                  if (!context.mounted) return;
-                  
-                  int treeArity = memoCard.knowledge['treeArity'];
-                  int treeDepth = memoCard.knowledge['treeDepth'];
-                  int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
-                  TacitKnowledge tacitKnowledge =
-                      memoCard.knowledge['tacitKnowledge'];
+                  if (password != null && password.isNotEmpty) {
+                    if (!context.mounted) return;
 
-                  context.read<GreatWallBloc>().add(
-                        GreatWallInitialized(
-                          treeArity: treeArity,
-                          treeDepth: treeDepth,
-                          timeLockPuzzleParam: timeLock,
-                          tacitKnowledge: tacitKnowledge,
-                          secretSeed: password,
-                        ),
+                    int treeArity = memoCard.knowledge['treeArity'];
+                    int treeDepth = memoCard.knowledge['treeDepth'];
+                    int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
+                    TacitKnowledge tacitKnowledge = memoCard.knowledge['tacitKnowledge'];
+
+                    context.read<GreatWallBloc>().add(
+                      GreatWallInitialized(
+                        treeArity: treeArity,
+                        treeDepth: treeDepth,
+                        timeLockPuzzleParam: timeLock,
+                        tacitKnowledge: tacitKnowledge,
+                        secretSeed: password,
+                      ),
+                    );
+                    context.go('/${ConfirmationPage.routeName}');
+                  }
+                },
+                child: const Text('Try protocol'),
+              )
+            else if (memoCard is Pa0MemoCard)
+              ElevatedButton(
+                onPressed: () async {
+                  Pa0MemoCard pa0MemoCard = memoCard as Pa0MemoCard;
+                  String? eka = await showDialog<String>(
+                    context: context,
+                    builder: (context) => const PasswordPrompt(),
+                  );
+
+                  if (eka != null && eka.isNotEmpty) {
+                    try {
+                      Uint8List decodedBytes = base64Decode(pa0MemoCard.pa0);
+                      String pa0seed = await encryptionService.decrypt(decodedBytes, eka);
+                      if (!context.mounted) return;
+                      await showDialog<String>(
+                        context: context,
+                        builder: (context) => Pa0SeedPromtWidget(pa0Seed: pa0seed),
                       );
-                  context.go('/${ConfirmationPage.routeName}');
-                }
-              },
-              child: const Text('Try protocol'),
-            ),
+                    } catch (e) {
+                      if (!context.mounted) return;
+                      await showDialog<String>(
+                        context: context,
+                        builder: (context) => const DecryptionErrorPromtWidget(),
+                      );
+                    }
+                  }
+                },
+                child: const Text('Password recovery'),
+              ),
           ],
         ),
       ),

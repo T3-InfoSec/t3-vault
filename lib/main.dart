@@ -17,7 +17,7 @@ void main() async {
 
   // Create the full file path for the memo cards JSON file, ensuring that
   // it is stored within the application documents directory.
-  final filePath = '${directory.path}/t3-vault.json';
+  final filePath = '${directory.path}/t3-profiles.json';
 
   // Initialize the MemoCardRepository with the specified file path, allowing
   // the application to read and write memo card data to the JSON file.

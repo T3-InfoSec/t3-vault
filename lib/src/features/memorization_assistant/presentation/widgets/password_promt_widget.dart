@@ -8,11 +8,11 @@ class PasswordPrompt extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     return AlertDialog(
-      title: const Text('Enter Password'),
+      title: const Text('Enter secret'),
       content: TextField(
         controller: passwordController,
         obscureText: true,
-        decoration: const InputDecoration(hintText: 'Password'),
+        decoration: const InputDecoration(hintText: 'secret'),
       ),
       actions: [
         TextButton(
