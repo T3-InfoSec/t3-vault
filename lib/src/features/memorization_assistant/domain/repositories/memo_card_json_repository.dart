@@ -6,7 +6,7 @@ import '../converters/memo_card_json_converter.dart';
 
 class MemoCardRepository {
   final String filePath;
-  Map<String, MemoCard> _memoCardIdMap = {};
+  final Map<String, MemoCard> _memoCardIdMap = {};
 
   MemoCardRepository({required this.filePath});
 

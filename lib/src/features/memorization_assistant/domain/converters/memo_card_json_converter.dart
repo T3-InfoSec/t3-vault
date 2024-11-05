@@ -8,39 +8,97 @@ class MemoCardConverter {
 
   /// Converts a MemoCard object to JSON format.
   static Map<String, dynamic> toJson(MemoCard memoCard) {
-    return memoCard.isTacitKnowledgeCard()
-        ? generateTacitKnowledgeJson(memoCard)
-        : generateBasicKnowledgeJson(memoCard);
+    Map<String, dynamic> jsonMemoCard;
+    switch (memoCard.runtimeType) {
+      case const (TacitKnowledgeMemoCard):
+        jsonMemoCard = generateTacitKnowledgeJson(memoCard);
+        break;
+      default:
+        jsonMemoCard = generateBasicKnowledgeJson(memoCard);
+    }
+    
+    return jsonMemoCard;
   }
 
   /// Converts JSON to a MemoCard object.
   static MemoCard fromJson(Map<String, dynamic> json) {
     final knowledge = json['knowledge'];
+    final cardType = json['cardType'];
 
-    TacitKnowledge? tacitKnowledge =
-        isTacitKnowledge(knowledge) ? getTacitKnowledge(knowledge) : null;
+    MemoCard memoCard;
 
-    return MemoCard(
-      knowledge: {
-        ...knowledge,
-        if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
-      },
-      deck: json['deck'],
-      due: DateTime.parse(json['due']),
-      lastReview: DateTime.parse(json['lastReview']),
-      stability: json['stability'],
-      difficulty: json['difficulty'],
-      elapsedDays: json['elapsedDays'],
-      scheduledDays: json['scheduledDays'],
-      reps: json['reps'],
-      lapses: json['lapses'],
-      stateIndex: json['stateIndex'],
-    );
+    switch (cardType) {
+      case 'Pa0MemoCard':
+        memoCard = Pa0MemoCard(
+          pa0: json['knowledge']['pa0'],
+          deck: json['deck'],
+          due: DateTime.parse(json['due']),
+          lastReview: DateTime.parse(json['lastReview']),
+          stability: json['stability'],
+          difficulty: json['difficulty'],
+          elapsedDays: json['elapsedDays'],
+          scheduledDays: json['scheduledDays'],
+          reps: json['reps'],
+          lapses: json['lapses'],
+          stateIndex: json['stateIndex'],
+        );
+      case 'TacitKnowledgeMemoCard':
+        TacitKnowledge? tacitKnowledge = getTacitKnowledge(knowledge);
+        memoCard = TacitKnowledgeMemoCard(
+          knowledge: {
+            'treeArity': json['knowledge']['treeArity'],
+            'treeDepth': json['knowledge']['treeDepth'],
+            'timeLockPuzzleParam': json['knowledge']['timeLockPuzzleParam'],
+            if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
+          },
+          deck: json['deck'],
+          due: DateTime.parse(json['due']),
+          lastReview: DateTime.parse(json['lastReview']),
+          stability: json['stability'],
+          difficulty: json['difficulty'],
+          elapsedDays: json['elapsedDays'],
+          scheduledDays: json['scheduledDays'],
+          reps: json['reps'],
+          lapses: json['lapses'],
+          stateIndex: json['stateIndex'],
+        );
+      case 'EkaMemoCard':
+        memoCard = EkaMemoCard(
+          eka: json['knowledge']['eka'],
+          deck: json['deck'],
+          due: DateTime.parse(json['due']),
+          lastReview: DateTime.parse(json['lastReview']),
+          stability: json['stability'],
+          difficulty: json['difficulty'],
+          elapsedDays: json['elapsedDays'],
+          scheduledDays: json['scheduledDays'],
+          reps: json['reps'],
+          lapses: json['lapses'],
+          stateIndex: json['stateIndex'],
+        );
+      default:
+        return MemoCard(
+          knowledge: json['knowledge'],
+          deck: json['deck'],
+          due: DateTime.parse(json['due']),
+          lastReview: DateTime.parse(json['lastReview']),
+          stability: json['stability'],
+          difficulty: json['difficulty'],
+          elapsedDays: json['elapsedDays'],
+          scheduledDays: json['scheduledDays'],
+          reps: json['reps'],
+          lapses: json['lapses'],
+          stateIndex: json['stateIndex'],
+        );
+    }
+
+    return memoCard;
   }
 
   static Map<String, dynamic> generateBasicKnowledgeJson(MemoCard memoCard) {
     return {
       'knowledge': memoCard.knowledge,
+      'cardType': memoCard.runtimeType.toString(),
       'deck': memoCard.deck,
       'due': memoCard.due.toIso8601String(),
       'lastReview': memoCard.card.lastReview.toIso8601String(),
@@ -67,10 +125,10 @@ class MemoCardConverter {
         'treeArity': knowledge['treeArity'],
         'treeDepth': knowledge['treeDepth'],
         'timeLockPuzzleParam': knowledge['timeLockPuzzleParam'],
-        'secretSeed': knowledge['secretSeed'],
         'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
         'tacitKnowledgeType': tacitKnowledgeType,
       },
+      'cardType': memoCard.runtimeType.toString(),
       'deck': memoCard.deck,
       'due': memoCard.due.toIso8601String(),
       'lastReview': memoCard.card.lastReview.toIso8601String(),
@@ -83,8 +141,6 @@ class MemoCardConverter {
       'stateIndex': memoCard.card.state.index,
     };
   }
-
-  static bool isTacitKnowledge(knowledge) => knowledge is Map<String, dynamic>;
 
   /// Creates a configuration map including the Formosa theme name.
   ///

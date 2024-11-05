@@ -1,30 +1,19 @@
-import 'dart:math';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-import 'package:t3_formosa/formosa.dart';
 
 class Pa0SeedPromtWidget extends StatelessWidget {
-  const Pa0SeedPromtWidget({super.key});
+  final String pa0Seed;
+
+  const Pa0SeedPromtWidget({super.key, required this.pa0Seed});
 
   @override
   Widget build(BuildContext context) {
-    Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
-    Uint8List randomEntropy = Uint8List(8);
-    Random random = Random();
-    for (int i = 0; i < randomEntropy.length; i++) {
-      randomEntropy[i] =
-          random.nextInt(256); // Generates a number between 0 and 255
-    }
-    String sixWordsSeed = formosa.toFormosa(randomEntropy);
-
     return AlertDialog(
       title: const Text("This is your seed:"),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            sixWordsSeed,
+            pa0Seed,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -50,12 +39,6 @@ class Pa0SeedPromtWidget extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
-          },
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(sixWordsSeed);
           },
           child: const Text('OK'),
         ),
