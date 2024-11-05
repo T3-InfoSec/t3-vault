@@ -242,6 +242,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                             ),
                                           },
                                           deck: deck,
+                                          title: 'Derivation Level $i Card'
                                         ),
                                       )  
                                 );

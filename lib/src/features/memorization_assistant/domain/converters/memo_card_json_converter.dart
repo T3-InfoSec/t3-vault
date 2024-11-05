@@ -51,6 +51,7 @@ class MemoCardConverter {
             'timeLockPuzzleParam': json['knowledge']['timeLockPuzzleParam'],
             if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
           },
+          title: json['title'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
@@ -79,6 +80,7 @@ class MemoCardConverter {
       default:
         return MemoCard(
           knowledge: json['knowledge'],
+          title: json['title'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
@@ -98,6 +100,7 @@ class MemoCardConverter {
   static Map<String, dynamic> generateBasicKnowledgeJson(MemoCard memoCard) {
     return {
       'knowledge': memoCard.knowledge,
+      'title': memoCard.title,
       'cardType': memoCard.runtimeType.toString(),
       'deckId': memoCard.deck.id,
       'deckName': memoCard.deck.name,
@@ -129,6 +132,7 @@ class MemoCardConverter {
         'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
         'tacitKnowledgeType': tacitKnowledgeType,
       },
+      'title': memoCard.title,
       'cardType': memoCard.runtimeType.toString(),
       'deckId': memoCard.deck.id,
       'deckName': memoCard.deck.name,
