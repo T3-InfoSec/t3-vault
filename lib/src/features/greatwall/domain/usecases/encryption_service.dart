@@ -42,7 +42,6 @@ class EncryptionService {
   Future<String> decrypt(List<int> cipherText, String key) async {
     final derivedKey = await deriveKey(key);
     final algorithm = AesGcm.with256bits();
-
     final nonce = cipherText.sublist(0, 12);
     final ciphertextWithMac = cipherText.sublist(12);
 

@@ -69,20 +69,6 @@ class MemoCardDecksPage extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: memoCardsByDeck.entries.map((entry) {
                         var cards = entry.value;
-                        
-                        var tacitKnowledge = getTacitKnowledgeIfExists(cards);
-                        String name;
-                        if (tacitKnowledge != null) {
-                          if (tacitKnowledge is FormosaTacitKnowledge) {
-                            name = 'Formosa';
-                          } else if (tacitKnowledge is HashVizTacitKnowledge) {
-                            name = 'Hashviz';
-                          } else {
-                            name = 'Unknown TacitKnowledge';
-                          }
-                        } else {
-                          name = 'Keys';
-                        }
 
                         return GestureDetector(
                           onTap: () {
@@ -93,7 +79,7 @@ class MemoCardDecksPage extends StatelessWidget {
                           },
                           child: DeckViewerWidget(
                             themeData: themeData,
-                            name: name,
+                            name: getDeckName(cards),
                             cardsNum: cards.length,
                           ),
                         );
@@ -109,9 +95,26 @@ class MemoCardDecksPage extends StatelessWidget {
     );
   }
 
+  String getDeckName(List<MemoCard> cards) {
+    var tacitKnowledge = getTacitKnowledgeIfExists(cards);
+    String name;
+    if (tacitKnowledge != null) {
+      if (tacitKnowledge is FormosaTacitKnowledge) {
+        name = 'Formosa';
+      } else if (tacitKnowledge is HashVizTacitKnowledge) {
+        name = 'Hashviz';
+      } else {
+        name = 'Unknown TacitKnowledge';
+      }
+    } else {
+      name = 'Keys';
+    }
+    return name;
+  }
+
   dynamic getTacitKnowledgeIfExists(List<MemoCard> memoCards) {
     for (var card in memoCards) {
-      if (card.isTacitKnowledgeCard()) {
+      if (card is TacitKnowledgeMemoCard) {
         return card.knowledge['tacitKnowledge'];
       }
     }
