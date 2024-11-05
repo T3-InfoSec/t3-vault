@@ -3,13 +3,11 @@ import 'package:t3_memassist/memory_assistant.dart';
 
 class MemoCardViewer extends StatelessWidget {
   final ThemeData themeData;
-  final int levelNumber;
   final MemoCard memoCard;
 
   const MemoCardViewer({
     super.key,
     required this.themeData,
-    required this.levelNumber,
     required this.memoCard,
   });
 
@@ -32,7 +30,7 @@ class MemoCardViewer extends StatelessWidget {
               fontWeight: themeData.textTheme.titleLarge!.fontWeight,
               color: themeData.colorScheme.onPrimary,
             ),
-            'L$levelNumber',
+            memoCard.title,
           ),
           const SizedBox(height: 5),
           Text(

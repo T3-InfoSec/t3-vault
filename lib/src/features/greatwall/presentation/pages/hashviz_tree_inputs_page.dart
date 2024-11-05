@@ -309,6 +309,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                             ),
                                           },
                                           deck: deck,
+                                          title: 'Derivation Level $i Card'
                                         ),
                                       ),
                                     );
