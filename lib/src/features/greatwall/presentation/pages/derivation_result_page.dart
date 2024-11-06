@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_formosa/formosa.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -11,7 +11,9 @@ import '../blocs/blocs.dart';
 class DerivationResultPage extends StatelessWidget {
   static const routeName = 'derivation_result';
 
-  const DerivationResultPage({super.key});
+  final bip39generator = Bip39generator();
+
+  DerivationResultPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +78,7 @@ class DerivationResultPage extends StatelessWidget {
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
                       Clipboard.setData(ClipboardData(
-                          text: bip39Derivation(state.derivationHashResult)));
+                          text: bip39generator.deriveTwelveWordsSeed(state.derivationHashResult)));
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                             content: Text('Seed copied to clipboard')),
@@ -109,15 +111,5 @@ class DerivationResultPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String bip39Derivation(String key) {
-    // Convert the derivation hash result to a Uint8List
-    Uint8List derivationHashResultBytes = Uint8List.fromList(
-      key.codeUnits.take(16).toList(), // Take the first 16 bytes
-    );
-
-    Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
-    return formosa.toFormosa(derivationHashResultBytes);
   }
 }

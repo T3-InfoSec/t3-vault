@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
@@ -29,6 +29,8 @@ class FormosaTreeInputsPage extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
 
   final encryptionService = EncryptionService();
+  final bip39generator = Bip39generator();
+  final keyGenerator = KeyGenerator();
 
   FormosaTreeInputsPage({super.key});
 
@@ -163,13 +165,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.sync),
                       onPressed: () async {
-                        Formosa formosa = Formosa(formosaTheme: FormosaTheme.bip39);
-                        Uint8List randomEntropy = Uint8List(8);
-                        Random random = Random();
-                        for (int i = 0; i < randomEntropy.length; i++) {
-                          randomEntropy[i] = random.nextInt(256); // Generates a number between 0 and 255
-                        }
-                        String pa0Seed = formosa.toFormosa(randomEntropy);
+                        String pa0Seed = bip39generator.generataSixWordsSeed();
                         await showDialog<String>(
                           context: context,
                           builder: (context) => Pa0SeedPromtWidget(pa0Seed: pa0Seed),
@@ -189,9 +185,10 @@ class FormosaTreeInputsPage extends StatelessWidget {
                     onPressed: (memoCardSetState is MemoCardSetAddSuccess)
                         ? null
                         : () async {
+                          final generatedKey = keyGenerator.generateHexadecimalKey();
                           final eka = await showDialog<String>(
                             context: context,
-                            builder: (context) => const EKAPromptWidget(),
+                            builder: (context) => EKAPromptWidget(eka: generatedKey),
                           );
                           if (eka != null) {
                             if (!context.mounted) return;
@@ -201,7 +198,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             );
                             if (deckName != null) {
                               final deckId = const Uuid().v4();
-                              Deck deck = Deck(deckId, deckName);
+                              final deck = Deck(deckId, deckName);
                               final arity = int.parse(_arityController.text);
                               final depth = int.parse(_depthController.text);
                               final timeLock = int.parse(_timeLockController.text);

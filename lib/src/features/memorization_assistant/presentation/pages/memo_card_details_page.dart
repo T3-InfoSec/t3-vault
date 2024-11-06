@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
