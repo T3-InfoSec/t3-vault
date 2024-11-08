@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import 'formosa_tree_inputs_page.dart';
@@ -23,7 +24,7 @@ class KnowledgeTypesPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tacit Knowledge Types'),
+        title: Text(AppLocalizations.of(context)!.knowledgeTypesPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -15,7 +16,7 @@ class ConfirmationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Confirmation'),
+        title: Text(AppLocalizations.of(context)!.confirmationPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -37,21 +38,21 @@ class ConfirmationPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Tacit Knowledge',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.tacitKnowledge,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(state.tacitKnowledge.toString()),
                     const SizedBox(height: 20),
-                    const Text(
-                      'Tree Arity',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.treeArity,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text('${state.treeArity}'),
                     const SizedBox(height: 20),
-                    const Text(
-                      'Tree Depth',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.treeDepth,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text('${state.treeDepth}'),
                     const SizedBox(height: 20),
@@ -68,9 +69,9 @@ class ConfirmationPage extends StatelessWidget {
                         ],
                       );
                     }),
-                    const Text(
-                      'Password',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      AppLocalizations.of(context)!.password,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const Text('****'),
                     const SizedBox(height: 20),
@@ -87,14 +88,14 @@ class ConfirmationPage extends StatelessWidget {
                           },
                         );
                       },
-                      child: const Text('Confirm'),
+                      child: Text(AppLocalizations.of(context)!.confirm),
                     ),
                   ],
                 ),
               ),
             );
           } else {
-            return const Center(child: Text('No parameters available.'));
+            return Center(child: Text(AppLocalizations.of(context)!.noParameters));
           }
         },
       ),
