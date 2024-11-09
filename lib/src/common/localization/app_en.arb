@@ -107,8 +107,8 @@
   "@memorizeKeys": {
     "description": "Home Page: Button to memorize keys"
   },
-  "saveMemoCard": "Save To Memorization Card",
-  "@saveMemoCard": {
+  "saveDerivationCards": "Save derivation to Memorization Assistant",
+  "@saveDerivationCards": {
     "description": "Tree Inputs Page: Button to save memo card"
   },
   "startDerivation": "Start Derivation",
@@ -126,6 +126,10 @@
   "generateAndCopySeed": "Generate and copy seed",
   "@generateAndCopySeed": {
     "description": "Derivation Result Page: Button to generate and copy seed"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Derivation Result Page: Button to reset derivation protocol and go back home"
   },
   "again": "Again",
   "@again": {
@@ -195,6 +199,10 @@
   "seedCopiedToClipboard": "Seed copied to clipboard",
   "@seedCopiedToClipboard": {
     "description": "Derivation Result Page: Text seed copied to clipboard"
+  },
+  "savingInProgress": "Saving memorization cards. Please wait",
+  "@savingInProgress": {
+    "description": "Derivation Result Page: Text saving memo cards"
   },
   "noMemoCards": "No Memorization Cards Yet!",
   "@noMemoCards": {
@@ -282,6 +290,6 @@
   },
   "secretHint": "secret",
   "@secretHint": {
-    "description": "Secret Widget: secret hint"
+    "description": "Secret Widget: Hint secret"
   }
 }

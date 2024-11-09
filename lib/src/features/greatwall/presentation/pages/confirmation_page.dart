@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -81,6 +82,7 @@ class ConfirmationPage extends StatelessWidget {
                           const Duration(seconds: 1),
                           () {
                             if (!context.mounted) return;
+                            context.read<DerivationState>().updatePassword(state.secretSeed);
                             context
                                 .read<GreatWallBloc>()
                                 .add(GreatWallDerivationStarted());

@@ -191,15 +191,13 @@ class T3Vault extends StatelessWidget {
                               },
                             ),
                             GoRoute(
-                              path: '${MemoCardDetailsPage.routeName}/:cardName',
+                              path: MemoCardDetailsPage.routeName,
                               pageBuilder: (BuildContext context, GoRouterState state) {
-                                final cardName = int.parse(state.pathParameters['cardName']!);
                                 final memoCard = state.extra as MemoCard;
 
                                 return MaterialPage(
                                   restorationId: 'router.root.decks.memoCards.details',
                                   child: MemoCardDetailsPage(
-                                    cardName: cardName,
                                     memoCard: memoCard,
                                   ),
                                 );

@@ -1,19 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -80,7 +74,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
               children: [
                 TextField(
                   controller: _arityController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.treeArity),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.treeArity),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -91,7 +86,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _depthController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.treeDepth),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.treeDepth),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -103,7 +99,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 TextField(
                   controller: _timeLockController,
                   decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.timeLockPuzzleParam),
+                      labelText:
+                          AppLocalizations.of(context)!.timeLockPuzzleParam),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -206,10 +203,12 @@ class HashvizTreeInputsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.sync),
                           onPressed: () async {
-                            String pa0Seed = bip39generator.generataSixWordsSeed();
+                            String pa0Seed =
+                                bip39generator.generataSixWordsSeed();
                             await showDialog<String>(
                               context: context,
-                              builder: (context) => Pa0SeedPromtWidget(pa0Seed: pa0Seed),
+                              builder: (context) =>
+                                  Pa0SeedPromtWidget(pa0Seed: pa0Seed),
                             );
                             if (pa0Seed.isNotEmpty) {
                               _passwordController.text = pa0Seed;
@@ -217,105 +216,6 @@ class HashvizTreeInputsPage extends StatelessWidget {
                           },
                         ),
                       ],
-                    );
-                  },
-                ),
-                const SizedBox(height: 10),
-                BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
-                  builder: (context, memoCardSetState) {
-                    return ElevatedButton(
-                      onPressed: (memoCardSetState is MemoCardSetAddSuccess)
-                          ? null
-                          : () async {
-                            final generatedKey = keyGenerator.generateHexadecimalKey();
-                            final eka = await showDialog<String>(
-                              context: context,
-                              builder: (context) => EKAPromptWidget(eka: generatedKey),
-                            );
-                            if (eka != null) {
-                              if (!context.mounted) return;
-                                final deckName = await showDialog<String>(
-                                  context: context,
-                                  builder: (context) => DecknamePromtWidget(),
-                                );
-                              if (deckName != null) {
-                                final deckId = const Uuid().v4();
-                                final deck = Deck(deckId, deckName);
-                                final arity = int.parse(_arityController.text);
-                                final depth = int.parse(_depthController.text);
-                                final timeLock =
-                                    int.parse(_timeLockController.text);
-                                final hashvizSize =
-                                    int.parse(_sizeController.text);
-                                final numColors =
-                                    int.parse(_colorsNumberController.text);
-                                final saturation =
-                                    double.parse(_saturationController.text);
-                                final brightness =
-                                    double.parse(_brightnessController.text);
-                                final minHue =
-                                    int.parse(_minHueController.text);
-                                final maxHue =
-                                    int.parse(_maxHueController.text);
-                                final encryptedPA0 = await encryptionService
-                                    .encrypt(_passwordController.text, eka);
-                                if (!context.mounted) return;
-                                final state =
-                                    context.read<GreatWallBloc>().state;
-                                final isSymmetric =
-                                    state is GreatWallInputsInProgress
-                                        ? state.isSymmetric
-                                        : false;
-
-                                context.read<MemoCardSetBloc>().add(
-                                  MemoCardSetCardAdded(
-                                    memoCard: EkaMemoCard(
-                                      eka: 'question',
-                                      deck: deck,
-                                    ),
-                                  ),
-                                );
-
-                                context.read<MemoCardSetBloc>().add(
-                                  MemoCardSetCardAdded(
-                                    memoCard: Pa0MemoCard(
-                                      pa0: base64Encode(encryptedPA0),
-                                      deck: deck,
-                                    ),
-                                  ),
-                                );
-
-                                for (int i = 1; i <= depth; i++) {
-                                  context.read<MemoCardSetBloc>().add(
-                                    MemoCardSetCardAdded(
-                                      memoCard: TacitKnowledgeMemoCard(
-                                        knowledge: {
-                                          'treeArity': arity,
-                                          'treeDepth': i,
-                                          'timeLockPuzzleParam': timeLock,
-                                          'tacitKnowledge':
-                                              HashVizTacitKnowledge(
-                                            configs: {
-                                              'hashvizSize': hashvizSize,
-                                              'isSymmetric': isSymmetric,
-                                              'numColors': numColors,
-                                              'saturation': saturation,
-                                              'brightness': brightness,
-                                              'minHue': minHue,
-                                              'maxHue': maxHue,
-                                            },
-                                          ),
-                                        },
-                                        deck: deck,
-                                        title: 'Derivation Level $i Card'
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
-                            }
-                          },
-                      child: Text(AppLocalizations.of(context)!.saveMemoCard),
                     );
                   },
                 ),

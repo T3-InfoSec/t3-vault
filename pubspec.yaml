@@ -19,14 +19,16 @@ dependencies:
   path_provider: ^2.1.4
   uuid: ^3.0.6
   cryptography: ^2.7.0
+  provider: ^6.1.2
   t3_formosa:
     git:
       url: git@github.com:T3-InfoSec/t3-formosa-dart.git
       ref: development
   great_wall:
-    git:
-      url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: development
+    # git:
+    #   url: git@github.com:T3-InfoSec/great-wall-dart.git
+    #   ref: development
+    path: ../../dart/great-wall-dart # TODO: Delete
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git

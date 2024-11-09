@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
 
@@ -80,12 +82,21 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
 
 final class GreatWallFinishSuccess extends GreatWallState {
   final String derivationHashResult;
+  final List<Uint8List> savedNodes;
+  final int treeArity;
+  final int treeDepth;
   final bool isKAVisible;
 
-  GreatWallFinishSuccess(this.derivationHashResult, this.isKAVisible);
+  GreatWallFinishSuccess({
+    required this.derivationHashResult,
+    required this.savedNodes,
+    required this.treeArity,
+    required this.treeDepth,
+    required this.isKAVisible
+  });
 
   @override
-  List<Object> get props => [derivationHashResult, isKAVisible];
+  List<Object> get props => [derivationHashResult, savedNodes, treeArity, treeDepth, isKAVisible];
 }
 
 // class GreatWallLoadedArityIndexes extends GreatWallState {

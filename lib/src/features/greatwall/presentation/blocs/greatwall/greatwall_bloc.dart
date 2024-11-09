@@ -60,7 +60,11 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallFinishSuccess(
-          hex.encode(_greatWall!.derivationHashResult!), false),
+          derivationHashResult: hex.encode(_greatWall!.derivationHashResult!),
+          savedNodes: _greatWall!.savedDerivedStates.values.toList(),
+          treeArity: _greatWall!.treeArity,
+          treeDepth: _greatWall!.treeDepth,
+          isKAVisible:  false),
     );
   }
 
@@ -180,7 +184,12 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     if (state is GreatWallFinishSuccess) {
       final currentState = state as GreatWallFinishSuccess;
       emit(GreatWallFinishSuccess(
-          currentState.derivationHashResult, !currentState.isKAVisible));
+          derivationHashResult: currentState.derivationHashResult, 
+          savedNodes: currentState.savedNodes,
+          treeArity: _greatWall!.treeArity,
+          treeDepth: _greatWall!.treeDepth,
+          isKAVisible: !currentState.isKAVisible
+      ));
     }
   }
 

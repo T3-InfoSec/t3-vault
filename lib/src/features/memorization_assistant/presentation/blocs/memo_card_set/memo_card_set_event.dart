@@ -12,13 +12,15 @@ final class MemoCardSetLoadRequested extends MemoCardSetEvent {}
 
 final class MemoCardSetUnchanged extends MemoCardSetEvent {}
 
-final class MemoCardSetCardAdded extends MemoCardSetEvent {
-  final MemoCard memoCard;
+final class MemoCardSetCardsAdding extends MemoCardSetEvent {}
 
-  const MemoCardSetCardAdded({required this.memoCard});
+final class MemoCardSetCardsAdded extends MemoCardSetEvent {
+  final List<MemoCard> memoCards;
+
+  const MemoCardSetCardsAdded({required this.memoCards});
 
   @override
-  List<Object?> get props => [memoCard];
+  List<Object?> get props => [memoCards];
 }
 
 final class MemoCardSetCardRemoved extends MemoCardSetEvent {

@@ -57,12 +57,11 @@ class MemoCardsPage extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: memoCards.asMap().entries.map(
                   (entry) {
-                    int levelNumber = entry.key;
                     MemoCard memoCard = entry.value;
                     return GestureDetector(
                       onTap: () {
                         context.go(
-                          '/${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}/$levelNumber',
+                          '/${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}',
                           extra: memoCard,
                         );
                       },

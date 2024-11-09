@@ -28,18 +28,15 @@ import '../widgets/widgets.dart';
 class MemoCardDetailsPage extends StatelessWidget {
   static const routeName = 'memo_card_details';
 
-  final int cardName;
   final MemoCard memoCard;
 
   final encryptionService = EncryptionService();
 
   /// Creates a detailed view of a memory card.
   ///
-  /// [cardName] identify the position of the card in the knowledge
-  /// tree and [memoCard] to provide the card's data.
+  /// receives [memoCard] to provide the card's data.
   MemoCardDetailsPage({
     super.key,
-    required this.cardName,
     required this.memoCard,
   });
 
@@ -82,7 +79,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                               themeData.textTheme.titleLarge!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
-                        'L$cardName Card Details',
+                        memoCard.title,
                       ),
                       const SizedBox(height: 10),
                       Text(
