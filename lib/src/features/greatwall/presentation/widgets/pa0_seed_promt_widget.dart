@@ -7,6 +7,8 @@ class Pa0SeedPromtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+
     return AlertDialog(
       title: const Text("This is your seed:"),
       content: Column(
@@ -22,15 +24,16 @@ class Pa0SeedPromtWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               //style: TextStyle(color: Colors.black),
-              children: [
+              children: const [
                 TextSpan(text: "Write down and store your 6-word seed in a safe place.\n", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: "These words are used as input for the derivation protocol. "),
                 TextSpan(text: "If lost, you won't be able to retrieve the key directly. However, you can recover your seed using this ephemeral key, which is provided as you save the protocol.\n\n"),
                 TextSpan(text: "Over time, you can memorize the seed with the help of the memorization assistant, but for now, keeping it safe is a top priority.\n\n"),
                 TextSpan(text: "While 12-word seeds (128 bits of entropy) provide higher security, a 6-word seed (64 bits) is sufficient when used with the Tacit Knowledge Base Authentication process, which adds another 64 bits of entropy for a total of 128 bits."),
               ],
+              style: TextStyle(color: textColor),
             ),
           ),
         ],
