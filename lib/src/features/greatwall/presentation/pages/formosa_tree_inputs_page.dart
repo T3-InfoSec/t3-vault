@@ -9,6 +9,7 @@ import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -193,50 +194,59 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             builder: (context) => const EKAPromptWidget(),
                           );
                           if (eka != null) {
-                            final arity = int.parse(_arityController.text);
-                            final depth = int.parse(_depthController.text);
-                            final timeLock = int.parse(_timeLockController.text);
-                            final encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
-                            final deck = const Uuid().v4();
                             if (!context.mounted) return;
-                            final theme = (context.read<FormosaBloc>().state
-                                    as FormosaThemeSelectSuccess)
-                                .theme;
-
-                            context.read<MemoCardSetBloc>().add(
-                              MemoCardSetCardAdded(
-                                memoCard: EkaMemoCard(
-                                  eka: 'question',
-                                  deck: deck,
-                                ),
-                              ),
+                            final deckName = await showDialog<String>(
+                              context: context,
+                              builder: (context) => DecknamePromtWidget(),
                             );
+                            if (deckName != null) {
+                              final deckId = const Uuid().v4();
+                              Deck deck = Deck(deckId, deckName);
+                              final arity = int.parse(_arityController.text);
+                              final depth = int.parse(_depthController.text);
+                              final timeLock = int.parse(_timeLockController.text);
+                              final encryptedPA0 = await encryptionService.encrypt(_passwordController.text, eka);
+                              if (!context.mounted) return;
+                              final theme = (context.read<FormosaBloc>().state
+                                      as FormosaThemeSelectSuccess)
+                                  .theme;
 
-                            context.read<MemoCardSetBloc>().add(
-                              MemoCardSetCardAdded(
-                                memoCard: Pa0MemoCard(
-                                  pa0: base64Encode(encryptedPA0),
-                                  deck: deck,
-                                ),
-                              ),
-                            );
-
-                            for (int i = 1; i <= depth; i++) {
                               context.read<MemoCardSetBloc>().add(
-                                    MemoCardSetCardAdded(
-                                      memoCard: TacitKnowledgeMemoCard(
-                                        knowledge: {
-                                          'treeArity': arity,
-                                          'treeDepth': i,
-                                          'timeLockPuzzleParam': timeLock,
-                                          'tacitKnowledge': FormosaTacitKnowledge(
-                                            configs: {'formosaTheme': theme},
-                                          ),
-                                        },
-                                        deck: deck,
-                                      ),
-                                    )  
+                                MemoCardSetCardAdded(
+                                  memoCard: EkaMemoCard(
+                                    eka: 'question',
+                                    deck: deck,
+                                  ),
+                                ),
                               );
+
+                              context.read<MemoCardSetBloc>().add(
+                                MemoCardSetCardAdded(
+                                  memoCard: Pa0MemoCard(
+                                    pa0: base64Encode(encryptedPA0),
+                                    deck: deck,
+                                  ),
+                                ),
+                              );
+
+                              for (int i = 1; i <= depth; i++) {
+                                context.read<MemoCardSetBloc>().add(
+                                      MemoCardSetCardAdded(
+                                        memoCard: TacitKnowledgeMemoCard(
+                                          knowledge: {
+                                            'treeArity': arity,
+                                            'treeDepth': i,
+                                            'timeLockPuzzleParam': timeLock,
+                                            'tacitKnowledge': FormosaTacitKnowledge(
+                                              configs: {'formosaTheme': theme},
+                                            ),
+                                          },
+                                          deck: deck,
+                                          title: 'Derivation Level $i Card'
+                                        ),
+                                      )  
+                                );
+                              }
                             }
                           }
                         },

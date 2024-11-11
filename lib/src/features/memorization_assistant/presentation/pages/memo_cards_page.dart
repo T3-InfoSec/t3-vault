@@ -66,7 +66,6 @@ class MemoCardsPage extends StatelessWidget {
                       },
                       child: MemoCardViewer(
                         themeData: themeData,
-                        levelNumber: levelNumber,
                         memoCard: memoCard,
                       ),
                     );

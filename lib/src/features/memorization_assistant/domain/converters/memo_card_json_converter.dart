@@ -31,7 +31,7 @@ class MemoCardConverter {
       case 'Pa0MemoCard':
         memoCard = Pa0MemoCard(
           pa0: json['knowledge']['pa0'],
-          deck: json['deck'],
+          deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
           stability: json['stability'],
@@ -51,7 +51,8 @@ class MemoCardConverter {
             'timeLockPuzzleParam': json['knowledge']['timeLockPuzzleParam'],
             if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
           },
-          deck: json['deck'],
+          title: json['title'],
+          deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
           stability: json['stability'],
@@ -65,7 +66,7 @@ class MemoCardConverter {
       case 'EkaMemoCard':
         memoCard = EkaMemoCard(
           eka: json['knowledge']['eka'],
-          deck: json['deck'],
+          deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
           stability: json['stability'],
@@ -79,7 +80,8 @@ class MemoCardConverter {
       default:
         return MemoCard(
           knowledge: json['knowledge'],
-          deck: json['deck'],
+          title: json['title'],
+          deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
           stability: json['stability'],
@@ -98,8 +100,10 @@ class MemoCardConverter {
   static Map<String, dynamic> generateBasicKnowledgeJson(MemoCard memoCard) {
     return {
       'knowledge': memoCard.knowledge,
+      'title': memoCard.title,
       'cardType': memoCard.runtimeType.toString(),
-      'deck': memoCard.deck,
+      'deckId': memoCard.deck.id,
+      'deckName': memoCard.deck.name,
       'due': memoCard.due.toIso8601String(),
       'lastReview': memoCard.card.lastReview.toIso8601String(),
       'stability': memoCard.card.stability,
@@ -128,8 +132,10 @@ class MemoCardConverter {
         'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
         'tacitKnowledgeType': tacitKnowledgeType,
       },
+      'title': memoCard.title,
       'cardType': memoCard.runtimeType.toString(),
-      'deck': memoCard.deck,
+      'deckId': memoCard.deck.id,
+      'deckName': memoCard.deck.name,
       'due': memoCard.due.toIso8601String(),
       'lastReview': memoCard.card.lastReview.toIso8601String(),
       'stability': memoCard.card.stability,

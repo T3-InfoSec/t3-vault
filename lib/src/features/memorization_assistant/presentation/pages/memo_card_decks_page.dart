@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/deck_viewer_widget.dart';
@@ -52,11 +51,11 @@ class MemoCardDecksPage extends StatelessWidget {
                 // Group MemoCards by deck
                 Map<String, List<MemoCard>> memoCardsByDeck = {};
                 for (var memoCard in memoCardSetState.memoCardSet) {
-                  var deck = memoCard.deck;
-                  if (!memoCardsByDeck.containsKey(deck)) {
-                    memoCardsByDeck[deck] = [];
+                  var deckId = memoCard.deck.id;
+                  if (!memoCardsByDeck.containsKey(deckId)) {
+                    memoCardsByDeck[deckId] = [];
                   }
-                  memoCardsByDeck[deck]!.add(memoCard);
+                  memoCardsByDeck[deckId]!.add(memoCard);
                 }
 
                 return BlocBuilder<MemoCardRatingBloc, MemoCardRatingState>(
@@ -79,7 +78,7 @@ class MemoCardDecksPage extends StatelessWidget {
                           },
                           child: DeckViewerWidget(
                             themeData: themeData,
-                            name: getDeckName(cards),
+                            name: cards[0].deck.name,
                             cardsNum: cards.length,
                           ),
                         );
@@ -93,31 +92,5 @@ class MemoCardDecksPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getDeckName(List<MemoCard> cards) {
-    var tacitKnowledge = getTacitKnowledgeIfExists(cards);
-    String name;
-    if (tacitKnowledge != null) {
-      if (tacitKnowledge is FormosaTacitKnowledge) {
-        name = 'Formosa';
-      } else if (tacitKnowledge is HashVizTacitKnowledge) {
-        name = 'Hashviz';
-      } else {
-        name = 'Unknown TacitKnowledge';
-      }
-    } else {
-      name = 'Keys';
-    }
-    return name;
-  }
-
-  dynamic getTacitKnowledgeIfExists(List<MemoCard> memoCards) {
-    for (var card in memoCards) {
-      if (card is TacitKnowledgeMemoCard) {
-        return card.knowledge['tacitKnowledge'];
-      }
-    }
-    return null;
   }
 }
