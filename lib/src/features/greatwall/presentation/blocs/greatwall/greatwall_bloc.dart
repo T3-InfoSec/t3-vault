@@ -72,7 +72,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
-print("emitting GreatWallDeriveInProgress");
     emit(GreatWallDeriveInProgress());
 
     await Future<void>.delayed(
@@ -81,7 +80,6 @@ print("emitting GreatWallDeriveInProgress");
         _greatWall!.startDerivation();
       },
     );
-print("emitting GreatWallDeriveStepSuccess");
     emit(
       GreatWallDeriveStepSuccess(
         treeDepth: _greatWall!.treeDepth,
@@ -170,7 +168,7 @@ print("emitting GreatWallDeriveStepSuccess");
     );
 
     _greatWall!.seed0 = event.secretSeed;
-print("emitting InitialSuccess}");
+    
     emit(
       GreatWallInitialSuccess(
         treeArity: event.treeArity,
@@ -221,7 +219,6 @@ print("emitting InitialSuccess}");
         _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
       },
     );
-print("emitting GreatWallPracticeLevelStarted");
     emit(
       GreatWallPracticeLevelStarted(
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
