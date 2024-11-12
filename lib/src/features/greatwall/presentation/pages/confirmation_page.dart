@@ -83,6 +83,7 @@ class ConfirmationPage extends StatelessWidget {
                           () {
                             if (!context.mounted) return;
                             context.read<DerivationState>().updatePassword(state.secretSeed);
+                            context.read<DerivationState>().updateTacitKnowledge(state.tacitKnowledge);
                             context
                                 .read<GreatWallBloc>()
                                 .add(GreatWallDerivationStarted());

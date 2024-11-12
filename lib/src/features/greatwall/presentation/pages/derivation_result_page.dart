@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:great_wall/great_wall.dart';
 import 'package:provider/provider.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
@@ -150,6 +151,11 @@ class DerivationResultPage extends StatelessWidget {
                                           pa0: base64Encode(encryptedPA0),
                                           deck: deck)
                                     ]);
+                                    if (!context.mounted) return;
+                                    final tacitKnowledge = Provider.of<DerivationState>(
+                                        context,
+                                        listen: false)
+                                    .tacitKnowledge;
                                     
                                     for (int i = 1; i <= state.treeDepth; i++) {
                                       var encryptedNode =
@@ -163,10 +169,13 @@ class DerivationResultPage extends StatelessWidget {
                                               eka);
                                       memoCards.add(TacitKnowledgeMemoCard(
                                           knowledge: {
+                                            'level': i,
                                             'node': base64Encode(encryptedNode),
                                             'selectedNode': base64Encode(
                                                 encryptedSelectedNode),
                                             'treeArity': state.treeArity,
+                                            'treeDepth': state.treeDepth,
+                                            'tacitKnowledge': tacitKnowledge,
                                           },
                                           deck: deck,
                                           title: 'Derivation Level $i Card'));

@@ -48,6 +48,10 @@
   "@memoCardDetailsPageTitle": {
     "description": "Card Details Page: Title of the page"
   },
+    "memoCardPracticePageTitle": "Card Practice",
+  "@memoCardPracticePageTitle": {
+    "description": "Card Practice Page: Title of the page"
+  },
 
   "chooseNameWidgetTitle": "Choose a name for this derivation.",
   "@chooseName": {
@@ -151,8 +155,8 @@
   "@deleteMemoCard": {
     "description": "Card Details Page: Button to delete card"
   },
-  "tryProtocol": "Try protocol",
-  "@tryProtocol": {
+  "tryCard": "Try card",
+  "@tryCard": {
     "description": "Card Details Page: Button to try protocol"
   },
   "passwordRecovery": "Password recovery",
@@ -291,5 +295,13 @@
   "secretHint": "secret",
   "@secretHint": {
     "description": "Secret Widget: Hint secret"
+  },
+  "correctOption": "Correct!",
+  "@correctOption": {
+    "description": "Memo Card Practice Page: Result Message correct option"
+  },
+  "incorrectOption": "Incorrect!",
+  "@incorrectOption": {
+    "description": "Memo Card Practice Page: Result Message incorrect option"
   }
 }

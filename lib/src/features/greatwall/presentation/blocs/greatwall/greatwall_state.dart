@@ -99,20 +99,15 @@ final class GreatWallFinishSuccess extends GreatWallState {
   List<Object> get props => [derivationHashResult, savedNodes, treeArity, treeDepth, isKAVisible];
 }
 
-// class GreatWallLoadedArityIndexes extends GreatWallState {
-//   final int treeDepth;
-//   final int currentLevel;
-//   final List<dynamic> knowledgeValues;
-//   final TacitKnowledge tacitKnowledge;
-//
-//   GreatWallLoadedArityIndexes({
-//     required this.treeDepth,
-//     required this.currentLevel,
-//     required this.knowledgeValues,
-//     required this.tacitKnowledge,
-//   });
-//
-//   @override
-//   List<Object> get props =>
-//      [treeDepth, currentLevel, knowledgePalettes, tacitKnowledge];
-// }
+final class GreatWallPracticeLevelStarted extends GreatWallState {
+  final List<dynamic> knowledgePalettes;
+  final Uint8List currentHash;
+  
+  GreatWallPracticeLevelStarted({
+    required this.knowledgePalettes,
+    required this.currentHash,
+  });
+
+  @override
+  List<Object> get props => [knowledgePalettes, currentHash];
+}

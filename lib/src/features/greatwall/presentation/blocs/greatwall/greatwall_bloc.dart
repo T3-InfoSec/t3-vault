@@ -21,6 +21,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
     on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
+    on<GreatWallPracticeLevel>(_onGreatWallPracticeLevel);
+    on<GreatWallPracticeStepMade>(_onGreatWallPracticeStepMade);
   }
 
   void _onDerivationStepMade(
@@ -70,6 +72,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   Future<void> _onGreatWallDerivationStarted(
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
+print("emitting GreatWallDeriveInProgress");
     emit(GreatWallDeriveInProgress());
 
     await Future<void>.delayed(
@@ -78,7 +81,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         _greatWall!.startDerivation();
       },
     );
-
+print("emitting GreatWallDeriveStepSuccess");
     emit(
       GreatWallDeriveStepSuccess(
         treeDepth: _greatWall!.treeDepth,
@@ -167,7 +170,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
 
     _greatWall!.seed0 = event.secretSeed;
-
+print("emitting InitialSuccess}");
     emit(
       GreatWallInitialSuccess(
         treeArity: event.treeArity,
@@ -198,5 +201,32 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     _currentLevel = 1;
 
     emit(GreatWallInitial());
+  }
+
+  void _onGreatWallPracticeLevel(GreatWallPracticeLevel event, Emitter<GreatWallState> emit) {
+    _greatWall!.generateLevelKnowledgePalettes(event.node);
+
+    emit(
+      GreatWallPracticeLevelStarted(
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        currentHash: _greatWall!.currentHash,
+      ));
+  }
+
+  void _onGreatWallPracticeStepMade(
+      GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) async {
+    await Future<void>.delayed(
+      const Duration(seconds: 1),
+      () {
+        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
+      },
+    );
+print("emitting GreatWallPracticeLevelStarted");
+    emit(
+      GreatWallPracticeLevelStarted(
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        currentHash: _greatWall!.currentHash
+      ),
+    );
   }
 }

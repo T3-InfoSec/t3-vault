@@ -12,12 +12,13 @@ import 'package:great_wall/great_wall.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/blocs/blocs.dart';
-import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 
@@ -26,7 +27,7 @@ import '../widgets/widgets.dart';
 /// The [CardDetailsPage] class is a stateless widget that shows the
 /// details of a selected [memoCard], including its state and due date.
 class MemoCardDetailsPage extends StatelessWidget {
-  static const routeName = 'memo_card_details';
+  static const routeName = 'details';
 
   final MemoCard memoCard;
 
@@ -157,22 +158,24 @@ class MemoCardDetailsPage extends StatelessWidget {
 
                     int treeArity = memoCard.knowledge['treeArity'];
                     int treeDepth = memoCard.knowledge['treeDepth'];
-                    int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
                     TacitKnowledge tacitKnowledge = memoCard.knowledge['tacitKnowledge'];
 
                     context.read<GreatWallBloc>().add(
                       GreatWallInitialized(
                         treeArity: treeArity,
                         treeDepth: treeDepth,
-                        timeLockPuzzleParam: timeLock,
+                        timeLockPuzzleParam: 1,
                         tacitKnowledge: tacitKnowledge,
                         secretSeed: password,
                       ),
                     );
-                    context.go('/${ConfirmationPage.routeName}');
+                    context.go(
+                      '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}/${MemoCardPracticePage.routeName}',
+                      extra: memoCard,
+                    );
                   }
                 },
-                child: Text(AppLocalizations.of(context)!.tryProtocol),
+                child: Text(AppLocalizations.of(context)!.tryCard),
               )
             else if (memoCard is Pa0MemoCard)
               ElevatedButton(

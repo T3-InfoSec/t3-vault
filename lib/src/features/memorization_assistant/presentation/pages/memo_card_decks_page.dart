@@ -16,7 +16,7 @@ import '../blocs/blocs.dart';
 /// collection of memory card decks, which users can interact with to review their
 /// tacit knowledge protocol.
 class MemoCardDecksPage extends StatelessWidget {
-  static const routeName = 'memo_card_decks';
+  static const routeName = '/decks';
 
   const MemoCardDecksPage({super.key});
 
@@ -74,7 +74,7 @@ class MemoCardDecksPage extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             context.go(
-                              '/$routeName/${MemoCardsPage.routeName}',
+                              '${MemoCardDecksPage.routeName}/${MemoCardsPage.routeName}',
                               extra: cards,
                             );
                           },

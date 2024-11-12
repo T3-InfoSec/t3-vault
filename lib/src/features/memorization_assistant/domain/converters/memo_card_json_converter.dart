@@ -1,3 +1,5 @@
+import 'package:great_wall/great_wall.dart';
+import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:uuid/uuid.dart';
 
@@ -41,11 +43,15 @@ class MemoCardConverter {
           stateIndex: json['stateIndex'],
         );
       case 'TacitKnowledgeMemoCard':
+        TacitKnowledge? tacitKnowledge = getTacitKnowledge(knowledge);
         memoCard = TacitKnowledgeMemoCard(
           knowledge: {
+            'level': knowledge['level'],
             'node': knowledge['node'],
             'selectedNode': knowledge['selectedNode'],
             'treeArity': knowledge['treeArity'],
+            'treeDepth': knowledge['treeDepth'],
+            if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
           },
           title: json['title'],
           deck: Deck(json['deckId'], json['deckName']),
@@ -114,12 +120,21 @@ class MemoCardConverter {
 
   static Map<String, dynamic> generateTacitKnowledgeJson(MemoCard memoCard) {
     final knowledge = memoCard.knowledge;
+    final tacitKnowledge = knowledge['tacitKnowledge'];
+    final formosaThemeName = tacitKnowledge.configs['formosaTheme']?.name;
+    final tacitKnowledgeType = _getTacitKnowledgeType(tacitKnowledge);
+    final tacitKnowledgeConfigs =
+        _getConfigsWithFormosaThemeName(formosaThemeName, tacitKnowledge);
 
     return {
       'knowledge': {
+        'level': knowledge['level'],
         'node': knowledge['node'],
         'selectedNode': knowledge['selectedNode'],
         'treeArity': knowledge['treeArity'],
+        'treeDepth': knowledge['treeDepth'],
+        'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
+        'tacitKnowledgeType': tacitKnowledgeType,
       },
       'title': memoCard.title,
       'cardType': memoCard.runtimeType.toString(),
@@ -137,8 +152,71 @@ class MemoCardConverter {
     };
   }
 
+  /// Creates a configuration map including the Formosa theme name.
+  ///
+  /// Combines existing configurations from [tacitKnowledge] and adds
+  /// [formosaThemeName], if provided, returning a map containing the
+  /// configurations.
+  static Map<String, dynamic> _getConfigsWithFormosaThemeName(
+      formosaThemeName, tacitKnowledge) {
+    final configs = <String, dynamic>{};
+    if (tacitKnowledge.configs != null) {
+      configs.addAll(tacitKnowledge.configs);
+    }
+    if (formosaThemeName != null) {
+      configs['formosaTheme'] = formosaThemeName;
+    }
+    return configs;
+  }
+
+  /// Identifies the type of tacit knowledge.
+  ///
+  /// Checks if [tacitKnowledge] is of type [FormosaTacitKnowledge] or
+  /// [HashVizTacitKnowledge] and returns a corresponding string or an
+  /// empty string if unknown.
+  static String _getTacitKnowledgeType(tacitKnowledge) {
+    String tacitKnowledgeType;
+    if (tacitKnowledge is FormosaTacitKnowledge) {
+      tacitKnowledgeType = 'FormosaTacitKnowledge';
+    } else if (tacitKnowledge is HashVizTacitKnowledge) {
+      tacitKnowledgeType = 'HashVizTacitKnowledge';
+    } else {
+      tacitKnowledgeType = "";
+    }
+    return tacitKnowledgeType;
+  }
+
   /// Returns a newly generated UUID as a string.
   static String generateId() {
     return _uuid.v4();
+  }
+
+  static TacitKnowledge? getTacitKnowledge(knowledge) {
+    TacitKnowledge? tacitKnowledge;
+
+    if (knowledge.containsKey('tacitKnowledgeConfigs')) {
+      final tacitKnowledgeConfigs = knowledge['tacitKnowledgeConfigs'];
+      final tacitKnowledgeType = knowledge['tacitKnowledgeType'];
+
+      // Create TacitKnowledge instance based on its type
+      if (tacitKnowledgeType == 'FormosaTacitKnowledge') {
+        final formosaThemeName = tacitKnowledgeConfigs['formosaTheme'];
+        FormosaTheme? formosaTheme;
+
+        if (formosaThemeName != null) {
+          formosaTheme = FormosaTheme.values
+              .firstWhere((theme) => theme.name == formosaThemeName);
+        }
+        tacitKnowledgeConfigs['formosaTheme'] = formosaTheme;
+        tacitKnowledge = FormosaTacitKnowledge(
+          configs: tacitKnowledgeConfigs,
+        );
+      } else if (tacitKnowledgeType == 'HashVizTacitKnowledge') {
+        tacitKnowledge = HashVizTacitKnowledge(
+          configs: tacitKnowledgeConfigs,
+        );
+      }
+    }
+    return tacitKnowledge;
   }
 }
