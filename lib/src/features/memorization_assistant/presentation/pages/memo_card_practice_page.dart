@@ -81,17 +81,18 @@ class MemoCardPracticePage extends StatelessWidget {
                                       GreatWallPracticeStepMade(index + 1));
                                   
                                   var selectedNode = base64Decode(memoCard.knowledge['selectedNode']); // TODO: decrypt selectedNode value.
-                                  String resultMessage = "";
+                                  bool isCorrectOption = false;
                                   if (base64Encode(state.currentHash) == base64Encode(selectedNode)) {
-                                    resultMessage = AppLocalizations.of(context)!.correctOption;
-                                  } else {
-                                    resultMessage = AppLocalizations.of(context)!.incorrectOption;
+                                    isCorrectOption = true;
                                   }
                                   if (!context.mounted) return;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(resultMessage),
-                                      duration: const Duration(seconds: 2),
+                                      content: Text(isCorrectOption
+                                          ? AppLocalizations.of(context)!.correctOption
+                                          : AppLocalizations.of(context)!.incorrectOption),
+                                      duration: const Duration(seconds: 3),
+                                      backgroundColor: isCorrectOption ? Colors.green : Colors.red,
                                     ),
                                   );
                                 },
