@@ -311,6 +311,42 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ),
                                     ),
                                   );
+                                  context.read<MemoCardSetBloc>().add(
+                                    MemoCardSetCardAdded(
+                                      memoCard: Pa0MemoCard(
+                                        pa0: base64Encode(encryptedPA0),
+                                        deck: deck,
+                                      ),
+                                    ),
+                                  );
+
+                                  for (int i = 1; i <= depth; i++) {
+                                    context.read<MemoCardSetBloc>().add(
+                                      MemoCardSetCardAdded(
+                                        memoCard: TacitKnowledgeMemoCard(
+                                          knowledge: {
+                                            'treeArity': arity,
+                                            'treeDepth': i,
+                                            'timeLockPuzzleParam': timeLock,
+                                            'tacitKnowledge':
+                                                HashVizTacitKnowledge(
+                                              configs: {
+                                                'hashvizSize': hashvizSize,
+                                                'isSymmetric': isSymmetric,
+                                                'numColors': numColors,
+                                                'saturation': saturation,
+                                                'brightness': brightness,
+                                                'minHue': minHue,
+                                                'maxHue': maxHue,
+                                              },
+                                            ),
+                                          },
+                                          deck: deck,
+                                          title: 'Derivation Level $i Card'
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 }
                               }
                             }

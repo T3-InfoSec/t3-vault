@@ -8,6 +8,8 @@ class Pa0SeedPromtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.chooseNameWidgetTitle),
       content: Column(
@@ -32,6 +34,7 @@ class Pa0SeedPromtWidget extends StatelessWidget {
                 TextSpan(text: AppLocalizations.of(context)!.pa0Description4),
                 TextSpan(text: AppLocalizations.of(context)!.pa0Description5),
               ],
+              style: TextStyle(color: textColor),
             ),
           ),
         ],

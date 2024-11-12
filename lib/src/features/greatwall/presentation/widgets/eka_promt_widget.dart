@@ -8,6 +8,8 @@ class EKAPromptWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.ekaWidgetTitle),
       content: Column(
@@ -29,6 +31,7 @@ class EKAPromptWidget extends StatelessWidget {
                 TextSpan(text: AppLocalizations.of(context)!.ekaDescription2),
                 TextSpan(text: AppLocalizations.of(context)!.ekaDescription3, style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
+              style: TextStyle(color: textColor),
             ),
           ),
         ],
