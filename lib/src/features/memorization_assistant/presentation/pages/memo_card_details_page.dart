@@ -13,7 +13,6 @@ import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dar
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
 
