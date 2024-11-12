@@ -79,9 +79,6 @@ class MemoCardPracticePage extends StatelessWidget {
                                   if (!context.mounted) return;
                                   context.read<GreatWallBloc>().add(
                                       GreatWallPracticeStepMade(index + 1));
-                                  // await Future<void>.delayed(
-                                  //   const Duration(seconds: 1));
-                                  // if (!context.mounted) return;
                                   
                                   var selectedNode = base64Decode(memoCard.knowledge['selectedNode']); // TODO: decrypt selectedNode value.
                                   String resultMessage = "";
