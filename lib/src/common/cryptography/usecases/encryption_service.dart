@@ -64,10 +64,8 @@ class EncryptionService {
   Future<SecretKey> deriveKey(String key) async {
     final argon2 = Argon2id(
       parallelism: 4,
-      // iterations: 3, // TODO: balance safety with time.
-      iterations: 1,
-      // memory: 65536, // KB (64 MB), // TODO: balance safety with time.
-      memory: 1024, 
+      iterations: 3,
+      memory: 65536, // KB (64 MB),
       hashLength: 32, // 256 bits
     );
 
