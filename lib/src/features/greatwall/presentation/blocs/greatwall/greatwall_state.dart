@@ -101,13 +101,22 @@ final class GreatWallFinishSuccess extends GreatWallState {
 
 final class GreatWallPracticeLevelStarted extends GreatWallState {
   final List<dynamic> knowledgePalettes;
-  final Uint8List currentHash;
   
   GreatWallPracticeLevelStarted({
     required this.knowledgePalettes,
-    required this.currentHash,
   });
 
   @override
-  List<Object> get props => [knowledgePalettes, currentHash];
+  List<Object> get props => [knowledgePalettes];
+}
+
+final class GreatWallPracticeLevelFinish extends GreatWallState {
+  final Uint8List selectedNode;
+  
+  GreatWallPracticeLevelFinish({
+    required this.selectedNode,
+  });
+
+  @override
+  List<Object> get props => [selectedNode];
 }

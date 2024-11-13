@@ -147,12 +147,12 @@ class MemoCardDetailsPage extends StatelessWidget {
             if (memoCard is TacitKnowledgeMemoCard)
               ElevatedButton(
                 onPressed: () async {
-                  String? password = await showDialog<String>(
+                  String? eka = await showDialog<String>(
                     context: context,
                     builder: (context) => const PasswordPrompt(),
                   );
 
-                  if (password != null && password.isNotEmpty) {
+                  if (eka != null && eka.isNotEmpty) {
                     if (!context.mounted) return;
 
                     int treeArity = memoCard.knowledge['treeArity'];
@@ -165,12 +165,15 @@ class MemoCardDetailsPage extends StatelessWidget {
                         treeDepth: treeDepth,
                         timeLockPuzzleParam: 1,
                         tacitKnowledge: tacitKnowledge,
-                        secretSeed: password,
+                        secretSeed: 'not needed pa0 for practice level',
                       ),
                     );
                     context.go(
-                      '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}/${MemoCardPracticePage.routeName}',
-                      extra: memoCard,
+                      '${MemoCardDecksPage.routeName}/${MemoCardPracticePage.routeName}',
+                        extra: {
+                          'memoCard': memoCard,
+                          'eka': eka,
+                        },
                     );
                   }
                 },

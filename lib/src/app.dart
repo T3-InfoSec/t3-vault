@@ -199,20 +199,21 @@ class T3Vault extends StatelessWidget {
                                   child: MemoCardDetailsPage(memoCard: memoCard),
                                 );
                               },
-                              routes: <RouteBase>[
-                                GoRoute(
-                                  path: MemoCardPracticePage.routeName,
-                                  pageBuilder: (BuildContext context, GoRouterState state) {
-                                    final memoCard = state.extra as MemoCard;
-                                    return MaterialPage(
-                                      restorationId: 'router.root.decks.cards.details.practice',
-                                      child: MemoCardPracticePage(
-                                        memoCard: memoCard,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                            ),
+                            GoRoute(
+                              path: MemoCardPracticePage.routeName,
+                              pageBuilder: (BuildContext context, GoRouterState state) {
+                                final args = state.extra as Map<String, dynamic>;
+                                final memoCard = args['memoCard'] as MemoCard;
+                                final eka = args['eka'] as String;
+                                return MaterialPage(
+                                  restorationId: 'router.root.decks.cards.details.practice',
+                                  child: MemoCardPracticePage(
+                                    memoCard: memoCard,
+                                    eka: eka,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),

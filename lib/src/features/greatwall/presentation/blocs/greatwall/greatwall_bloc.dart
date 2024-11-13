@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
@@ -40,6 +42,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     } else {
       _currentLevel++;
     }
+print("current level [${_currentLevel}]");
+print("current hash [${_greatWall!.currentHash}]");
 
     emit(
       GreatWallDeriveStepSuccess(
@@ -195,8 +199,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   }
 
   void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
-    _greatWall = null;
-    _currentLevel = 1;
+    _greatWall!.initialDerivation();
 
     emit(GreatWallInitial());
   }
@@ -207,22 +210,16 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     emit(
       GreatWallPracticeLevelStarted(
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        currentHash: _greatWall!.currentHash,
       ));
   }
 
   void _onGreatWallPracticeStepMade(
-      GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) async {
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-      () {
-        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
-      },
-    );
+      GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
+    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
+    
     emit(
-      GreatWallPracticeLevelStarted(
-        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-        currentHash: _greatWall!.currentHash
+      GreatWallPracticeLevelFinish(
+        selectedNode: selectedNode,
       ),
     );
   }

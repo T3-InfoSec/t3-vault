@@ -25,10 +25,9 @@ dependencies:
       url: git@github.com:T3-InfoSec/t3-formosa-dart.git
       ref: development
   great_wall:
-    # git:
-    #   url: git@github.com:T3-InfoSec/great-wall-dart.git
-    #   ref: development
-    path: ../../dart/great-wall-dart # TODO: Delete
+    git:
+      url: git@github.com:T3-InfoSec/great-wall-dart.git
+      ref: issue82_tier2
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git

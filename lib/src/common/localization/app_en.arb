@@ -292,7 +292,7 @@
   "@decryptionErrorDescription": {
     "description": "Decryption Error Widget: Text description"
   },
-  "secretHint": "secret",
+  "secretHint": "Enter ephemeral key to decrypt memo data.",
   "@secretHint": {
     "description": "Secret Widget: Hint secret"
   },
