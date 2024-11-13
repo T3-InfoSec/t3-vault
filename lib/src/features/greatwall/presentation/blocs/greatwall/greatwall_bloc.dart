@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
@@ -42,8 +40,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     } else {
       _currentLevel++;
     }
-print("current level [${_currentLevel}]");
-print("current hash [${_greatWall!.currentHash}]");
 
     emit(
       GreatWallDeriveStepSuccess(
@@ -84,6 +80,7 @@ print("current hash [${_greatWall!.currentHash}]");
         _greatWall!.startDerivation();
       },
     );
+
     emit(
       GreatWallDeriveStepSuccess(
         treeDepth: _greatWall!.treeDepth,
@@ -216,7 +213,7 @@ print("current hash [${_greatWall!.currentHash}]");
   void _onGreatWallPracticeStepMade(
       GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
     var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
-    
+
     emit(
       GreatWallPracticeLevelFinish(
         selectedNode: selectedNode,

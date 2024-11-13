@@ -26,7 +26,6 @@ class Pa0SeedPromtWidget extends StatelessWidget {
           const SizedBox(height: 16),
           RichText(
             text: TextSpan(
-              //style: TextStyle(color: Colors.black),
               children: [
                 TextSpan(text: AppLocalizations.of(context)!.pa0Description1, style: const TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: AppLocalizations.of(context)!.pa0Description2),

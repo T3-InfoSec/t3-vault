@@ -15,16 +15,15 @@ class EncryptionService {
   /// a nonce (randomly generated for each encryption operation), and a MAC 
   /// (Message Authentication Code) that protects the integrity and authenticity 
   /// of the encrypted data.
-  Future<List<int>> encrypt(String plainText, String key) async {
+  Future<List<int>> encrypt(List<int> plainTextBytes, String key) async {
     final derivedKey = await deriveKey(key);
     final algorithm = AesGcm.with256bits();
 
     final secretBox = await algorithm.encrypt(
-      utf8.encode(plainText),
+      plainTextBytes,
       secretKey: derivedKey,
       // default randomness unique nonce (aka initialization vector, or "salt") https://pub.dev/documentation/cryptography/latest/cryptography/Cipher/encrypt.html
     );
-
     return secretBox.concatenation();
   }
 
@@ -39,7 +38,7 @@ class EncryptionService {
   /// from the remaining bytes. It creates a `SecretBox` object with the extracted nonce, ciphertext, 
   /// and MAC, which the AES-GCM algorithm requires for decryption. And finally, the method decrypts 
   /// the data and returns the original string [pa0].
-  Future<String> decrypt(List<int> cipherText, String key) async {
+  Future<List<int>> decrypt(List<int> cipherText, String key) async {
     final derivedKey = await deriveKey(key);
     final algorithm = AesGcm.with256bits();
     final nonce = cipherText.sublist(0, 12);
@@ -55,8 +54,7 @@ class EncryptionService {
       secretBox,
       secretKey: derivedKey,
     );
-
-    return utf8.decode(decryptedBytes);
+    return decryptedBytes;
   }
 
   /// Derives a 256-bit AES encryption key from the provided [key] string using the Argon2id algorithm.
@@ -66,8 +64,10 @@ class EncryptionService {
   Future<SecretKey> deriveKey(String key) async {
     final argon2 = Argon2id(
       parallelism: 4,
-      iterations: 3, 
-      memory: 65536, // KB (64 MB), 
+      // iterations: 3, // TODO: balance safety with time.
+      iterations: 1,
+      // memory: 65536, // KB (64 MB), // TODO: balance safety with time.
+      memory: 1024, 
       hashLength: 32, // 256 bits
     );
 

@@ -191,7 +191,8 @@ class MemoCardDetailsPage extends StatelessWidget {
                   if (eka != null && eka.isNotEmpty) {
                     try {
                       Uint8List decodedBytes = base64Decode(pa0MemoCard.pa0);
-                      String pa0seed = await encryptionService.decrypt(decodedBytes, eka);
+                      List<int> pa0seedBytes = await encryptionService.decrypt(decodedBytes, eka);
+                      String pa0seed = utf8.decode(pa0seedBytes);
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,

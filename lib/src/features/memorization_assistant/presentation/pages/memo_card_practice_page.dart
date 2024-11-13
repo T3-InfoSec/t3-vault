@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,8 @@ import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dar
 import 'package:t3_vault/src/common/settings/presentation/pages/settings_page.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/blocs/blocs.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_widget.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 
 class MemoCardPracticePage extends StatelessWidget {
   static const routeName = 'practice';
@@ -36,7 +39,10 @@ class MemoCardPracticePage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.read<GreatWallBloc>().add(GreatWallReset());
-            Navigator.of(context).pop();
+            context.go(
+              '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}',
+              extra: memoCard,
+            );
           },
         ),
         actions: [
@@ -125,23 +131,31 @@ class MemoCardPracticePage extends StatelessWidget {
               );
             } else if (state is GreatWallPracticeLevelFinish) {
               bool isCorrectOption = false;
-              Future.delayed(const Duration(microseconds: 1), () async {
-                Uint8List storedSelectedNode = await getStoredSelectedNode();
-                if (base64Encode(state.selectedNode) ==
-                    base64Encode(storedSelectedNode)) {
-                  isCorrectOption = true;
-                }
-              });
+              return FutureBuilder<Uint8List>(
+                future: getStoredSelectedNode(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text("Error occurred"));
+                  }
+                  if (snapshot.hasData) {
+                    isCorrectOption = listEquals(state.selectedNode, snapshot.data);
 
-              return Center(
-                child: Text(
-                  isCorrectOption ? "Correct!" : "Incorrect!",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: isCorrectOption ? Colors.green : Colors.red,
-                  ),
-                ),
+                    return Center(
+                      child: Text(
+                        isCorrectOption ? "Correct!" : "Incorrect!",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: isCorrectOption ? Colors.green : Colors.red,
+                        ),
+                      ),
+                    );
+                  }
+                  
+                  return const Center(child: Text("No data found"));
+                },
               );
             } else {
               return const CircularProgressIndicator();
@@ -154,15 +168,13 @@ class MemoCardPracticePage extends StatelessWidget {
 
   Future<Uint8List> getStoredSelectedNode() async {
     Uint8List decodedBytes = base64Decode(memoCard.knowledge['selectedNode']);
-    String storedSelectedNode = await encryptionService.decrypt(decodedBytes, eka);
-    Uint8List selectedNode = base64Decode(storedSelectedNode);
-    return selectedNode;
+    List<int> storedSelectedNode = await encryptionService.decrypt(decodedBytes, eka);
+    return Uint8List.fromList(storedSelectedNode);
   }
 
   Future<Uint8List> getNode() async {
     Uint8List decodedBytes = base64Decode(memoCard.knowledge['node']);
-    String storedNode = await encryptionService.decrypt(decodedBytes, eka);
-    Uint8List node = base64Decode(storedNode);
-    return node;
+    List<int> storedNode = await encryptionService.decrypt(decodedBytes, eka);
+    return Uint8List.fromList(storedNode);
   }
 }

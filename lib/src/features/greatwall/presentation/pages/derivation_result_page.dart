@@ -139,8 +139,9 @@ class DerivationResultPage extends StatelessWidget {
                                         context,
                                         listen: false)
                                     .password;
+                                    final pa0Bytes = utf8.encode(pa0);
                                     final encryptedPA0 = await encryptionService
-                                        .encrypt(pa0, eka);
+                                        .encrypt(pa0Bytes, eka);
 
                                     List<MemoCard> memoCards = [];
 
@@ -159,12 +160,11 @@ class DerivationResultPage extends StatelessWidget {
                                     for (int i = 1; i <= state.treeDepth; i++) {
                                       var encryptedNode =
                                           await encryptionService.encrypt(
-                                              base64Encode(
-                                                  state.savedNodes[i - 1]),
+                                              state.savedNodes[i - 1],
                                               eka);
                                       var encryptedSelectedNode =
                                           await encryptionService.encrypt(
-                                              base64Encode(state.savedNodes[i]),
+                                              state.savedNodes[i],
                                               eka);
                                       memoCards.add(TacitKnowledgeMemoCard(
                                           knowledge: {
@@ -200,7 +200,7 @@ class DerivationResultPage extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(AppLocalizations.of(context)!.savingInProgress),
-                              duration: const Duration(seconds: 2),
+                              duration: const Duration(seconds: 10),
                             ),
                           );
                         }

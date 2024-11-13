@@ -204,7 +204,7 @@
   "@seedCopiedToClipboard": {
     "description": "Derivation Result Page: Text seed copied to clipboard"
   },
-  "savingInProgress": "Saving memorization cards. Please wait",
+  "savingInProgress": "Secrets are being derived and encrypted for secure storage on memory cards. Please wait, this may take a few minutes.",
   "@savingInProgress": {
     "description": "Derivation Result Page: Text saving memo cards"
   },
