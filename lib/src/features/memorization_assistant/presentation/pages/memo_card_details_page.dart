@@ -152,13 +152,12 @@ class MemoCardDetailsPage extends StatelessWidget {
                     builder: (context) => const PasswordPrompt(),
                   );
 
-                  if (eka != null && eka.isNotEmpty) {
-                    if (!context.mounted) return;
-
+                  if (eka != null && eka.isNotEmpty && await isValid(eka)) {
                     int treeArity = memoCard.knowledge['treeArity'];
                     int treeDepth = memoCard.knowledge['treeDepth'];
                     TacitKnowledge tacitKnowledge = memoCard.knowledge['tacitKnowledge'];
 
+                    if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
                       GreatWallInitialized(
                         treeArity: treeArity,
@@ -175,6 +174,12 @@ class MemoCardDetailsPage extends StatelessWidget {
                           'eka': eka,
                         },
                     );
+                  } else {
+                    if (!context.mounted) return;
+                    await showDialog<String>(
+                      context: context,
+                      builder: (context) => const DecryptionErrorPromtWidget(),
+                    ); 
                   }
                 },
                 child: Text(AppLocalizations.of(context)!.tryCard),
@@ -213,5 +218,16 @@ class MemoCardDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  Future<bool> isValid(String eka) async {
+    Uint8List decodedBytes = base64Decode(memoCard.knowledge['node']);
+    try {
+      await encryptionService.decrypt(decodedBytes, eka);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
