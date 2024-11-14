@@ -7,12 +7,14 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
 
 import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/eka_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -131,58 +133,70 @@ class DerivationResultPage extends StatelessWidget {
                                   );
                                   if (!context.mounted) return;
                                   if (deckName != null) {
-                                    context.read<MemoCardSetBloc>().add(MemoCardSetCardsAdding());
-                                    final deckId = const Uuid().v4();
-                                    final deck = Deck(deckId, deckName);
-
-                                    final pa0 = Provider.of<DerivationState>(
-                                        context,
-                                        listen: false)
-                                    .password;
-                                    final pa0Bytes = utf8.encode(pa0);
-                                    final encryptedPA0 = await encryptionService
-                                        .encrypt(pa0Bytes, eka);
-
-                                    List<MemoCard> memoCards = [];
-
-                                    memoCards.addAll([
-                                      EkaMemoCard(eka: 'question', deck: deck),
-                                      Pa0MemoCard(
-                                          pa0: base64Encode(encryptedPA0),
-                                          deck: deck)
-                                    ]);
+                                    String? enteredEKA = await showDialog<String>(
+                                      context: context,
+                                      builder: (context) => const PasswordPrompt(),
+                                    );
                                     if (!context.mounted) return;
-                                    final tacitKnowledge = Provider.of<DerivationState>(
-                                        context,
-                                        listen: false)
-                                    .tacitKnowledge;
-                                    
-                                    for (int i = 1; i <= state.treeDepth; i++) {
-                                      var encryptedNode =
-                                          await encryptionService.encrypt(
-                                              state.savedNodes[i - 1],
-                                              eka);
-                                      var encryptedSelectedNode =
-                                          await encryptionService.encrypt(
-                                              state.savedNodes[i],
-                                              eka);
-                                      memoCards.add(TacitKnowledgeMemoCard(
-                                          knowledge: {
-                                            'level': i,
-                                            'node': base64Encode(encryptedNode),
-                                            'selectedNode': base64Encode(
-                                                encryptedSelectedNode),
-                                            'treeArity': state.treeArity,
-                                            'treeDepth': state.treeDepth,
-                                            'tacitKnowledge': tacitKnowledge,
-                                          },
-                                          deck: deck,
-                                          title: 'Derivation Level $i Card'));
+                                    if (enteredEKA != eka){
+                                      await showDialog<String>(
+                                        context: context,
+                                        builder: (context) => const InputKeyErrorPromtWidget(),
+                                      );
+                                    } else {
+                                      context.read<MemoCardSetBloc>().add(MemoCardSetCardsAdding());
+                                      final deckId = const Uuid().v4();
+                                      final deck = Deck(deckId, deckName);
+
+                                      final pa0 = Provider.of<DerivationState>(
+                                          context,
+                                          listen: false)
+                                      .password;
+                                      final pa0Bytes = utf8.encode(pa0);
+                                      final encryptedPA0 = await encryptionService
+                                          .encrypt(pa0Bytes, eka);
+
+                                      List<MemoCard> memoCards = [];
+
+                                      memoCards.addAll([
+                                        EkaMemoCard(eka: 'question', deck: deck),
+                                        Pa0MemoCard(
+                                            pa0: base64Encode(encryptedPA0),
+                                            deck: deck)
+                                      ]);
+                                      if (!context.mounted) return;
+                                      final tacitKnowledge = Provider.of<DerivationState>(
+                                          context,
+                                          listen: false)
+                                      .tacitKnowledge;
+                                      
+                                      for (int i = 1; i <= state.treeDepth; i++) {
+                                        var encryptedNode =
+                                            await encryptionService.encrypt(
+                                                state.savedNodes[i - 1],
+                                                eka);
+                                        var encryptedSelectedNode =
+                                            await encryptionService.encrypt(
+                                                state.savedNodes[i],
+                                                eka);
+                                        memoCards.add(TacitKnowledgeMemoCard(
+                                            knowledge: {
+                                              'level': i,
+                                              'node': base64Encode(encryptedNode),
+                                              'selectedNode': base64Encode(
+                                                  encryptedSelectedNode),
+                                              'treeArity': state.treeArity,
+                                              'treeDepth': state.treeDepth,
+                                              'tacitKnowledge': tacitKnowledge,
+                                            },
+                                            deck: deck,
+                                            title: 'Derivation Level $i Card'));
+                                      }
+                                      if (!context.mounted) return;
+                                      context.read<MemoCardSetBloc>().add(
+                                          MemoCardSetCardsAdded(
+                                              memoCards: memoCards));
                                     }
-                                    if (!context.mounted) return;
-                                    context.read<MemoCardSetBloc>().add(
-                                        MemoCardSetCardsAdded(
-                                            memoCards: memoCards));
                                   }
                                 }
                               },

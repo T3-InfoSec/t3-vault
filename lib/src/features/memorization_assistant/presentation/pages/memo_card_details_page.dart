@@ -10,11 +10,11 @@ import 'package:t3_memassist/memory_assistant.dart';
 import 'package:great_wall/great_wall.dart';
 
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/blocs/blocs.dart';
@@ -178,7 +178,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     if (!context.mounted) return;
                     await showDialog<String>(
                       context: context,
-                      builder: (context) => const DecryptionErrorPromtWidget(),
+                      builder: (context) => const InputKeyErrorPromtWidget(),
                     ); 
                   }
                 },
@@ -207,7 +207,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,
-                        builder: (context) => const DecryptionErrorPromtWidget(),
+                        builder: (context) => const InputKeyErrorPromtWidget(),
                       );
                     }
                   }

@@ -65,8 +65,8 @@
   "@pa0WidgetTitle": {
     "description": "PA0 Widget: Title Dialog"
   },
-  "decryptionErrorWidgetTitle": "Decryption error",
-  "@decryptionErrorWidgetTitle": {
+  "inputKeyErrorWidgetTitle": "Key error",
+  "@inputKeyErrorWidgetTitle": {
     "description": "Decryption Error Widget: Title Dialog"
   },
   "secretWidgetTitle": "Enter secret:",
@@ -288,8 +288,8 @@
   "@pa0Description5": {
     "description": "PA0 Widget: Text description5"
   },
-  "decryptionErrorDescription": "The provided key is incorrect. Please try again.",
-  "@decryptionErrorDescription": {
+  "inputKeyErrorDescription": "The provided key is incorrect. Please try again.",
+  "@inputKeyErrorDescription": {
     "description": "Decryption Error Widget: Text description"
   },
   "secretHint": "Enter ephemeral key to decrypt memo data.",

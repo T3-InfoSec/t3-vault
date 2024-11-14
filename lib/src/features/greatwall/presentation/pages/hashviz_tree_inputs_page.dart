@@ -7,7 +7,7 @@ import 'package:great_wall/great_wall.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
