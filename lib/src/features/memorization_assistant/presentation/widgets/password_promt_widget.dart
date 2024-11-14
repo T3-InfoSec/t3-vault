@@ -7,13 +7,29 @@ class PasswordPrompt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextEditingController passwordController = TextEditingController();
+    final ValueNotifier<bool> isObscuredNotifier = ValueNotifier<bool>(true);
 
     return AlertDialog(
       title: Text(AppLocalizations.of(context)!.secretWidgetTitle),
-      content: TextField(
-        controller: passwordController,
-        obscureText: true,
-        decoration: InputDecoration(hintText: AppLocalizations.of(context)!.secretHint),
+      content: ValueListenableBuilder<bool>(
+        valueListenable: isObscuredNotifier,
+        builder: (context, isObscured, child) {
+          return TextField(
+            controller: passwordController,
+            obscureText: isObscured,
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context)!.secretHint,
+              suffixIcon: IconButton(
+                icon: Icon(
+                  isObscured ? Icons.visibility_off : Icons.visibility,
+                ),
+                onPressed: () {
+                  isObscuredNotifier.value = !isObscuredNotifier.value;
+                },
+              ),
+            ),
+          );
+        },
       ),
       actions: [
         TextButton(
