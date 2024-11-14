@@ -7,6 +7,8 @@ class EKAPromptWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
+
     return AlertDialog(
       title: const Text("This is your key:"),
       content: Column(
@@ -22,12 +24,13 @@ class EKAPromptWidget extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           RichText(
-            text: const TextSpan(
-              children: [
+            text: TextSpan(
+              children: const [
                 TextSpan(text: "Important, ", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                TextSpan(text: "make a physical backup of this key by writing it down and storing it in a secure place.\n"),
+                TextSpan(text: "make a physical backup of this key by writing it down and storing it in a secure place.\n", style: TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(text: "This key cannot be recovered if lost.", style: TextStyle(fontWeight: FontWeight.bold)),
               ],
+              style: TextStyle(color: textColor),
             ),
           ),
         ],
