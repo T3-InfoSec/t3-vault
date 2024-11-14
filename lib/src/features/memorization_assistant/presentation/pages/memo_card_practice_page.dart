@@ -16,6 +16,11 @@ import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_wid
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 
+/// A page for practice memory card.
+///
+/// The [MemoCardPracticePage] class is a stateless widget that displays a
+/// derivation options of the given card, which users can interact with to review their
+/// tacit knowledge protocol.
 class MemoCardPracticePage extends StatelessWidget {
   static const routeName = 'practice';
 
@@ -142,6 +147,14 @@ class MemoCardPracticePage extends StatelessWidget {
                   if (snapshot.hasData) {
                     isCorrectOption = listEquals(state.selectedNode, snapshot.data);
 
+                    Future.delayed(const Duration(seconds: 1), () {
+                      if (context.mounted) {
+                        context.read<GreatWallBloc>().add(
+                          GreatWallPracticeLevelContinue()
+                        );
+                      }
+                    });
+
                     return Center(
                       child: Text(
                         isCorrectOption ? "Correct!" : "Incorrect!",
@@ -153,7 +166,6 @@ class MemoCardPracticePage extends StatelessWidget {
                       ),
                     );
                   }
-                  
                   return const Center(child: Text("No data found"));
                 },
               );

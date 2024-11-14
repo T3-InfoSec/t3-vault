@@ -137,7 +137,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     context.read<MemoCardSetBloc>().add(
                           MemoCardSetCardRemoved(memoCard: memoCard),
                         );
-                    context.go('/${MemoCardDecksPage.routeName}');
+                    context.go(MemoCardDecksPage.routeName);
                   },
                   child: Text(AppLocalizations.of(context)!.deleteMemoCard),
                 );
