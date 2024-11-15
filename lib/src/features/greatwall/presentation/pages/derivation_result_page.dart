@@ -7,12 +7,12 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/cryptography/domain/eka.dart';
+import 'package:t3_vault/src/common/cryptography/domain/ka.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
 
-import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
@@ -25,8 +25,6 @@ class DerivationResultPage extends StatelessWidget {
   static const routeName = 'derivation_result';
 
   final encryptionService = EncryptionService();
-  final bip39generator = Bip39generator();
-  final keyGenerator = KeyGenerator();
 
   DerivationResultPage({super.key});
 
@@ -48,6 +46,7 @@ class DerivationResultPage extends StatelessWidget {
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             if (state is GreatWallFinishSuccess) {
+              final ka = KA(state.derivationHashResult);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -60,7 +59,7 @@ class DerivationResultPage extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: TextEditingController(
-                              text: state.derivationHashResult),
+                              text: ka.encodedHash),
                           readOnly: true,
                           obscureText: !state.isKAVisible,
                           decoration: InputDecoration(
@@ -83,7 +82,7 @@ class DerivationResultPage extends StatelessWidget {
                         icon: const Icon(Icons.copy),
                         onPressed: () {
                           Clipboard.setData(
-                              ClipboardData(text: state.derivationHashResult));
+                              ClipboardData(text: ka.encodedHash));
                         },
                       ),
                     ],
@@ -93,8 +92,7 @@ class DerivationResultPage extends StatelessWidget {
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
                       Clipboard.setData(ClipboardData(
-                          text: bip39generator.deriveTwelveWordsSeed(
-                              state.derivationHashResult)));
+                          text: ka.seedBip39));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -117,15 +115,14 @@ class DerivationResultPage extends StatelessWidget {
                         onPressed: (memoCardSetState is MemoCardSetAddSuccess)
                             ? null
                             : () async {
-                                final generatedKey =
-                                    keyGenerator.generateHexadecimalKey();
-                                final eka = await showDialog<String>(
+                                Eka eka = Eka();
+                                final String? optionalEka = await showDialog<String>(
                                   context: context,
                                   builder: (context) =>
-                                      EKAPromptWidget(eka: generatedKey),
+                                      EKAPromptWidget(eka: eka.key),
                                 );
                                 if (!context.mounted) return;
-                                if (eka != null) {
+                                if (optionalEka != null) {
                                   final deckName = await showDialog<String>(
                                     context: context,
                                     builder: (context) =>
@@ -138,7 +135,7 @@ class DerivationResultPage extends StatelessWidget {
                                       builder: (context) => const PasswordPrompt(),
                                     );
                                     if (!context.mounted) return;
-                                    if (enteredEKA != eka){
+                                    if (enteredEKA != eka.key){
                                       await showDialog<String>(
                                         context: context,
                                         builder: (context) => const InputKeyErrorPromtWidget(),
@@ -154,7 +151,7 @@ class DerivationResultPage extends StatelessWidget {
                                       .password;
                                       final pa0Bytes = utf8.encode(pa0);
                                       final encryptedPA0 = await encryptionService
-                                          .encrypt(pa0Bytes, eka);
+                                          .encrypt(pa0Bytes, eka.key);
 
                                       List<MemoCard> memoCards = [];
 
@@ -174,11 +171,11 @@ class DerivationResultPage extends StatelessWidget {
                                         var encryptedNode =
                                             await encryptionService.encrypt(
                                                 state.savedNodes[i - 1],
-                                                eka);
+                                                eka.key);
                                         var encryptedSelectedNode =
                                             await encryptionService.encrypt(
                                                 state.savedNodes[i],
-                                                eka);
+                                                eka.key);
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,

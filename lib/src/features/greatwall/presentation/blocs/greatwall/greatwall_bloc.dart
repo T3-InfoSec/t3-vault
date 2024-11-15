@@ -1,4 +1,3 @@
-import 'package:convert/convert.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
@@ -63,7 +62,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallFinishSuccess(
-          derivationHashResult: hex.encode(_greatWall!.derivationHashResult!),
+          derivationHashResult: _greatWall!.derivationHashResult!,
           savedNodes: _greatWall!.savedDerivedStates.values.toList(),
           treeArity: _greatWall!.treeArity,
           treeDepth: _greatWall!.treeDepth,

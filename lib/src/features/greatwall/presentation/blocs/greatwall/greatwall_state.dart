@@ -81,7 +81,7 @@ final class GreatWallDeriveStepSuccess extends GreatWallState {
 }
 
 final class GreatWallFinishSuccess extends GreatWallState {
-  final String derivationHashResult;
+  final Uint8List derivationHashResult;
   final List<Uint8List> savedNodes;
   final int treeArity;
   final int treeDepth;
