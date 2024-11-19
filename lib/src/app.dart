@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/presentation/pages/notifications_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
 
@@ -225,6 +226,17 @@ class T3Vault extends StatelessWidget {
                               restorationId: 'router.root.settings',
                               child:
                                   SettingsPage(controller: settingsController),
+                            );
+                          },
+                        ),
+                        GoRoute(
+                          path: NotificationsPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.notifications',
+                              child:
+                                  NotificationsPage(),
                             );
                           },
                         ),

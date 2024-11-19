@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/domain/notifications_service.dart';
 import '../converters/memo_card_json_converter.dart';
 
 class MemoCardRepository {
   final String filePath;
   final Map<String, MemoCard> _memoCardIdMap = {};
+  final NotificationService notificationService;
 
-  MemoCardRepository({required this.filePath});
+  MemoCardRepository({required this.filePath, required this.notificationService});
 
   /// Reads memo cards from a JSON file and returns a map of memo cards.
   ///
@@ -91,10 +93,24 @@ class MemoCardRepository {
   /// If the file does not exist, it will be created.  
   Future<void> _writeMemoCards() async {
     final file = File(filePath);
-    final jsonData = _memoCardIdMap.entries.map((entry) => {
-      ...MemoCardConverter.toJson(entry.value),
-      'id': entry.key,
-    }).toList();
+
+    final List<Map<String, dynamic>> jsonData = [];
+
+    for (var entry in _memoCardIdMap.entries) {
+      final memoCardJson = {
+        ...MemoCardConverter.toJson(entry.value),
+        'id': entry.key,
+      };
+      jsonData.add(memoCardJson);
+      notificationService.scheduleNotification(
+        id: entry.key.hashCode,
+        title: 'Time to review ${entry.value.title}',
+        body: 'You have a card to review!',
+        scheduledDate: entry.value.due,
+        payload: jsonEncode(memoCardJson),
+      );
+    }
+
     await file.writeAsString(jsonEncode(jsonData));
   }
 

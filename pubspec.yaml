@@ -20,6 +20,8 @@ dependencies:
   uuid: ^3.0.6
   cryptography: ^2.7.0
   provider: ^6.1.2
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.10.0
   t3_formosa:
     git:
       url: git@github.com:T3-InfoSec/t3-formosa-dart.git
