@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'package:android_intent_plus/android_intent.dart';
+
 import 'package:t3_vault/src/common/localization/timezone/timezone_helper.dart';
 import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
 
@@ -12,12 +15,13 @@ import 'package:t3_vault/src/common/notifications/state/notifications_state.dart
 class NotificationService {
   // Singleton instance
   static final NotificationService _instance = NotificationService._internal();
+
   /// Factory constructor to access the singleton instance.
   factory NotificationService() => _instance;
-  
+
   bool _isInitialized = false;
 
-   late NotificationsState? notificationsState;
+  late NotificationsState? notificationsState;
 
   /// Internal instance of [FlutterLocalNotificationsPlugin] used for managing
   /// notifications on supported platforms.
@@ -41,7 +45,8 @@ class NotificationService {
   Future<void> _initializePlugin() async {
     if (_isInitialized) {
       if (notificationsState == null) {
-        throw StateError('NotificationsState must be set before initialization.');
+        throw StateError(
+            'NotificationsState must be set before initialization.');
       }
       return;
     }
@@ -72,35 +77,24 @@ class NotificationService {
           }
         },
       );
-
     } catch (e) {
       print('Error during initialization: $e');
       rethrow;
     }
   }
 
-
   /// Requests notification permissions from the user on iOS and macOS.
   ///
   /// This method requests permissions for displaying alerts, badges, and
   /// sounds. These permissions are not required on Android or Linux.
   Future<void> requestPermissions() async {
-    await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
-    await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            MacOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+    if (Platform.isIOS) {
+      await _requestIOSPermissions();
+    } else if (Platform.isMacOS) {
+      await _requestMacOSPermissions();
+    } else if (Platform.isAndroid) {
+      await _requestAndroidPermissions();
+    }
   }
 
   /// Schedules a notification to be displayed at a specific date and time.
@@ -120,11 +114,11 @@ class NotificationService {
     required DateTime scheduledDate,
     required String payload,
   }) async {
-    final instance = NotificationService()._notificationsPlugin;
-
     if (Platform.isLinux) {
-      print("Linux does not support zonedSchedule. Immediate notification triggered.");
-      await instance.show(
+      print(
+          "Linux does not support zonedSchedule. Immediate notification triggered.");
+      await _notificationsPlugin.show(
+        // TODO: use `flutter_desktop_notifications` to schedule linux notifications.
         id,
         title,
         body,
@@ -134,7 +128,7 @@ class NotificationService {
         payload: payload,
       );
     } else {
-      await instance.zonedSchedule(
+      await _notificationsPlugin.zonedSchedule(
         id,
         title,
         body,
@@ -156,12 +150,50 @@ class NotificationService {
     }
   }
 
-  // Future<void> checkLinuxNotificationCapabilities() async { // TODO: delete method to check linux notifications capabilities
-  //   final capabilities = await _notificationsPlugin
-  //       .resolvePlatformSpecificImplementation<
-  //           LinuxFlutterLocalNotificationsPlugin>()
-  //       ?.getCapabilities();
+  Future<void> _requestIOSPermissions() async {
+    await _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
 
-  //   print('Notification Capabilities: $capabilities');
-  // }
+  Future<void> _requestMacOSPermissions() async {
+    await _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            MacOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<void> _requestAndroidPermissions() async {
+    final hasPermission = await _checkAndroidExactAlarmsPermission();
+    if (!hasPermission) {
+      await _requestAndroidExactAlarmsPermission();
+    }
+  }
+
+  Future<bool> _checkAndroidExactAlarmsPermission() async {
+    return await _notificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.areNotificationsEnabled() ??
+        false;
+  }
+
+  static Future<void> _requestAndroidExactAlarmsPermission() async {
+    const intent = AndroidIntent(
+      action: 'android.settings.APP_NOTIFICATION_SETTINGS',
+      arguments: {
+        'android.provider.extra.APP_PACKAGE': 'com.example.t3_vault',
+      },
+    );
+    await intent.launch();
+  }
 }

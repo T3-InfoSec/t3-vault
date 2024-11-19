@@ -35,6 +35,7 @@ class EKAPromptWidget extends StatelessWidget {
               style: TextStyle(color: textColor),
             ),
           ),
+IconButton(icon: const Icon(Icons.copy),onPressed: () {Clipboard.setData(ClipboardData(text: eka));},),
         ],
       ),
       actions: [
