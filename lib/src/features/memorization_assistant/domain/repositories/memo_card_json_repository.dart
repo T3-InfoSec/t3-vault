@@ -1,26 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/notifications/domain/notifications_service.dart';
 import '../converters/memo_card_json_converter.dart';
 
 class MemoCardRepository {
   final String filePath;
-  final Map<String, MemoCard> _memoCardIdMap = {};
+  final Set<MemoCard> _memoCards = {};
   final NotificationService notificationService;
 
   MemoCardRepository({required this.filePath, required this.notificationService});
 
-  /// Reads memo cards from a JSON file and returns a map of memo cards.
-  ///
-  /// This method attempts to read a JSON file located at [filePath]. If the file
-  /// does not exist, it returns an empty map. The contents of the file are 
-  /// expected to be a list of JSON objects representing memo cards.
-  ///
-  /// Each JSON object is converted to a [MemoCard] instance using 
-  /// [MemoCardConverter.fromJson], and a corresponding ID is extracted from 
-  /// the JSON object to serve as the key in the resulting map.
+  /// Reads memo cards from a JSON file and returns a list of memo cards.
   Future<List> readMemoCards() async {
     try {
       final file = File(filePath);
@@ -30,98 +23,60 @@ class MemoCardRepository {
       final contents = await file.readAsString();
       final jsonData = jsonDecode(contents) as List;
 
+      _memoCards.clear();
       for (var json in jsonData) {
         final memoCard = MemoCardConverter.fromJson(json);
-        final id = json['id'];
-        _memoCardIdMap[id] = memoCard;
+        _memoCards.add(memoCard);
       }
-      return _memoCardIdMap.values.toList();
+      return List.unmodifiable(_memoCards);
     } catch (e) {
-      // TODO: Handle file read errors
+      debugPrint('Error reading from repository: $e');
       return [];
     }
   }
 
   /// Adds a new memo card to the repository.
-  ///
-  /// This method generates a unique ID for each the provided [memoCards] and adds 
-  /// it to the internal map [_memoCardIdMap]. The updated map is then written 
-  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
   Future<void> addMemoCard(List<MemoCard> memoCards) async {
-    for (MemoCard memoCard in memoCards) {
-      final id = MemoCardConverter.generateId();
-      _memoCardIdMap[id] = memoCard;
-    }
-    
+    _memoCards.addAll(memoCards);
     await _writeMemoCards();
   }
 
-  /// Removes a memo card from the repository.
-  ///
-  /// This method identifies the ID of the provided [memoCard] from 
-  /// [_memoCardIdMap] and removes it from the map. The updated map is then 
-  /// written to the JSON file at [filePath] using [_writeMemoCard] method.
-  Future<void> removeMemoCard(MemoCard memoCard) async {
-    final id = _getMemoCardId(memoCard);
-    if (id != null) {
-      _memoCardIdMap.remove(id);
-    }
-    
+  /// Removes a memo card from the repository by ID.
+  Future<void> removeMemoCard(String id) async {
+    _memoCards.removeWhere((card) => card.id == id);
     await _writeMemoCards();
   }
 
-  /// Updates an existing memo card in the repository.
-  ///
-  /// This method locates the ID of the provided [memoCard] in [_memoCardIdMap] 
-  /// and updates its content. The updated map is then written 
-  /// to the JSON file located at [filePath] using [_writeMemoCard] method.
-  Future<void> updateMemoCard(MemoCard memoCard) async {
-    final id = _getMemoCardId(memoCard);
-    if (id != null) {
-      _memoCardIdMap[id] = memoCard;
-    }
+/// Updates an existing memo card in the repository.
+Future<void> updateMemoCard(MemoCard memoCard) async {
+  _memoCards.removeWhere((card) => card.id == memoCard.id);
 
-    await _writeMemoCards();
-  }
+  _memoCards.add(memoCard);
 
-  /// Writes the current state of memo cards to the JSON file.
-  ///
-  /// This private method converts the current entries in [_memoCardIdMap] 
-  /// to JSON format using [MemoCardConverter.toJson], adds their corresponding 
-  /// IDs, and writes the resulting list to the file located at [filePath].
-  ///
-  /// If the file does not exist, it will be created.  
+  await _writeMemoCards();
+}
+
+  /// Writes the current list of memo cards to the JSON file.
   Future<void> _writeMemoCards() async {
     final file = File(filePath);
 
-    final List<Map<String, dynamic>> jsonData = [];
-
-    for (var entry in _memoCardIdMap.entries) {
-      final memoCardJson = {
-        ...MemoCardConverter.toJson(entry.value),
-        'id': entry.key,
-      };
-      jsonData.add(memoCardJson);
-      notificationService.scheduleNotification(
-        id: entry.key.hashCode,
-        title: 'Time to review ${entry.value.title}',
-        body: 'You have a card to review!',
-        scheduledDate: entry.value.due,
-        payload: jsonEncode(memoCardJson),
-      );
-    }
+    final List<Map<String, dynamic>> jsonData = _memoCards.map((card) {
+      _scheduleMemoCardReviewNotification(card);
+      return MemoCardConverter.toJson(card);
+    }).toList();
 
     await file.writeAsString(jsonEncode(jsonData));
   }
 
-  Map<String, MemoCard> get memoCardIdMap => _memoCardIdMap;
+  Set<MemoCard> get memoCards => _memoCards;
 
-  /// Retrieves the ID of a memo card.
-  ///
-  /// This private method searches [_memoCardIdMap] for the provided [memoCard] 
-  /// and returns its corresponding ID. If the memo card is not found, the method 
-  /// returns `null`.
-  String? _getMemoCardId(MemoCard memoCard) {
-    return _memoCardIdMap.entries.firstWhere((entry) => entry.value == memoCard).key;
+  void _scheduleMemoCardReviewNotification(MemoCard card) {
+    notificationService.scheduleNotification(
+      id: card.id.hashCode,
+      title: 'Time to review ${card.title}',
+      body: 'You have a card to review!',
+      scheduledDate: card.due.toLocal(),
+      payload: jsonEncode(MemoCardConverter.toJson(card)),
+    );
   }
 }

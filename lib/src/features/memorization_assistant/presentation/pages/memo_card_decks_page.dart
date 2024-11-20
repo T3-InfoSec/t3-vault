@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/deck_viewer_widget.dart';
 
@@ -23,6 +24,11 @@ class MemoCardDecksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+
+    final pendingPayload = context.watch<NotificationsState>().pendingPayload;
+    final String? pendingDeckId = pendingPayload != null
+        ? NotificationsState.extractDeckIdFromPayload(pendingPayload)
+        : null;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MemoCardSetBloc>().add(MemoCardSetLoadRequested());
@@ -50,7 +56,6 @@ class MemoCardDecksPage extends StatelessWidget {
                   return Text(AppLocalizations.of(context)!.noMemoCards);
                 }
 
-                // Group MemoCards by deck
                 Map<String, List<MemoCard>> memoCardsByDeck = {};
                 for (var memoCard in memoCardSetState.memoCardSet) {
                   var deckId = memoCard.deck.id;
@@ -82,6 +87,7 @@ class MemoCardDecksPage extends StatelessWidget {
                             themeData: themeData,
                             name: cards[0].deck.name,
                             cardsNum: cards.length,
+                            toBeReviewed: pendingDeckId != null && entry.key == pendingDeckId,
                           ),
                         );
                       }).toList(),

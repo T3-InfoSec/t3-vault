@@ -25,7 +25,8 @@ void main() async {
   // Set up the NotificationService and request permissions needed to display
   // notifications on supported platforms.
   final notificationService = NotificationService();
-  notificationService.setNotificationsState(NotificationsState());
+  final notificationsState = NotificationsState();
+  notificationService.setNotificationsState(notificationsState);
   await notificationService.requestPermissions();
 
   // Get the application documents directory, which is a suitable location
@@ -52,7 +53,7 @@ void main() async {
     MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => DerivationState()),
-          ChangeNotifierProvider(create: (_) => NotificationsState()),
+          ChangeNotifierProvider.value(value: notificationsState),
         ],
         child: T3Vault(
           settingsController: settingsController,

@@ -14,7 +14,6 @@ class MemoCardSetBloc
     on<MemoCardSetCardsAdding>(_onMemoCardSetEvent);
     on<MemoCardSetCardsAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
-    _loadMemoCardsFromRepository();
   }
 
   Future<void> _onMemoCardSetEvent(
@@ -24,28 +23,28 @@ class MemoCardSetBloc
 
     if (event is MemoCardSetLoadRequested) {
       await _loadMemoCardsFromRepository();
-      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCards));
     }
 
     if (event is MemoCardSetUnchanged) {
-      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+      return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCards));
     }
 
     if (event is MemoCardSetCardsAdding) {
-      return emit(MemoCardSetAdding(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+      return emit(MemoCardSetAdding(memoCards: memoCardRepository.memoCards));
     }
 
     if (event is MemoCardSetCardsAdded) {
       await memoCardRepository.addMemoCard(event.memoCards);
-      return emit(MemoCardSetAddSuccess(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+      return emit(MemoCardSetAddSuccess(memoCards: memoCardRepository.memoCards));
     }
 
     if (event is MemoCardSetCardRemoved) {
-      await memoCardRepository.removeMemoCard(event.memoCard);
-      if (memoCardRepository.memoCardIdMap.isEmpty) {
+      await memoCardRepository.removeMemoCard(event.memoCard.id);
+      if (memoCardRepository.memoCards.isEmpty) {
         return emit(MemoCardSetEmpty());
       } else {
-        return emit(MemoCardSetRemoveSuccess(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+        return emit(MemoCardSetRemoveSuccess(memoCards: memoCardRepository.memoCards));
       }
     }
   }

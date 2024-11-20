@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'package:android_intent_plus/android_intent.dart';
@@ -72,13 +73,12 @@ class NotificationService {
         onDidReceiveNotificationResponse: (response) {
           final payload = response.payload;
           if (payload != null) {
-            print('Notification tapped with payload: $payload');
             notificationsState!.handleNotificationTap(payload);
           }
         },
       );
     } catch (e) {
-      print('Error during initialization: $e');
+      debugPrint('Error during initialization: $e');
       rethrow;
     }
   }
@@ -115,10 +115,9 @@ class NotificationService {
     required String payload,
   }) async {
     if (Platform.isLinux) {
-      print(
-          "Linux does not support zonedSchedule. Immediate notification triggered.");
+      // Linux does not support zonedSchedule. Immediate notification triggered.
+      // TODO: use `flutter_desktop_notifications` to schedule linux notifications.
       await _notificationsPlugin.show(
-        // TODO: use `flutter_desktop_notifications` to schedule linux notifications.
         id,
         title,
         body,

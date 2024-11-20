@@ -56,12 +56,13 @@ class HomePage extends StatelessWidget {
                   },
                   child: Stack(
                     alignment: Alignment.center,
+                    clipBehavior: Clip.none,
                     children: [
                       Text(AppLocalizations.of(context)!.memorizeKeys),
                       if (pendingPayload != null)
                         const Positioned(
-                          right: 0,
-                          top: 0,
+                          right: -20,
+                          top: -10,
                           child: CircleAvatar(
                             radius: 5,
                             backgroundColor: Colors.red,

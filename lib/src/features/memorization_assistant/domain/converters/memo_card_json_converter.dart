@@ -1,10 +1,8 @@
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:uuid/uuid.dart';
 
 class MemoCardConverter {
-  static const _uuid = Uuid();
 
   /// Converts a MemoCard object to JSON format.
   static Map<String, dynamic> toJson(MemoCard memoCard) {
@@ -41,6 +39,7 @@ class MemoCardConverter {
           reps: json['reps'],
           lapses: json['lapses'],
           stateIndex: json['stateIndex'],
+          id: json['id']
         );
       case 'TacitKnowledgeMemoCard':
         TacitKnowledge? tacitKnowledge = getTacitKnowledge(knowledge);
@@ -64,6 +63,7 @@ class MemoCardConverter {
           reps: json['reps'],
           lapses: json['lapses'],
           stateIndex: json['stateIndex'],
+          id: json['id'],
         );
       case 'EkaMemoCard':
         memoCard = EkaMemoCard(
@@ -78,6 +78,7 @@ class MemoCardConverter {
           reps: json['reps'],
           lapses: json['lapses'],
           stateIndex: json['stateIndex'],
+          id: json['id'],
         );
       default:
         return MemoCard(
@@ -93,6 +94,7 @@ class MemoCardConverter {
           reps: json['reps'],
           lapses: json['lapses'],
           stateIndex: json['stateIndex'],
+          id: json['id'],
         );
     }
 
@@ -103,6 +105,7 @@ class MemoCardConverter {
     return {
       'knowledge': memoCard.knowledge,
       'title': memoCard.title,
+      'id': memoCard.id,
       'cardType': memoCard.runtimeType.toString(),
       'deckId': memoCard.deck.id,
       'deckName': memoCard.deck.name,
@@ -137,6 +140,7 @@ class MemoCardConverter {
         'tacitKnowledgeType': tacitKnowledgeType,
       },
       'title': memoCard.title,
+      'id': memoCard.id,
       'cardType': memoCard.runtimeType.toString(),
       'deckId': memoCard.deck.id,
       'deckName': memoCard.deck.name,
@@ -184,11 +188,6 @@ class MemoCardConverter {
       tacitKnowledgeType = "";
     }
     return tacitKnowledgeType;
-  }
-
-  /// Returns a newly generated UUID as a string.
-  static String generateId() {
-    return _uuid.v4();
   }
 
   static TacitKnowledge? getTacitKnowledge(knowledge) {

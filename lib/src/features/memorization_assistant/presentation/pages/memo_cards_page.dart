@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
 
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -60,6 +62,7 @@ class MemoCardsPage extends StatelessWidget {
                     MemoCard memoCard = entry.value;
                     return GestureDetector(
                       onTap: () {
+                        context.read<NotificationsState>().clearPendingPayload();
                         context.go(
                           '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}',
                           extra: memoCard,
