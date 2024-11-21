@@ -311,6 +311,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                       ),
                                     ),
                                   );
+
                                   context.read<MemoCardSetBloc>().add(
                                     MemoCardSetCardAdded(
                                       memoCard: Pa0MemoCard(
