@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DecryptionErrorPromtWidget extends StatelessWidget {
   const DecryptionErrorPromtWidget({super.key});
@@ -6,14 +7,14 @@ class DecryptionErrorPromtWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Error"),
-      content: const Text("The provided key is incorrect. Please try again."),
+      title: Text(AppLocalizations.of(context)!.decryptionErrorWidgetTitle),
+      content: Text(AppLocalizations.of(context)!.decryptionErrorDescription),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('OK'),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
     );

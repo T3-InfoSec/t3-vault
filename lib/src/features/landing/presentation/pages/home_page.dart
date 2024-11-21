@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/pages/knowledge_types_page.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('T3-Vault'),
+        title: Text(AppLocalizations.of(context)!.homePageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     context.go('/${KnowledgeTypesPage.routeName}');
                   },
-                  child: const Text('Derive Your Keys!'),
+                  child: Text(AppLocalizations.of(context)!.deriveKeys),
                 ),
                 const SizedBox(
                   height: 10,
@@ -58,7 +59,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     context.go('/${MemoCardDecksPage.routeName}');
                   },
-                  child: const Text('Memorize Your Keys!'),
+                  child: Text(AppLocalizations.of(context)!.memorizeKeys),
                 ),
                 const SizedBox(
                   height: 30,

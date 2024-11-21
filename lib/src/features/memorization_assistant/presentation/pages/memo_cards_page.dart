@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:t3_memassist/memory_assistant.dart';
+
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../widgets/widgets.dart';
 import 'memo_card_details_page.dart';
@@ -31,7 +33,7 @@ class MemoCardsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memorization Cards'),
+        title: Text(AppLocalizations.of(context)!.memoCardsPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -46,7 +48,7 @@ class MemoCardsPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: memoCards.isEmpty 
-            ? const Text('No Memorization Cards in this deck!') 
+            ? Text(AppLocalizations.of(context)!.noMemoCardsDeck)
             : Wrap(
                 spacing: 5.0,
                 runSpacing: 5.0,

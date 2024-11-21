@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
@@ -44,7 +46,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hashviz Input Parameters'),
+        title: Text(AppLocalizations.of(context)!.hashvizTreeInputsPageTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -78,7 +80,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
               children: [
                 TextField(
                   controller: _arityController,
-                  decoration: const InputDecoration(labelText: 'Tree Arity'),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.treeArity),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -89,7 +91,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _depthController,
-                  decoration: const InputDecoration(labelText: 'Tree Depth'),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.treeDepth),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -100,8 +102,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
                 const SizedBox(height: 10),
                 TextField(
                   controller: _timeLockController,
-                  decoration: const InputDecoration(
-                      labelText: 'Time Lock Puzzle Param'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.timeLockPuzzleParam),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     context.read<GreatWallBloc>().add(
@@ -186,7 +188,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             controller: _passwordController,
                             obscureText: !isPasswordVisible,
                             decoration: InputDecoration(
-                              hintText: 'Password',
+                              hintText: AppLocalizations.of(context)!.password,
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   isPasswordVisible
@@ -350,7 +352,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                               }
                             }
                           },
-                      child: const Text('Save To Memorization Card'),
+                      child: Text(AppLocalizations.of(context)!.saveMemoCard),
                     );
                   },
                 ),
@@ -402,7 +404,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                       },
                     );
                   },
-                  child: const Text('Start Derivation'),
+                  child: Text(AppLocalizations.of(context)!.startDerivation),
                 ),
               ],
             ),

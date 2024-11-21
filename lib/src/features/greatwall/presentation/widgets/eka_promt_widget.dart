@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EKAPromptWidget extends StatelessWidget {
   final String eka;
@@ -10,7 +11,7 @@ class EKAPromptWidget extends StatelessWidget {
     final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return AlertDialog(
-      title: const Text("This is your key:"),
+      title: Text(AppLocalizations.of(context)!.ekaWidgetTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -25,10 +26,10 @@ class EKAPromptWidget extends StatelessWidget {
           const SizedBox(height: 16),
           RichText(
             text: TextSpan(
-              children: const [
-                TextSpan(text: "Important, ", style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
-                TextSpan(text: "make a physical backup of this key by writing it down and storing it in a secure place.\n", style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: "This key cannot be recovered if lost.", style: TextStyle(fontWeight: FontWeight.bold)),
+              children: [
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription1, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription2),
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription3, style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
               style: TextStyle(color: textColor),
             ),
@@ -40,13 +41,13 @@ class EKAPromptWidget extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(eka);
           },
-          child: const Text('OK'),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
     );

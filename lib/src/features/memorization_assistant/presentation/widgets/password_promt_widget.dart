@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PasswordPrompt extends StatelessWidget {
   const PasswordPrompt({super.key});
@@ -8,24 +9,24 @@ class PasswordPrompt extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
 
     return AlertDialog(
-      title: const Text('Enter secret'),
+      title: Text(AppLocalizations.of(context)!.secretWidgetTitle),
       content: TextField(
         controller: passwordController,
         obscureText: true,
-        decoration: const InputDecoration(hintText: 'secret'),
+        decoration: InputDecoration(hintText: AppLocalizations.of(context)!.secretHint),
       ),
       actions: [
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(passwordController.text);
           },
-          child: const Text('OK'),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
     );

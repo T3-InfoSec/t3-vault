@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../blocs/blocs.dart';
 
@@ -20,44 +21,39 @@ class AgreementPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              const Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Welcome to T3-Vault",
+                    AppLocalizations.of(context)!.appWelcome,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       // color: tabColor,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
-                  Text(
-                    'Your Key, Your Vault! T3-Vault is powered by an '
-                    'innovative protocol for providing Kerckhoffian, 0-trust '
-                    ' and deviceless coercion-resistance in self-custody.',
+                  Text(AppLocalizations.of(context)!.introducing,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 11),
+                    style: const TextStyle(fontSize: 11),
                   ),
                 ],
               ),
               Image.asset("assets/images/flutter_logo.png"),
               Column(
                 children: [
-                  const Text(
-                    "Read our Privacy Policy, 'AGREE AND CONTINUE'"
-                    " to accept the Terms of Service.",
+                  Text(AppLocalizations.of(context)!.readPolicy,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15),
+                    style: const TextStyle(fontSize: 15),
                   ),
                   const SizedBox(
                     height: 30,
                   ),
                   ElevatedButton(
-                    child: const Text('Learn More...'),
+                    child: Text(AppLocalizations.of(context)!.learnMore),
                     onPressed: () {
                       AgreementBloc bloc =
                           BlocProvider.of<AgreementBloc>(context);
@@ -69,7 +65,7 @@ class AgreementPage extends StatelessWidget {
                     height: 10,
                   ),
                   ElevatedButton(
-                    child: const Text('AGREE AND CONTINUE'),
+                    child: Text(AppLocalizations.of(context)!.agreeAndContinue),
                     onPressed: () {
                       AgreementBloc bloc =
                           BlocProvider.of<AgreementBloc>(context);

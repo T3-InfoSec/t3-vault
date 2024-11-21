@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
 import '../blocs/blocs.dart';
@@ -19,7 +20,7 @@ class DerivationResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GreatWall Derivation Result'),
+        title: Text(AppLocalizations.of(context)!.derivationResultPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -37,7 +38,7 @@ class DerivationResultPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 10),
-                  const Text('KA Result:'),
+                  Text(AppLocalizations.of(context)!.kaResult),
                   const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -80,8 +81,8 @@ class DerivationResultPage extends StatelessWidget {
                       Clipboard.setData(ClipboardData(
                           text: bip39generator.deriveTwelveWordsSeed(state.derivationHashResult)));
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Seed copied to clipboard')),
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.seedCopiedToClipboard)),
                       );
 
                       // Allow copying for 10 seconds, then disable
@@ -90,7 +91,7 @@ class DerivationResultPage extends StatelessWidget {
                       // Clear clipboard after the time limit
                       Clipboard.setData(const ClipboardData(text: ''));
                     },
-                    child: const Text('Generate and copy seed'),
+                    child: Text(AppLocalizations.of(context)!.generateAndCopySeed),
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(

@@ -4,8 +4,11 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:great_wall/great_wall.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:great_wall/great_wall.dart';
+
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
@@ -46,7 +49,7 @@ class MemoCardDetailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Card Details'),
+        title: Text(AppLocalizations.of(context)!.memoCardDetailsPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -105,22 +108,22 @@ class MemoCardDetailsPage extends StatelessWidget {
                           RatingButton(
                             memoCard: memoCard,
                             themeData: themeData,
-                            text: 'Again',
+                            text: AppLocalizations.of(context)!.again,
                           ),
                           RatingButton(
                             memoCard: memoCard,
                             themeData: themeData,
-                            text: 'Hard',
+                            text: AppLocalizations.of(context)!.hard,
                           ),
                           RatingButton(
                             memoCard: memoCard,
                             themeData: themeData,
-                            text: 'Good',
+                            text: AppLocalizations.of(context)!.good,
                           ),
                           RatingButton(
                             memoCard: memoCard,
                             themeData: themeData,
-                            text: 'Easy',
+                            text: AppLocalizations.of(context)!.easy,
                           ),
                         ],
                       ),
@@ -139,7 +142,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                         );
                     context.go('/${MemoCardDecksPage.routeName}');
                   },
-                  child: const Text('Delete Memorization Card'),
+                  child: Text(AppLocalizations.of(context)!.deleteMemoCard),
                 );
               },
             ),
@@ -172,7 +175,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     context.go('/${ConfirmationPage.routeName}');
                   }
                 },
-                child: const Text('Try protocol'),
+                child: Text(AppLocalizations.of(context)!.tryProtocol),
               )
             else if (memoCard is Pa0MemoCard)
               ElevatedButton(
@@ -201,7 +204,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     }
                   }
                 },
-                child: const Text('Password recovery'),
+                child: Text(AppLocalizations.of(context)!.passwordRecovery),
               ),
           ],
         ),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:great_wall/great_wall.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:great_wall/great_wall.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/hashviz_widget.dart';
@@ -17,7 +18,7 @@ class DerivationLevelPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('GreatWall Derivation Level'),
+        title: Text(AppLocalizations.of(context)!.derivationLevelPageTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -56,7 +57,7 @@ class DerivationLevelPage extends StatelessWidget {
                         context.go('/${DerivationLevelPage.routeName}');
                       }
                     },
-                    child: const Text('Previous Level'),
+                    child: Text(AppLocalizations.of(context)!.previousLevel),
                   ),
                   const SizedBox(height: 10),
                   Expanded(
@@ -120,8 +121,8 @@ class DerivationLevelPage extends StatelessWidget {
                 ],
               );
             } else {
-              return const Center(
-                child: Text('Loading or no level data available.'),
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noLevel),
               );
             }
           },

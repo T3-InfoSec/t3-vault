@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/deck_viewer_widget.dart';
@@ -28,7 +30,7 @@ class MemoCardDecksPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memorization Card Decks'),
+        title: Text(AppLocalizations.of(context)!.memoCardDecksPageTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -45,7 +47,7 @@ class MemoCardDecksPage extends StatelessWidget {
             child: BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
               builder: (context, memoCardSetState) {
                 if (memoCardSetState.memoCardSet.isEmpty) {
-                  return const Text('No Memorization Cards Yet!');
+                  return Text(AppLocalizations.of(context)!.noMemoCards);
                 }
 
                 // Group MemoCards by deck
