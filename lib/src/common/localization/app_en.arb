@@ -48,6 +48,10 @@
   "@memoCardDetailsPageTitle": {
     "description": "Card Details Page: Title of the page"
   },
+    "memoCardPracticePageTitle": "Card Practice",
+  "@memoCardPracticePageTitle": {
+    "description": "Card Practice Page: Title of the page"
+  },
 
   "chooseNameWidgetTitle": "Choose a name for this derivation.",
   "@chooseName": {
@@ -61,8 +65,8 @@
   "@pa0WidgetTitle": {
     "description": "PA0 Widget: Title Dialog"
   },
-  "decryptionErrorWidgetTitle": "Decryption error",
-  "@decryptionErrorWidgetTitle": {
+  "inputKeyErrorWidgetTitle": "Key error",
+  "@inputKeyErrorWidgetTitle": {
     "description": "Decryption Error Widget: Title Dialog"
   },
   "secretWidgetTitle": "Enter secret:",
@@ -107,8 +111,8 @@
   "@memorizeKeys": {
     "description": "Home Page: Button to memorize keys"
   },
-  "saveMemoCard": "Save To Memorization Card",
-  "@saveMemoCard": {
+  "saveDerivationCards": "Save derivation to Memorization Assistant",
+  "@saveDerivationCards": {
     "description": "Tree Inputs Page: Button to save memo card"
   },
   "startDerivation": "Start Derivation",
@@ -126,6 +130,10 @@
   "generateAndCopySeed": "Generate and copy seed",
   "@generateAndCopySeed": {
     "description": "Derivation Result Page: Button to generate and copy seed"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Derivation Result Page: Button to reset derivation protocol and go back home"
   },
   "again": "Again",
   "@again": {
@@ -147,8 +155,8 @@
   "@deleteMemoCard": {
     "description": "Card Details Page: Button to delete card"
   },
-  "tryProtocol": "Try protocol",
-  "@tryProtocol": {
+  "tryCard": "Try card",
+  "@tryCard": {
     "description": "Card Details Page: Button to try protocol"
   },
   "passwordRecovery": "Password recovery",
@@ -195,6 +203,10 @@
   "seedCopiedToClipboard": "Seed copied to clipboard",
   "@seedCopiedToClipboard": {
     "description": "Derivation Result Page: Text seed copied to clipboard"
+  },
+  "savingInProgress": "Cards are being storage encrypted for secure. Please wait.",
+  "@savingInProgress": {
+    "description": "Derivation Result Page: Text saving memo cards"
   },
   "noMemoCards": "No Memorization Cards Yet!",
   "@noMemoCards": {
@@ -276,12 +288,20 @@
   "@pa0Description5": {
     "description": "PA0 Widget: Text description5"
   },
-  "decryptionErrorDescription": "The provided key is incorrect. Please try again.",
-  "@decryptionErrorDescription": {
+  "inputKeyErrorDescription": "The provided key is incorrect. Please try again.",
+  "@inputKeyErrorDescription": {
     "description": "Decryption Error Widget: Text description"
   },
-  "secretHint": "secret",
+  "secretHint": "Enter ephemeral key to decrypt memo data.",
   "@secretHint": {
-    "description": "Secret Widget: secret hint"
+    "description": "Secret Widget: Hint secret"
+  },
+  "correctOption": "Correct!",
+  "@correctOption": {
+    "description": "Memo Card Practice Page: Result Message correct option"
+  },
+  "incorrectOption": "Incorrect!",
+  "@incorrectOption": {
+    "description": "Memo Card Practice Page: Result Message incorrect option"
   }
 }

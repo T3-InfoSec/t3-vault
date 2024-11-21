@@ -21,6 +21,9 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallDerivationStepMade>(_onDerivationStepMade);
     on<GreatWallDerivationFinished>(_onGreatWallDerivationFinished);
     on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
+    on<GreatWallPracticeLevel>(_onGreatWallPracticeLevel);
+    on<GreatWallPracticeStepMade>(_onGreatWallPracticeStepMade);
+    on<GreatWallPracticeLevelContinue>(_onGreatWallPracticeLevelContinue);
   }
 
   void _onDerivationStepMade(
@@ -60,7 +63,11 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
     emit(
       GreatWallFinishSuccess(
-          hex.encode(_greatWall!.derivationHashResult!), false),
+          derivationHashResult: hex.encode(_greatWall!.derivationHashResult!),
+          savedNodes: _greatWall!.savedDerivedStates.values.toList(),
+          treeArity: _greatWall!.treeArity,
+          treeDepth: _greatWall!.treeDepth,
+          isKAVisible:  false),
     );
   }
 
@@ -163,7 +170,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     );
 
     _greatWall!.seed0 = event.secretSeed;
-
+    
     emit(
       GreatWallInitialSuccess(
         treeArity: event.treeArity,
@@ -180,14 +187,47 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     if (state is GreatWallFinishSuccess) {
       final currentState = state as GreatWallFinishSuccess;
       emit(GreatWallFinishSuccess(
-          currentState.derivationHashResult, !currentState.isKAVisible));
+          derivationHashResult: currentState.derivationHashResult, 
+          savedNodes: currentState.savedNodes,
+          treeArity: _greatWall!.treeArity,
+          treeDepth: _greatWall!.treeDepth,
+          isKAVisible: !currentState.isKAVisible
+      ));
     }
   }
 
   void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
-    _greatWall = null;
-    _currentLevel = 1;
+    _greatWall!.initialDerivation();
 
     emit(GreatWallInitial());
+  }
+
+  void _onGreatWallPracticeLevel(GreatWallPracticeLevel event, Emitter<GreatWallState> emit) {
+    _greatWall!.generateLevelKnowledgePalettes(event.node);
+
+    emit(
+      GreatWallPracticeLevelStarted(
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+      ));
+  }
+
+  void _onGreatWallPracticeStepMade(
+      GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
+    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
+
+    emit(
+      GreatWallPracticeLevelFinish(
+        selectedNode: selectedNode,
+      ),
+    );
+  }
+
+  void _onGreatWallPracticeLevelContinue(
+      GreatWallPracticeLevelContinue event, Emitter<GreatWallState> emit) {
+
+    emit(
+      GreatWallPracticeLevelStarted(
+        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+      ));
   }
 }

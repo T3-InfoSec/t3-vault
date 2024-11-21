@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Pa0SeedPromtWidget extends StatelessWidget {
-  final String pa0Seed;
+class EKAPromptWidget extends StatelessWidget {
+  final String eka;
 
-  const Pa0SeedPromtWidget({super.key, required this.pa0Seed});
+  const EKAPromptWidget({super.key, required this.eka});
 
   @override
   Widget build(BuildContext context) {
     final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)!.chooseNameWidgetTitle),
+      title: Text(AppLocalizations.of(context)!.ekaWidgetTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            pa0Seed,
+            eka,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -26,13 +27,10 @@ class Pa0SeedPromtWidget extends StatelessWidget {
           const SizedBox(height: 16),
           RichText(
             text: TextSpan(
-              //style: TextStyle(color: Colors.black),
               children: [
-                TextSpan(text: AppLocalizations.of(context)!.pa0Description1, style: const TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: AppLocalizations.of(context)!.pa0Description2),
-                TextSpan(text: AppLocalizations.of(context)!.pa0Description3),
-                TextSpan(text: AppLocalizations.of(context)!.pa0Description4),
-                TextSpan(text: AppLocalizations.of(context)!.pa0Description5),
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription1, style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription2),
+                TextSpan(text: AppLocalizations.of(context)!.ekaDescription3, style: const TextStyle(fontWeight: FontWeight.bold)),
               ],
               style: TextStyle(color: textColor),
             ),
@@ -43,6 +41,12 @@ class Pa0SeedPromtWidget extends StatelessWidget {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
+          },
+          child: Text(AppLocalizations.of(context)!.cancel),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(eka);
           },
           child: Text(AppLocalizations.of(context)!.ok),
         ),

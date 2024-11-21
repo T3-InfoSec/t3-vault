@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
 
@@ -82,3 +84,27 @@ final class GreatWallDerivationStepMade extends GreatWallEvent {
 final class GreatWallDerivationFinished extends GreatWallEvent {}
 
 final class GreatWallKAVisibilityToggled extends GreatWallEvent {}
+
+final class GreatWallPracticeLevel extends GreatWallEvent {
+  final Uint8List node;
+
+  GreatWallPracticeLevel(this.node);
+
+  @override
+  List<Object> get props => [node];
+}
+
+final class GreatWallPracticeStepMade extends GreatWallEvent {
+  final Uint8List currentHash;
+  final int choiceNumber;
+
+  GreatWallPracticeStepMade({
+    required this.currentHash,
+    required this.choiceNumber,
+  });
+
+  @override
+  List<Object> get props => [currentHash, choiceNumber];
+}
+
+final class GreatWallPracticeLevelContinue extends GreatWallEvent {}

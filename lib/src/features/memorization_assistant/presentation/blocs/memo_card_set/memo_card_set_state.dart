@@ -18,6 +18,10 @@ final class MemoCardSetChangeNothing extends MemoCardSetState {
   const MemoCardSetChangeNothing({required List<MemoCard> memoCards}) : super(memoCardSet: memoCards);
 }
 
+final class MemoCardSetAdding extends MemoCardSetState {
+  const MemoCardSetAdding({required List<MemoCard> memoCards}) : super(memoCardSet: memoCards);
+}
+
 final class MemoCardSetAddSuccess extends MemoCardSetState {
   const MemoCardSetAddSuccess({required List<MemoCard> memoCards}) : super(memoCardSet: memoCards);
 }

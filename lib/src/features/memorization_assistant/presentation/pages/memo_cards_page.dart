@@ -15,7 +15,7 @@ import 'memo_card_details_page.dart';
 /// collection of memory cards, which users can interact with to review their
 /// tacit knowledge protocol.
 class MemoCardsPage extends StatelessWidget {
-  static const routeName = 'memo_cards';
+  static const routeName = 'cards';
 
   final List<MemoCard> memoCards;
 
@@ -57,12 +57,11 @@ class MemoCardsPage extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: memoCards.asMap().entries.map(
                   (entry) {
-                    int levelNumber = entry.key;
                     MemoCard memoCard = entry.value;
                     return GestureDetector(
                       onTap: () {
                         context.go(
-                          '/${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}/$levelNumber',
+                          '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}',
                           extra: memoCard,
                         );
                       },

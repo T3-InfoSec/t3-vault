@@ -11,7 +11,8 @@ class MemoCardSetBloc
   MemoCardSetBloc({required this.memoCardRepository}) : super(MemoCardSetEmpty()) {
     on<MemoCardSetLoadRequested>(_onMemoCardSetEvent);
     on<MemoCardSetUnchanged>(_onMemoCardSetEvent);
-    on<MemoCardSetCardAdded>(_onMemoCardSetEvent);
+    on<MemoCardSetCardsAdding>(_onMemoCardSetEvent);
+    on<MemoCardSetCardsAdded>(_onMemoCardSetEvent);
     on<MemoCardSetCardRemoved>(_onMemoCardSetEvent);
     _loadMemoCardsFromRepository();
   }
@@ -30,8 +31,12 @@ class MemoCardSetBloc
       return emit(MemoCardSetChangeNothing(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
     }
 
-    if (event is MemoCardSetCardAdded) {
-      await memoCardRepository.addMemoCard(event.memoCard);
+    if (event is MemoCardSetCardsAdding) {
+      return emit(MemoCardSetAdding(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
+    }
+
+    if (event is MemoCardSetCardsAdded) {
+      await memoCardRepository.addMemoCard(event.memoCards);
       return emit(MemoCardSetAddSuccess(memoCards: memoCardRepository.memoCardIdMap.values.toList()));
     }
 

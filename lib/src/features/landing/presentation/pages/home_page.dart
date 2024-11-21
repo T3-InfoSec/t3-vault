@@ -57,7 +57,7 @@ class HomePage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/${MemoCardDecksPage.routeName}');
+                    context.go(MemoCardDecksPage.routeName);
                   },
                   child: Text(AppLocalizations.of(context)!.memorizeKeys),
                 ),

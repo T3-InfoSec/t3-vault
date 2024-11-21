@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
 
 import 'src/app.dart';
@@ -30,8 +32,15 @@ void main() async {
   // Run the app and pass in the SettingsController. The app listens to the
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
-  runApp(T3Vault(
-    settingsController: settingsController,
-    memoCardRepository: memoCardRepository,)
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => DerivationState()),
+      ],
+      child: T3Vault(
+        settingsController: settingsController,
+        memoCardRepository: memoCardRepository,
+      )
+    ),
   );
 }

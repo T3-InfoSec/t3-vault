@@ -10,14 +10,14 @@ import 'package:t3_memassist/memory_assistant.dart';
 import 'package:great_wall/great_wall.dart';
 
 import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/decryption_error_promt_widget.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/password_promt_widget.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../greatwall/presentation/blocs/blocs.dart';
-import '../../../greatwall/presentation/pages/confirmation_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/widgets.dart';
 
@@ -26,20 +26,17 @@ import '../widgets/widgets.dart';
 /// The [CardDetailsPage] class is a stateless widget that shows the
 /// details of a selected [memoCard], including its state and due date.
 class MemoCardDetailsPage extends StatelessWidget {
-  static const routeName = 'memo_card_details';
+  static const routeName = 'details';
 
-  final int cardName;
   final MemoCard memoCard;
 
   final encryptionService = EncryptionService();
 
   /// Creates a detailed view of a memory card.
   ///
-  /// [cardName] identify the position of the card in the knowledge
-  /// tree and [memoCard] to provide the card's data.
+  /// receives [memoCard] to provide the card's data.
   MemoCardDetailsPage({
     super.key,
-    required this.cardName,
     required this.memoCard,
   });
 
@@ -82,7 +79,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                               themeData.textTheme.titleLarge!.fontWeight,
                           color: themeData.colorScheme.onPrimary,
                         ),
-                        'L$cardName Card Details',
+                        memoCard.title,
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -140,7 +137,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                     context.read<MemoCardSetBloc>().add(
                           MemoCardSetCardRemoved(memoCard: memoCard),
                         );
-                    context.go('/${MemoCardDecksPage.routeName}');
+                    context.go(MemoCardDecksPage.routeName);
                   },
                   child: Text(AppLocalizations.of(context)!.deleteMemoCard),
                 );
@@ -150,32 +147,42 @@ class MemoCardDetailsPage extends StatelessWidget {
             if (memoCard is TacitKnowledgeMemoCard)
               ElevatedButton(
                 onPressed: () async {
-                  String? password = await showDialog<String>(
+                  String? eka = await showDialog<String>(
                     context: context,
                     builder: (context) => const PasswordPrompt(),
                   );
 
-                  if (password != null && password.isNotEmpty) {
-                    if (!context.mounted) return;
-
+                  if (eka != null && eka.isNotEmpty && await isValid(eka)) {
                     int treeArity = memoCard.knowledge['treeArity'];
                     int treeDepth = memoCard.knowledge['treeDepth'];
-                    int timeLock = memoCard.knowledge['timeLockPuzzleParam'];
                     TacitKnowledge tacitKnowledge = memoCard.knowledge['tacitKnowledge'];
 
+                    if (!context.mounted) return;
                     context.read<GreatWallBloc>().add(
                       GreatWallInitialized(
                         treeArity: treeArity,
                         treeDepth: treeDepth,
-                        timeLockPuzzleParam: timeLock,
+                        timeLockPuzzleParam: 1,
                         tacitKnowledge: tacitKnowledge,
-                        secretSeed: password,
+                        secretSeed: 'not needed pa0 for practice level',
                       ),
                     );
-                    context.go('/${ConfirmationPage.routeName}');
+                    context.go(
+                      '${MemoCardDecksPage.routeName}/${MemoCardPracticePage.routeName}',
+                        extra: {
+                          'memoCard': memoCard,
+                          'eka': eka,
+                        },
+                    );
+                  } else {
+                    if (!context.mounted) return;
+                    await showDialog<String>(
+                      context: context,
+                      builder: (context) => const InputKeyErrorPromtWidget(),
+                    ); 
                   }
                 },
-                child: Text(AppLocalizations.of(context)!.tryProtocol),
+                child: Text(AppLocalizations.of(context)!.tryCard),
               )
             else if (memoCard is Pa0MemoCard)
               ElevatedButton(
@@ -189,7 +196,8 @@ class MemoCardDetailsPage extends StatelessWidget {
                   if (eka != null && eka.isNotEmpty) {
                     try {
                       Uint8List decodedBytes = base64Decode(pa0MemoCard.pa0);
-                      String pa0seed = await encryptionService.decrypt(decodedBytes, eka);
+                      List<int> pa0seedBytes = await encryptionService.decrypt(decodedBytes, eka);
+                      String pa0seed = utf8.decode(pa0seedBytes);
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,
@@ -199,7 +207,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,
-                        builder: (context) => const DecryptionErrorPromtWidget(),
+                        builder: (context) => const InputKeyErrorPromtWidget(),
                       );
                     }
                   }
@@ -210,5 +218,16 @@ class MemoCardDetailsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+  
+  Future<bool> isValid(String eka) async {
+    Uint8List decodedBytes = base64Decode(memoCard.knowledge['node']);
+    try {
+      await encryptionService.decrypt(decodedBytes, eka);
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

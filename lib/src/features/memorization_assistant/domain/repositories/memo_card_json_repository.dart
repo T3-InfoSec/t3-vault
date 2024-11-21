@@ -42,12 +42,14 @@ class MemoCardRepository {
 
   /// Adds a new memo card to the repository.
   ///
-  /// This method generates a unique ID for the provided [memoCard] and adds 
+  /// This method generates a unique ID for each the provided [memoCards] and adds 
   /// it to the internal map [_memoCardIdMap]. The updated map is then written 
   /// to the JSON file located at [filePath] using [_writeMemoCard] method.
-  Future<void> addMemoCard(MemoCard memoCard) async {
-    final id = MemoCardConverter.generateId();
-    _memoCardIdMap[id] = memoCard;
+  Future<void> addMemoCard(List<MemoCard> memoCards) async {
+    for (MemoCard memoCard in memoCards) {
+      final id = MemoCardConverter.generateId();
+      _memoCardIdMap[id] = memoCard;
+    }
     
     await _writeMemoCards();
   }

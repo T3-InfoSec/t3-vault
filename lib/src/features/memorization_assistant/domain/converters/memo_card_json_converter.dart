@@ -30,7 +30,7 @@ class MemoCardConverter {
     switch (cardType) {
       case 'Pa0MemoCard':
         memoCard = Pa0MemoCard(
-          pa0: json['knowledge']['pa0'],
+          pa0: knowledge['pa0'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
@@ -46,9 +46,11 @@ class MemoCardConverter {
         TacitKnowledge? tacitKnowledge = getTacitKnowledge(knowledge);
         memoCard = TacitKnowledgeMemoCard(
           knowledge: {
-            'treeArity': json['knowledge']['treeArity'],
-            'treeDepth': json['knowledge']['treeDepth'],
-            'timeLockPuzzleParam': json['knowledge']['timeLockPuzzleParam'],
+            'level': knowledge['level'],
+            'node': knowledge['node'],
+            'selectedNode': knowledge['selectedNode'],
+            'treeArity': knowledge['treeArity'],
+            'treeDepth': knowledge['treeDepth'],
             if (tacitKnowledge != null) 'tacitKnowledge': tacitKnowledge,
           },
           title: json['title'],
@@ -65,7 +67,7 @@ class MemoCardConverter {
         );
       case 'EkaMemoCard':
         memoCard = EkaMemoCard(
-          eka: json['knowledge']['eka'],
+          eka: knowledge['eka'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
@@ -79,7 +81,7 @@ class MemoCardConverter {
         );
       default:
         return MemoCard(
-          knowledge: json['knowledge'],
+          knowledge: knowledge,
           title: json['title'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
@@ -126,9 +128,11 @@ class MemoCardConverter {
 
     return {
       'knowledge': {
+        'level': knowledge['level'],
+        'node': knowledge['node'],
+        'selectedNode': knowledge['selectedNode'],
         'treeArity': knowledge['treeArity'],
         'treeDepth': knowledge['treeDepth'],
-        'timeLockPuzzleParam': knowledge['timeLockPuzzleParam'],
         'tacitKnowledgeConfigs': tacitKnowledgeConfigs,
         'tacitKnowledgeType': tacitKnowledgeType,
       },
