@@ -22,7 +22,7 @@ class EncryptionService {
     final secretBox = await algorithm.encrypt(
       utf8.encode(plainText),
       secretKey: derivedKey,
-      // TODO: Review randomness for nonce
+      // default randomness unique nonce (aka initialization vector, or "salt") https://pub.dev/documentation/cryptography/latest/cryptography/Cipher/encrypt.html
     );
 
     return secretBox.concatenation();
@@ -66,8 +66,8 @@ class EncryptionService {
   Future<SecretKey> deriveKey(String key) async {
     final argon2 = Argon2id(
       parallelism: 4,
-      iterations: 1, 
-      memory: 1024, 
+      iterations: 3, 
+      memory: 65536, // KB (64 MB), 
       hashLength: 32, // 256 bits
     );
 

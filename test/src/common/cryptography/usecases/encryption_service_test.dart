@@ -1,5 +1,8 @@
+import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:t3_vault/src/features/greatwall/domain/usecases/encryption_service.dart';
+import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 
 void main() {
   final encryptionService = EncryptionService();
@@ -29,5 +32,22 @@ void main() {
 
       expect(decryptedData, pa0);
     });
+
+    test('encrypt should produce unique nonces for each encryption', () async {
+      final List<List<int>> previousNonces = [];
+      const int testIterations = 10000;
+
+      for (int i = 0; i < testIterations; i++) {
+        final pa0 = List.generate(16, (_) => Random().nextInt(256)).join();
+        final encryptedData = await encryptionService.encrypt(pa0, eka);
+
+        final nonce = encryptedData.sublist(0, 12);
+
+        final isDuplicate = previousNonces.any((prevNonce) => listEquals(prevNonce, nonce));
+        expect(isDuplicate, isFalse, reason: 'Nonce repetition detected.');
+
+        previousNonces.add(nonce);
+      }
+    }, timeout: const Timeout(Duration(seconds: 60)), skip: true);
   });
 }

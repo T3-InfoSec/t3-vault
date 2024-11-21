@@ -1,13 +1,12 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class EKAPromptWidget extends StatelessWidget {
-  const EKAPromptWidget({super.key});
+  final String eka;
+
+  const EKAPromptWidget({super.key, required this.eka});
 
   @override
   Widget build(BuildContext context) {
-    final generatedKey = generateHexadecimalKey();
     final textColor = Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black;
 
     return AlertDialog(
@@ -16,7 +15,7 @@ class EKAPromptWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            generatedKey,
+            eka,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -45,32 +44,11 @@ class EKAPromptWidget extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop(generatedKey);
+            Navigator.of(context).pop(eka);
           },
           child: const Text('OK'),
         ),
       ],
     );
   }
-
-  /// Generates a secure random hexadecimal key, formatted into 4-character blocks
-  /// separated by spaces for readability.
-  ///
-  /// Generates a 32-charater hexadecimal secuence.
-  /// Then formats the hexadecimal key into 4-character blocks separated by spaces, for that
-  /// uses `replaceAllMapped` with the regex pattern `.{4}`, which matches every group of 4 characters.
-  /// For each 4-character match, a space is appended and calls `trim()` to remove any trailing spaces.
-  String generateHexadecimalKey() {
-    final random = Random.secure();
-    final buffer = StringBuffer();
-    
-    for (int i = 0; i < 32; i++) {
-      buffer.write(random.nextInt(16).toRadixString(16));
-    }
-
-    return buffer.toString().toUpperCase().replaceAllMapped(
-      RegExp(r".{4}"), (match) => "${match.group(0)} ",
-    ).trim();
-  }
-
 }
