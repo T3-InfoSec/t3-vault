@@ -1,0 +1,33 @@
+name: Memorization Assistant CI - Memorization Assistant Flutter
+
+on:
+  pull_request:
+    branches:
+      - master
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Dart
+      uses: dart-lang/setup-dart@v1
+
+    - name: Install dependencies
+      run: flutter pub get
+      working-directory: t3-app/memorization_assistant_flutter
+
+    - name: Run Linter
+      run: dart analyze
+      working-directory: t3-app/memorization_assistant_flutter
+
+    - name: Format code
+      run: dart format --output=none --set-exit-if-changed . || true
+      working-directory: t3-app/memorization_assistant_flutter
+
+    - name: Run Unit Tests
+      run: flutter test
+      working-directory: t3-app/memorization_assistant_flutter
