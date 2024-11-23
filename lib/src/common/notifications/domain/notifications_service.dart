@@ -71,11 +71,8 @@ class NotificationService {
       await _notificationsPlugin.initialize(
         settings,
         onDidReceiveNotificationResponse: (response) {
-          final payload = response.payload;
-          if (payload != null) {
-            notificationsState!.handleNotificationTap(payload);
-          }
-        },
+        notificationsState!.handleNotificationTap(response);
+                },
       );
     } catch (e) {
       debugPrint('Error during initialization: $e');

@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
 
 class MemoCardViewer extends StatelessWidget {
   final ThemeData themeData;
   final MemoCard memoCard;
+  final bool isToBeReviewed;
 
   const MemoCardViewer({
     super.key,
     required this.themeData,
     required this.memoCard,
+    required this.isToBeReviewed
   });
 
   @override
   Widget build(BuildContext context) {
-    final String? pendingPayload = context.watch<NotificationsState>().pendingPayload;
 
     return Stack(
       clipBehavior: Clip.none,
@@ -51,7 +50,7 @@ class MemoCardViewer extends StatelessWidget {
             ],
           ),
         ),
-        if (_isToBeReviewed(memoCard, pendingPayload))
+        if (isToBeReviewed)
           Positioned(
             top: -5,
             right: -5,
@@ -66,11 +65,5 @@ class MemoCardViewer extends StatelessWidget {
           ),
       ],
     );
-  }
-
-  bool _isToBeReviewed(MemoCard memoCard, String? pendingPayload) {
-    return pendingPayload != null &&
-        memoCard.id ==
-            NotificationsState.extractMemoCardIdFromPayload(pendingPayload);
   }
 }

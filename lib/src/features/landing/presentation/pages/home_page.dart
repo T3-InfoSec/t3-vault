@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pendingPayload = context.watch<NotificationsState>().pendingPayload;
+    final notificationHistory = context.watch<NotificationsState>().notificationHistory;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                     clipBehavior: Clip.none,
                     children: [
                       Text(AppLocalizations.of(context)!.memorizeKeys),
-                      if (pendingPayload != null)
+                      if (notificationHistory.isNotEmpty)
                         const Positioned(
                           right: -20,
                           top: -10,

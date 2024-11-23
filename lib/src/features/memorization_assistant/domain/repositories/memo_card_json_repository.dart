@@ -47,14 +47,14 @@ class MemoCardRepository {
     await _writeMemoCards();
   }
 
-/// Updates an existing memo card in the repository.
-Future<void> updateMemoCard(MemoCard memoCard) async {
-  _memoCards.removeWhere((card) => card.id == memoCard.id);
+  /// Updates an existing memo card in the repository.
+  Future<void> updateMemoCard(MemoCard memoCard) async {
+    _memoCards.removeWhere((card) => card.id == memoCard.id);
 
-  _memoCards.add(memoCard);
+    _memoCards.add(memoCard);
 
-  await _writeMemoCards();
-}
+    await _writeMemoCards();
+  }
 
   /// Writes the current list of memo cards to the JSON file.
   Future<void> _writeMemoCards() async {

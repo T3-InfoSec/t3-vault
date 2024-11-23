@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
@@ -99,6 +100,24 @@ class MemoCardConverter {
     }
 
     return memoCard;
+  }
+
+  static String? extractDeckIdFromJson(Map<String, dynamic> json) {
+    try {
+      return json['deckId'] as String?;
+    } catch (e) {
+      debugPrint('Error decoding payload: $e');
+      return null;
+    }
+  }
+
+  static String? extractMemoCardIdFromJson(Map<String, dynamic> json) {
+    try {
+      return json['id'] as String?;
+    } catch (e) {
+      debugPrint('Error decoding payload: $e');
+      return null;
+    }
   }
 
   static Map<String, dynamic> generateBasicKnowledgeJson(MemoCard memoCard) {

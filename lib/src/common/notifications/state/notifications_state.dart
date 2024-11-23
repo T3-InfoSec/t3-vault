@@ -1,41 +1,43 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+/// State management class for handling notifications in the application.
+///
+/// This [NotificationsState] class is responsible for storing and managing the
+/// notification history, as well as processing user interactions with notifications.
+/// It exposes methods to handle notification taps and to clear notifications
+/// based on their unique identifier.
 class NotificationsState extends ChangeNotifier {
-  String? _pendingPayload;
+  final List<NotificationResponse> _notificationHistory = [];
 
-  String? get pendingPayload {
-    return _pendingPayload;
+  List<NotificationResponse> get notificationHistory {
+    return _notificationHistory;
   }
 
-  void handleNotificationTap(String payload) {
-    _pendingPayload = payload;
-    notifyListeners(); // TODO: Hanlde notificaions in MemoCardsPage
+  /// Handles the tap on a notification by adding it to the notification history.
+  ///
+  /// When a user taps on a [notification], this method is called to add the tapped
+  /// notification to the history and notify listeners to trigger any updates.
+  void handleNotificationTap(NotificationResponse notification) {
+   _notificationHistory.add(notification);
+    notifyListeners();
   }
 
-  static String? extractDeckIdFromPayload(String payload) {
+  /// Clears a notification from the history by its unique identifier.
+  ///
+  /// This method tries to find the notification with the specified [id] in the history
+  /// and removes it. If the notification is not found, it logs an error message.
+  void clearNotificationById(int id) {
+    final NotificationResponse response;
     try {
-      final decodedPayload = jsonDecode(payload) as Map<String, dynamic>;
-      return decodedPayload['deckId'] as String?;
+    response = _notificationHistory.firstWhere(
+      (response) => response.id == id);
     } catch (e) {
-      debugPrint('Error decoding payload: $e');
-      return null;
+      debugPrint('Error clearing notification by id: $e');
+      rethrow;
     }
-  }
 
-  static String? extractMemoCardIdFromPayload(String payload) {
-    try {
-      final decodedPayload = jsonDecode(payload) as Map<String, dynamic>;
-      return decodedPayload['id'] as String?;
-    } catch (e) {
-      debugPrint('Error decoding payload: $e');
-      return null;
-    }
-  }
-
-  void clearPendingPayload() {
-    _pendingPayload = null;
+    _notificationHistory.remove(response);
     notifyListeners();
   }
 }
