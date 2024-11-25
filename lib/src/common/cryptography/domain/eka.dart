@@ -9,19 +9,19 @@ import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dar
 /// 
 /// Eka acts as a last resort option for retrieving PA0 if the original entry seed is forgotten.
 class Eka {
-  static const int keyLength = 32;
+  static const int keyLength = 32; // Digits
   static const int hexBase = 16;
-  static const int blockSize = 4;
+  static const int digitsChunkSize = 4;
 
   String key;
 
   Eka() : key = _generateHexadecimalKey();
 
-  /// Generates a secure random hexadecimal key, formatted into [blockSize]-character blocks
+  /// Generates a secure random hexadecimal key, formatted into [digitsChunkSize]-character blocks
   /// separated by spaces for readability.
   ///
   /// - Generates a [keyLength]-character hexadecimal sequence.
-  /// - Formats the key into [blockSize]-character blocks separated by spaces using a regex.
+  /// - Formats the key into [digitsChunkSize]-character blocks separated by spaces using a regex.
   /// - Removes trailing spaces with `trim()`.
   static String _generateHexadecimalKey() {
     final random = Random.secure();
@@ -32,7 +32,7 @@ class Eka {
     }
 
     return buffer.toString().toUpperCase().replaceAllMapped(
-      RegExp('.{$blockSize}'),
+      RegExp('.{$digitsChunkSize}'),
       (match) => "${match.group(0)} ",
     ).trim();
   }

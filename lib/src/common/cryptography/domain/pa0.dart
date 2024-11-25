@@ -8,7 +8,10 @@ import 'package:t3_formosa/formosa.dart';
 ///
 /// This seed is encrypted using an ephemeral key (Eka) for storage security.
 class Pa0 {
-  static const int byteMaxValue = 256; // Maximum value for a single byte (0-255).
+  static const int byteMaxValue = 256;
+  static const double bytesPerWord = 1.33;
+  static const int wordsNumber = 6;
+  static final int entropyBytesForSeed = (wordsNumber * bytesPerWord).ceil();
 
   final String seed;
   List<int> seedEncrypted;
@@ -22,13 +25,18 @@ class Pa0 {
 
   /// Generates a six-words BIP39 seed using random entropy and bip39 as Formosa theme.
   static String _generateSixWordsSeed() {
-    Uint8List randomEntropy = Uint8List(8);
-    Random random = Random();
+    Uint8List entropy = generateRandomEntropy();
+    return Formosa(
+      formosaTheme: FormosaTheme.bip39, 
+      entropy: entropy).seed;
+  }
+
+  static Uint8List generateRandomEntropy() {
+    Uint8List randomEntropy = Uint8List(entropyBytesForSeed);
+    Random random = Random.secure();
     for (int i = 0; i < randomEntropy.length; i++) {
       randomEntropy[i] = random.nextInt(byteMaxValue);
     }
-    FormosaTheme theme = FormosaTheme.bip39;
-    Formosa formosa = Formosa(formosaTheme: theme);
-    return formosa.toFormosa(randomEntropy);
+    return randomEntropy;
   }
 }
