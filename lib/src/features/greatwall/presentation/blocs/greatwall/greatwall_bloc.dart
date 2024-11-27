@@ -168,7 +168,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       tacitKnowledge: event.tacitKnowledge,
     );
 
-    _greatWall!.seed0 = event.secretSeed;
+    _greatWall!.sa0 = Pa0(seed: event.pa0Seed);
     
     emit(
       GreatWallInitialSuccess(
@@ -176,7 +176,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
         tacitKnowledge: event.tacitKnowledge,
-        secretSeed: event.secretSeed,
+        pa0Seed: event.pa0Seed,
       ),
     );
   }
