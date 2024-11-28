@@ -4,9 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/bip_39_generator.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/key_generator.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -29,10 +26,6 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _minHueController = TextEditingController();
   final TextEditingController _maxHueController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  final encryptionService = EncryptionService();
-  final bip39generator = Bip39generator();
-  final keyGenerator = KeyGenerator();
 
   HashvizTreeInputsPage({super.key});
 
@@ -203,8 +196,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.sync),
                           onPressed: () async {
-                            String pa0Seed =
-                                bip39generator.generataSixWordsSeed();
+                            String pa0Seed = Pa0().seed;
                             await showDialog<String>(
                               context: context,
                               builder: (context) =>
@@ -257,7 +249,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                     'maxHue': maxHue,
                                   },
                                 ),
-                                secretSeed: _passwordController.text,
+                                pa0Seed: _passwordController.text,
                               ),
                             );
                         context.go(

@@ -40,19 +40,19 @@ final class GreatWallInitialized extends GreatWallEvent {
   final int treeDepth;
   final int timeLockPuzzleParam;
   final TacitKnowledge tacitKnowledge;
-  final String secretSeed;
+  final String pa0Seed;
 
   GreatWallInitialized({
     required this.treeArity,
     required this.treeDepth,
     required this.timeLockPuzzleParam,
     required this.tacitKnowledge,
-    required this.secretSeed,
+    required this.pa0Seed,
   });
 
   @override
   List<Object> get props =>
-      [treeDepth, timeLockPuzzleParam, tacitKnowledge, secretSeed];
+      [treeDepth, timeLockPuzzleParam, tacitKnowledge, pa0Seed];
 }
 
 final class GreatWallReset extends GreatWallEvent {}
