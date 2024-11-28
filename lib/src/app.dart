@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/fractal_tree_inputs_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
 
@@ -280,6 +281,30 @@ class T3Vault extends StatelessWidget {
                                     return const MaterialPage(
                                       restorationId: 'router.root.knowledge.'
                                           'hashviz_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            GoRoute(
+                              path: FractalTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.knowledge.fractal_inputs',
+                                  child: FractalTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'fractal_inputs.confirmation',
                                       child: ConfirmationPage(),
                                     );
                                   },

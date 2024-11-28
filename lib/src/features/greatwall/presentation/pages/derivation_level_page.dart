@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/fractal_widget.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import '../widgets/hashviz_widget.dart';
@@ -99,8 +100,7 @@ class DerivationLevelPage extends StatelessWidget {
                           child: Builder(builder: (context) {
                             if (tacitKnowledge is FormosaTacitKnowledge) {
                               return Text(tacitKnowledge.knowledge!);
-                            } else if (tacitKnowledge
-                                is HashVizTacitKnowledge) {
+                            } else if (tacitKnowledge is HashVizTacitKnowledge) {
                               return HashvizWidget(
                                 imageData: tacitKnowledge.knowledge!,
                                 size: state.tacitKnowledge.configs['hashvizSize'],
@@ -109,6 +109,21 @@ class DerivationLevelPage extends StatelessWidget {
                                 brightness: state.tacitKnowledge.configs['brightness'] ?? 0.8,
                                 minHue: state.tacitKnowledge.configs['minHue'] ?? 90,
                                 maxHue: state.tacitKnowledge.configs['maxHue'] ?? 150,
+                              );
+                            } else if (tacitKnowledge is FractalTacitKnowledge) {
+                              return FractalWidget(
+                                imageData: tacitKnowledge.knowledge!,
+                                funcType: state.tacitKnowledge.configs['funcType'],
+                                xMin: state.tacitKnowledge.configs['xMin'],
+                                xMax: state.tacitKnowledge.configs['xMax'],
+                                yMin: state.tacitKnowledge.configs['yMin'],
+                                yMax: state.tacitKnowledge.configs['yMax'],
+                                realP: state.tacitKnowledge.configs['realP'],
+                                imagP: state.tacitKnowledge.configs['imagP'],
+                                width: state.tacitKnowledge.configs['width'],
+                                height: state.tacitKnowledge.configs['height'],
+                                escapeRadius: state.tacitKnowledge.configs['escapeRadius'],
+                                maxIters: state.tacitKnowledge.configs['maxIters'],
                               );
                             } else {
                               return const Text('Unknown type');
