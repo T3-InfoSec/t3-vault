@@ -312,7 +312,7 @@ class T3Vault extends StatelessWidget {
                           path: DerivationResultPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
-                            return MaterialPage(
+                            return const MaterialPage(
                               restorationId: 'router.root.derivation_result',
                               child: DerivationResultPage(),
                             );

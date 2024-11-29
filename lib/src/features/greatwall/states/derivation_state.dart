@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:great_wall/great_wall.dart';
 
 class DerivationState with ChangeNotifier {
-  String _password = "";
+  String _pa0Seed = "";
   TacitKnowledge? _tacitKnowledge;
 
-  String get password => _password;
+  String get pa0Seed => _pa0Seed;
 
   TacitKnowledge? get tacitKnowledge => _tacitKnowledge;
 
-  void updatePassword(String newValue) {
-    _password = newValue;
+  void updatePa0Seed(String seed) {
+    _pa0Seed = seed;
     notifyListeners();
   }
 

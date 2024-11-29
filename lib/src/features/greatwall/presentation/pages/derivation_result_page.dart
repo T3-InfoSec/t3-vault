@@ -5,14 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:great_wall/great_wall.dart';
 import 'package:provider/provider.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/common/cryptography/domain/eka.dart';
-import 'package:t3_vault/src/common/cryptography/domain/ka.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
 
-import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
@@ -24,9 +22,7 @@ import '../blocs/blocs.dart';
 class DerivationResultPage extends StatelessWidget {
   static const routeName = 'derivation_result';
 
-  final encryptionService = EncryptionService();
-
-  DerivationResultPage({super.key});
+  const DerivationResultPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +88,7 @@ class DerivationResultPage extends StatelessWidget {
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
                       Clipboard.setData(ClipboardData(
-                          text: ka.seedBip39));
+                          text: ka.formosa.seed));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -145,20 +141,18 @@ class DerivationResultPage extends StatelessWidget {
                                       final deckId = const Uuid().v4();
                                       final deck = Deck(deckId, deckName);
 
-                                      final pa0 = Provider.of<DerivationState>(
+                                      final pa0Seed = Provider.of<DerivationState>(
                                           context,
-                                          listen: false)
-                                      .password;
-                                      final pa0Bytes = utf8.encode(pa0);
-                                      final encryptedPA0 = await encryptionService
-                                          .encrypt(pa0Bytes, eka.key);
+                                          listen: false).pa0Seed;
+                                      final pa0 = Pa0(seed: pa0Seed);
+                                      await eka.encryptPa0(pa0);
 
                                       List<MemoCard> memoCards = [];
 
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'question', deck: deck),
                                         Pa0MemoCard(
-                                            pa0: base64Encode(encryptedPA0),
+                                            pa0: base64Encode(pa0.seedEncrypted),
                                             deck: deck)
                                       ]);
                                       if (!context.mounted) return;
@@ -168,20 +162,15 @@ class DerivationResultPage extends StatelessWidget {
                                       .tacitKnowledge;
                                       
                                       for (int i = 1; i <= state.treeDepth; i++) {
-                                        var encryptedNode =
-                                            await encryptionService.encrypt(
-                                                state.savedNodes[i - 1],
-                                                eka.key);
-                                        var encryptedSelectedNode =
-                                            await encryptionService.encrypt(
-                                                state.savedNodes[i],
-                                                eka.key);
+                                        final node = Node(state.savedNodes[i - 1]);
+                                        await eka.encryptNode(node);   
+                                        final selectedNode = Node(state.savedNodes[i]);
+                                        await eka.encryptNode(selectedNode);
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,
-                                              'node': base64Encode(encryptedNode),
-                                              'selectedNode': base64Encode(
-                                                  encryptedSelectedNode),
+                                              'node': base64Encode(node.hashEncrypted),
+                                              'selectedNode': base64Encode(selectedNode.hashEncrypted),
                                               'treeArity': state.treeArity,
                                               'treeDepth': state.treeDepth,
                                               'tacitKnowledge': tacitKnowledge,

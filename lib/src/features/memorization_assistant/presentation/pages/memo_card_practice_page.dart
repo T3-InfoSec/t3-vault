@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:great_wall/great_wall.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/common/cryptography/usecases/encryption_service.dart';
 import 'package:t3_vault/src/common/settings/presentation/pages/settings_page.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/blocs/blocs.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_widget.dart';
@@ -24,12 +20,10 @@ import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/
 class MemoCardPracticePage extends StatelessWidget {
   static const routeName = 'practice';
 
-  final encryptionService = EncryptionService();
-
   final MemoCard memoCard;
   final String eka;
 
-  MemoCardPracticePage({
+  const MemoCardPracticePage({
     super.key,
     required this.memoCard,
     required this.eka,
@@ -179,14 +173,14 @@ class MemoCardPracticePage extends StatelessWidget {
   }
 
   Future<Uint8List> getStoredSelectedNode() async {
-    Uint8List decodedBytes = base64Decode(memoCard.knowledge['selectedNode']);
-    List<int> storedSelectedNode = await encryptionService.decrypt(decodedBytes, eka);
-    return Uint8List.fromList(storedSelectedNode);
+    final ephemeralKA = Eka(key: eka);
+    Node storedSelectedNode = await ephemeralKA.decryptToNode(memoCard.knowledge['selectedNode']);
+    return storedSelectedNode.hash;
   }
 
   Future<Uint8List> getNode() async {
-    Uint8List decodedBytes = base64Decode(memoCard.knowledge['node']);
-    List<int> storedNode = await encryptionService.decrypt(decodedBytes, eka);
-    return Uint8List.fromList(storedNode);
+    final ephemeralKA = Eka(key: eka);
+    Node storedNode = await ephemeralKA.decryptToNode(memoCard.knowledge['node']);
+    return storedNode.hash;
   }
 }

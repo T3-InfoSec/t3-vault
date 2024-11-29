@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_vault/src/common/cryptography/domain/pa0.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -250,7 +249,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                     'maxHue': maxHue,
                                   },
                                 ),
-                                secretSeed: _passwordController.text,
+                                pa0Seed: _passwordController.text,
                               ),
                             );
                         context.go(
