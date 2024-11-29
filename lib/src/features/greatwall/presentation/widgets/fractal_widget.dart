@@ -32,8 +32,8 @@ class FractalWidget extends StatelessWidget {
         } else if (snapshot.hasData) {
           // Render the fractal image
           return SizedBox(
-              width: 128,
-              height: 128,
+              width: 192,
+              height: 192,
               child: CustomPaint(
                 painter: FractalPainter(fractalImage: snapshot.data!),
               ));

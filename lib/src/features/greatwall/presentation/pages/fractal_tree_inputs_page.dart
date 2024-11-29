@@ -161,7 +161,6 @@ class FractalTreeInputsPage extends StatelessWidget {
                                 timeLockPuzzleParam: timeLock,
                                 tacitKnowledge: FractalTacitKnowledge(
                                   configs: {
-                                    'funcType': 'burningship',
                                     'width': 1024,
                                     'height': 1024,
                                   },
