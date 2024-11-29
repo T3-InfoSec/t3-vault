@@ -159,19 +159,11 @@ class FractalTreeInputsPage extends StatelessWidget {
                                 treeArity: arity,
                                 treeDepth: depth,
                                 timeLockPuzzleParam: timeLock,
-                                tacitKnowledge: FractalTacitKnowledge( // TODO: pending to merge PR
+                                tacitKnowledge: FractalTacitKnowledge(
                                   configs: {
                                     'funcType': 'burningship',
-                                    'xMin': -2.5,
-                                    'xMax': 2.0,
-                                    'yMin': -2.0,
-                                    'yMax': 0.8,
-                                    'realP': 2.0,
-                                    'imagP': 0.0,
                                     'width': 1024,
                                     'height': 1024,
-                                    'escapeRadius': 4,
-                                    'maxIters': 30,
                                   },
                                 ),
                                 pa0Seed: _passwordController.text,

@@ -104,26 +104,17 @@ class DerivationLevelPage extends StatelessWidget {
                               return HashvizWidget(
                                 imageData: tacitKnowledge.knowledge!,
                                 size: state.tacitKnowledge.configs['hashvizSize'],
-                                numColors: state.tacitKnowledge.configs['numColors'] ?? 3,
-                                saturation: state.tacitKnowledge.configs['saturation'] ?? 0.7,
-                                brightness: state.tacitKnowledge.configs['brightness'] ?? 0.8,
-                                minHue: state.tacitKnowledge.configs['minHue'] ?? 90,
-                                maxHue: state.tacitKnowledge.configs['maxHue'] ?? 150,
+                                numColors: state.tacitKnowledge.configs['numColors'],
+                                saturation: state.tacitKnowledge.configs['saturation'],
+                                brightness: state.tacitKnowledge.configs['brightness'],
+                                minHue: state.tacitKnowledge.configs['minHue'],
+                                maxHue: state.tacitKnowledge.configs['maxHue'],
                               );
                             } else if (tacitKnowledge is FractalTacitKnowledge) {
                               return FractalWidget(
                                 imageData: tacitKnowledge.knowledge!,
-                                funcType: state.tacitKnowledge.configs['funcType'],
-                                xMin: state.tacitKnowledge.configs['xMin'],
-                                xMax: state.tacitKnowledge.configs['xMax'],
-                                yMin: state.tacitKnowledge.configs['yMin'],
-                                yMax: state.tacitKnowledge.configs['yMax'],
-                                realP: state.tacitKnowledge.configs['realP'],
-                                imagP: state.tacitKnowledge.configs['imagP'],
                                 width: state.tacitKnowledge.configs['width'],
                                 height: state.tacitKnowledge.configs['height'],
-                                escapeRadius: state.tacitKnowledge.configs['escapeRadius'],
-                                maxIters: state.tacitKnowledge.configs['maxIters'],
                               );
                             } else {
                               return const Text('Unknown type');
