@@ -34,7 +34,7 @@ dependencies:
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
-      ref: issue81_notifications
+      ref: development
 
 dev_dependencies:
   flutter_test:
