@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_json_converter.dart';
 
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -55,11 +61,16 @@ class MemoCardsPage extends StatelessWidget {
                 direction: Axis.horizontal,
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: memoCards.asMap().entries.map(
-                  (entry) {
-                    MemoCard memoCard = entry.value;
+                children: memoCards.map(
+                  (memoCard) {
+                    bool hasNotification = false;
+                    final notification = _getNotificationByIdIfExists(context, memoCard.id);
+                    hasNotification = notification != null;
                     return GestureDetector(
                       onTap: () {
+                        if (notification != null) {
+                          _deleteNotification(context, notification);
+                        }
                         context.go(
                           '${MemoCardDecksPage.routeName}/${MemoCardDetailsPage.routeName}',
                           extra: memoCard,
@@ -68,6 +79,7 @@ class MemoCardsPage extends StatelessWidget {
                       child: MemoCardViewer(
                         themeData: themeData,
                         memoCard: memoCard,
+                        isToBeReviewed: hasNotification,
                       ),
                     );
                   },
@@ -77,5 +89,21 @@ class MemoCardsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  NotificationResponse? _getNotificationByIdIfExists(BuildContext context, String memoCardId) {
+    return context
+      .watch<NotificationsState>()
+      .notificationHistory
+      .where((response) {
+        var json = jsonDecode(response.payload!);
+        final extractedId = MemoCardConverter.extractMemoCardIdFromJson(json);
+        return extractedId == memoCardId;
+      })
+      .firstOrNull;
+  }
+
+  void _deleteNotification(BuildContext context, NotificationResponse notification) {
+      context.read<NotificationsState>().clearNotificationById(notification.id!);
   }
 }

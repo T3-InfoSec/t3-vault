@@ -56,6 +56,7 @@ class MemoCardDetailsPage extends StatelessWidget {
           children: <Widget>[
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
+              alignment: Alignment.center,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 color: themeData.colorScheme.primary,
@@ -93,8 +94,10 @@ class MemoCardDetailsPage extends StatelessWidget {
                         'Due: ${memoCard.due.toLocal()}',
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      Wrap(
+                        spacing: 8.0,
+                        runSpacing: 8.0,
+                        alignment: WrapAlignment.center,
                         children: [
                           RatingButton(
                             memoCard: memoCard,
@@ -219,7 +222,7 @@ class MemoCardDetailsPage extends StatelessWidget {
       await eka.decryptToNode(memoCard.knowledge['node']);
       return true;
     } catch (e) {
-      print(e);
+      debugPrint('Error decryting node: $e');
       return false;
     }
   }
