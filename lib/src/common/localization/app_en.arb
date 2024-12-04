@@ -61,9 +61,9 @@
   "@ekaWidgetTitle": {
     "description": "EKA Widget: Title Dialog"
   },
-  "pa0WidgetTitle": "This is your seed:",
-  "@pa0WidgetTitle": {
-    "description": "PA0 Widget: Title Dialog"
+  "sa0WidgetTitle": "This is your seed:",
+  "@sa0WidgetTitle": {
+    "description": "SA0 Widget: Title Dialog"
   },
   "inputKeyErrorWidgetTitle": "Key error",
   "@inputKeyErrorWidgetTitle": {
@@ -268,25 +268,25 @@
   "@ekaDescription3": {
     "description": "Deck Name Widget: Text description3"
   },
-  "pa0Description1": "Write down and store your 6-word seed in a safe place.\n",
-  "@pa0Description1": {
-    "description": "PA0 Widget: Text description1"
+  "sa0Description1": "Write down and store your 6-word seed in a safe place.\n",
+  "@sa0Description1": {
+    "description": "SA0 Widget: Text description1"
   },
-  "pa0Description2": "These words are used as input for the derivation protocol. ",
-  "@pa0Description2": {
-    "description": "PA0 Widget: Text description2"
+  "sa0Description2": "These words are used as input for the derivation protocol. ",
+  "@sa0Description2": {
+    "description": "SA0 Widget: Text description2"
   },
-  "pa0Description3": "If lost, you won't be able to retrieve the key directly. However, you can recover your seed using this ephemeral key, which is provided as you save the protocol.\n\n",
-  "@pa0Description3": {
-    "description": "PA0 Widget: Text description3"
+  "sa0Description3": "If lost, you won't be able to retrieve the key directly. However, you can recover your seed using this ephemeral key, which is provided as you save the protocol.\n\n",
+  "@sa0Description3": {
+    "description": "SA0 Widget: Text description3"
   },
-  "pa0Description4": "Over time, you can memorize the seed with the help of the memorization assistant, but for now, keeping it safe is a top priority.\n\n",
-  "@pa0Description4": {
-    "description": "PA0 Widget: Text description4"
+  "sa0Description4": "Over time, you can memorize the seed with the help of the memorization assistant, but for now, keeping it safe is a top priority.\n\n",
+  "@sa0Description4": {
+    "description": "SA0 Widget: Text description4"
   },
-  "pa0Description5": "While 12-word seeds (128 bits of entropy) provide higher security, a 6-word seed (64 bits) is sufficient when used with the Tacit Knowledge Base Authentication process, which adds another 64 bits of entropy for a total of 128 bits.",
-  "@pa0Description5": {
-    "description": "PA0 Widget: Text description5"
+  "sa0Description5": "While 12-word seeds (128 bits of entropy) provide higher security, a 6-word seed (64 bits) is sufficient when used with the Tacit Knowledge Base Authentication process, which adds another 64 bits of entropy for a total of 128 bits.",
+  "@sa0Description5": {
+    "description": "SA0 Widget: Text description5"
   },
   "inputKeyErrorDescription": "The provided key is incorrect. Please try again.",
   "@inputKeyErrorDescription": {

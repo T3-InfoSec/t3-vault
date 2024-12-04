@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:great_wall/great_wall.dart';
 
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/pa0_seed_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_seed_promt_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
@@ -161,7 +163,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                         treeDepth: treeDepth,
                         timeLockPuzzleParam: 1,
                         tacitKnowledge: tacitKnowledge,
-                        pa0Seed: 'not needed pa0 for practice level',
+                        sa0Mnemonic: 'not needed sa0 for practice level',
                       ),
                     );
                     context.go(
@@ -181,10 +183,10 @@ class MemoCardDetailsPage extends StatelessWidget {
                 },
                 child: Text(AppLocalizations.of(context)!.tryCard),
               )
-            else if (memoCard is Pa0MemoCard)
+            else if (memoCard is Sa0MemoCard)
               ElevatedButton(
                 onPressed: () async {
-                  Pa0MemoCard pa0MemoCard = memoCard as Pa0MemoCard;
+                  Sa0MemoCard sa0MemoCard = memoCard as Sa0MemoCard;
                   String? key = await showDialog<String>(
                     context: context,
                     builder: (context) => const PasswordPrompt(),
@@ -192,12 +194,12 @@ class MemoCardDetailsPage extends StatelessWidget {
 
                   if (key != null && key.isNotEmpty) {
                     try {
-                      final eka = Eka(key: key);
-                      Pa0 pa0 = await eka.decryptToPa0(pa0MemoCard.pa0);
+                      final eka = Eka.fromKey(key);
+                      Sa0 sa0 = await eka.decrypt(base64Decode(sa0MemoCard.sa0)) as Sa0;
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,
-                        builder: (context) => Pa0SeedPromtWidget(pa0Seed: pa0.seed),
+                        builder: (context) => Sa0MnemonicPromtWidget(sa0Mnemonic: sa0.formosa.mnemonic),
                       );
                     } catch (e) {
                       if (!context.mounted) return;
@@ -217,9 +219,9 @@ class MemoCardDetailsPage extends StatelessWidget {
   }
   
   Future<bool> isValid(String key) async {
-    Eka eka = Eka(key: key);
+    Eka eka = Eka.fromKey(key);
     try {
-      await eka.decryptToNode(memoCard.knowledge['node']);
+      await eka.decrypt(memoCard.knowledge['node']);
       return true;
     } catch (e) {
       debugPrint('Error decryting node: $e');

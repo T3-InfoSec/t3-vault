@@ -26,15 +26,15 @@ dependencies:
   t3_formosa:
     git:
       url: git@github.com:T3-InfoSec/t3-formosa-dart.git
-      ref: development
+      ref: issue51_object_orient_cryptogaphic_objects_improvement
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: development
+      ref: issue51_object_orient_cryptogaphic_objects_improvement
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
-      ref: development
+      ref: issue51_object_orient_cryptogaphic_objects_improvement
 
 dev_dependencies:
   flutter_test:

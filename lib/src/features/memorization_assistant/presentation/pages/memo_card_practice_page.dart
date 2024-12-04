@@ -173,14 +173,14 @@ class MemoCardPracticePage extends StatelessWidget {
   }
 
   Future<Uint8List> getStoredSelectedNode() async {
-    final ephemeralKA = Eka(key: eka);
-    Node storedSelectedNode = await ephemeralKA.decryptToNode(memoCard.knowledge['selectedNode']);
-    return storedSelectedNode.hash;
+    final ephemeralKA = Eka.fromKey(eka);
+    Node storedSelectedNode = await ephemeralKA.decrypt(memoCard.knowledge['selectedNode']) as Node;
+    return storedSelectedNode.value;
   }
 
   Future<Uint8List> getNode() async {
-    final ephemeralKA = Eka(key: eka);
-    Node storedNode = await ephemeralKA.decryptToNode(memoCard.knowledge['node']);
-    return storedNode.hash;
+    final ephemeralKA = Eka.fromKey(eka);
+    Node storedNode = await ephemeralKA.decrypt(memoCard.knowledge['node']) as Node;
+    return storedNode.value;
   }
 }

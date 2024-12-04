@@ -55,7 +55,7 @@ class DerivationResultPage extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: TextEditingController(
-                              text: ka.encodedHash),
+                              text: ka.hexadecimalValue),
                           readOnly: true,
                           obscureText: !state.isKAVisible,
                           decoration: InputDecoration(
@@ -78,7 +78,7 @@ class DerivationResultPage extends StatelessWidget {
                         icon: const Icon(Icons.copy),
                         onPressed: () {
                           Clipboard.setData(
-                              ClipboardData(text: ka.encodedHash));
+                              ClipboardData(text: ka.hexadecimalValue));
                         },
                       ),
                     ],
@@ -88,7 +88,7 @@ class DerivationResultPage extends StatelessWidget {
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
                       Clipboard.setData(ClipboardData(
-                          text: ka.formosa.seed));
+                          text: ka.formosa.mnemonic));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -141,18 +141,18 @@ class DerivationResultPage extends StatelessWidget {
                                       final deckId = const Uuid().v4();
                                       final deck = Deck(deckId, deckName);
 
-                                      final pa0Seed = Provider.of<DerivationState>(
+                                      final sa0Mnemonic = Provider.of<DerivationState>(
                                           context,
-                                          listen: false).pa0Seed;
-                                      final pa0 = Pa0(seed: pa0Seed);
-                                      await eka.encryptPa0(pa0);
+                                          listen: false).sa0Mnemonic;
+                                      final sa0 = Sa0.fromMnemonic(sa0Mnemonic);
+                                      await eka.encrypt(sa0);
 
                                       List<MemoCard> memoCards = [];
 
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'question', deck: deck),
-                                        Pa0MemoCard(
-                                            pa0: base64Encode(pa0.seedEncrypted),
+                                        Sa0MemoCard(
+                                            sa0: base64Encode(sa0.secretBox.cipherText),
                                             deck: deck)
                                       ]);
                                       if (!context.mounted) return;
@@ -163,14 +163,14 @@ class DerivationResultPage extends StatelessWidget {
                                       
                                       for (int i = 1; i <= state.treeDepth; i++) {
                                         final node = Node(state.savedNodes[i - 1]);
-                                        await eka.encryptNode(node);   
+                                        await eka.encrypt(node);   
                                         final selectedNode = Node(state.savedNodes[i]);
-                                        await eka.encryptNode(selectedNode);
+                                        await eka.encrypt(selectedNode);
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,
-                                              'node': base64Encode(node.hashEncrypted),
-                                              'selectedNode': base64Encode(selectedNode.hashEncrypted),
+                                              'node': base64Encode(node.secretBox.cipherText),
+                                              'selectedNode': base64Encode(selectedNode.secretBox.cipherText),
                                               'treeArity': state.treeArity,
                                               'treeDepth': state.treeDepth,
                                               'tacitKnowledge': tacitKnowledge,
