@@ -209,64 +209,57 @@ class T3Vault extends StatelessWidget {
                                       MemoCardDetailsPage(memoCard: memoCard),
                                 );
                               },
-                              routes: <RouteBase>[
-                                GoRoute(
-                                  path: EkaMemoCardPracticePage
-                                      .routeName,
-                                  pageBuilder: (BuildContext context,
-                                      GoRouterState state) {
-                                    final args =
-                                        state.extra as Map<String, dynamic>;
-                                    final memoCard =
-                                        args['memoCard'] as MemoCard;
-                                    return MaterialPage(
-                                      restorationId:
-                                          'router.root.decks.cards.details.eka_practice',
-                                      child: EkaMemoCardPracticePage(
-                                        memoCard: memoCard,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                GoRoute(
-                                  path: Pa0MemoCardPracticePage
-                                      .routeName,
-                                  pageBuilder: (BuildContext context,
-                                      GoRouterState state) {
-                                    final args =
-                                        state.extra as Map<String, dynamic>;
-                                    final pa0Seed =
-                                        args['pa0Seed'] as String;
-                                    return MaterialPage(
-                                      restorationId:
-                                          'router.root.decks.cards.details.pa0_practice',
-                                      child: Pa0MemoCardPracticePage(
-                                        pa0Seed: pa0Seed,
-                                      ),
-                                    );
-                                  },
-                                ),
-                                GoRoute(
-                                  path: TacitKnowledgeMemoCardPracticePage
-                                      .routeName,
-                                  pageBuilder: (BuildContext context,
-                                      GoRouterState state) {
-                                    final args =
-                                        state.extra as Map<String, dynamic>;
-                                    final memoCard =
-                                        args['memoCard'] as MemoCard;
-                                    final eka = args['eka'] as String;
-                                    return MaterialPage(
-                                      restorationId:
-                                          'router.root.decks.cards.details.tacit_knowledge_practice',
-                                      child: TacitKnowledgeMemoCardPracticePage(
-                                        memoCard: memoCard,
-                                        eka: eka,
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
+                            ),
+                            GoRoute(
+                              path: EkaMemoCardPracticePage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                final args =
+                                    state.extra as Map<String, dynamic>;
+                                final memoCard = args['memoCard'] as MemoCard;
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.decks.cards.details.eka_practice',
+                                  child: EkaMemoCardPracticePage(
+                                    memoCard: memoCard,
+                                  ),
+                                );
+                              },
+                            ),
+                            GoRoute(
+                              path: Pa0MemoCardPracticePage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                final args =
+                                    state.extra as Map<String, dynamic>;
+                                final pa0Seed = args['pa0Seed'] as String;
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.decks.cards.details.pa0_practice',
+                                  child: Pa0MemoCardPracticePage(
+                                    pa0Seed: pa0Seed,
+                                  ),
+                                );
+                              },
+                            ),
+                            GoRoute(
+                              path:
+                                  TacitKnowledgeMemoCardPracticePage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                final args =
+                                    state.extra as Map<String, dynamic>;
+                                final memoCard = args['memoCard'] as MemoCard;
+                                final eka = args['eka'] as String;
+                                return MaterialPage(
+                                  restorationId:
+                                      'router.root.decks.cards.details.tacit_knowledge_practice',
+                                  child: TacitKnowledgeMemoCardPracticePage(
+                                    memoCard: memoCard,
+                                    eka: eka,
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),

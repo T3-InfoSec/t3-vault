@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:t3_formosa/formosa.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/blocs/memo_card_practice/p0_memo_card_practice_event.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/blocs/memo_card_practice/p0_memo_card_practice_state.dart';
 
@@ -32,9 +35,11 @@ class Pa0MemoCardPracticeBloc extends Bloc<P0MemoCardPracticeEvent, Pa0MemoCardP
   }
 
   List<String> _generateOptions(String correctWord) {
-    // FormosaTheme.bip39;
-    final options = [correctWord, "toDefine", "toDefine", "toDefine"];
-    options.shuffle();
+    final filteredWordList = FormosaTheme.bip39.data.wordList().where((word) => word != correctWord).toList();
+    filteredWordList.shuffle(Random());
+    final randomWords = filteredWordList.take(3).toList();
+    final options = [...randomWords, correctWord];
+    options.shuffle(Random());
     return options;
   }
 }

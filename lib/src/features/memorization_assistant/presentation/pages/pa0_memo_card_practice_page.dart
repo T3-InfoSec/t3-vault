@@ -61,24 +61,27 @@ class Pa0MemoCardPracticePage extends StatelessWidget {
   Widget _buildOptions(BuildContext context, List<String> options) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Text(
           "Select the correct word:",
           style: TextStyle(fontSize: 18),
         ),
         const SizedBox(height: 20),
-        Wrap(
-          spacing: 16.0,
-          runSpacing: 8.0,
-          alignment: WrapAlignment.center,
-          children: options.map((word) {
-            return ElevatedButton(
-              onPressed: () {
-                context.read<Pa0MemoCardPracticeBloc>().add(SelectWord(word));
-              },
-              child: Text(word),
-            );
-          }).toList(),
+        Center(
+          child: Wrap(
+            spacing: 16.0,
+            runSpacing: 8.0,
+            alignment: WrapAlignment.center,
+            children: options.map((word) {
+              return ElevatedButton(
+                onPressed: () {
+                  context.read<Pa0MemoCardPracticeBloc>().add(SelectWord(word));
+                },
+                child: Text(word),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );

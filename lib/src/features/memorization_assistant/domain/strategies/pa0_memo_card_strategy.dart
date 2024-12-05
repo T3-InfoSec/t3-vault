@@ -45,11 +45,35 @@ class Pa0MemoCardStrategy extends MemoCardStrategy {
   @override
   Widget buildTryButton(BuildContext context, MemoCard memoCard) {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
+        String? key = await showDialog<String>(
+          context: context,
+          builder: (context) => const PasswordPrompt(),
+        );
+
+        if (key == null || key.isEmpty) {
+          if (!context.mounted) return;
+          await showDialog<String>(
+            context: context,
+            builder: (context) => const InputKeyErrorPromtWidget(),
+          );
+          return;
+        }
+
+        Pa0? pa0;
+        try {
+          final eka = Eka(key: key);
+          pa0 = await eka.decryptToPa0((memoCard as Pa0MemoCard).pa0);
+        } catch (e) {
+          debugPrint('Error decrypting: $e');
+          return;
+        }
+
+        if (!context.mounted) return;
         context.go(
           '${MemoCardDecksPage.routeName}/${Pa0MemoCardPracticePage.routeName}',
           extra: {
-            'memoCard': memoCard,
+            'pa0Seed': pa0.seed,
           },
         );
       },
