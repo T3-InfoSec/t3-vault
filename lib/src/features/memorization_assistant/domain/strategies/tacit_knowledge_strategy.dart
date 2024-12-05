@@ -16,7 +16,7 @@ import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/
 class TacitKnowledgeStrategy extends MemoCardStrategy {
   @override
   Widget? buildRecoveryButton(BuildContext context, MemoCard memoCard) {
-    return null; // Not required for TacitKnowledgeMemoCard
+    return null; // Not required for Tacit Knowledge Memo Card
   }
 
   @override
