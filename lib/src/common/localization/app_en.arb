@@ -48,11 +48,18 @@
   "@memoCardDetailsPageTitle": {
     "description": "Card Details Page: Title of the page"
   },
-    "memoCardPracticePageTitle": "Card Practice",
-  "@memoCardPracticePageTitle": {
-    "description": "Card Practice Page: Title of the page"
+  "tacitKnowledgeMemoCardPracticePageTitle": "Tacit Knowledge Card Practice",
+  "@tacitKnowledgeMemoCardPracticePageTitle": {
+    "description": "TacitKnowledge Card Practice Page: Title of the page"
   },
-
+  "ekaMemoCardPracticePageTitle": "Ephemeral key Card Practice",
+  "@ekaMemoCardPracticePageTitle": {
+    "description": "EKA Card Practice Page: Title of the page"
+  },
+  "pa0CardPracticePageTitle": "PA0 Card Practice",
+  "@pa0CardPracticePageTitle": {
+    "description": "PA0 Card Practice Page: Title of the page"
+  },
   "chooseNameWidgetTitle": "Choose a name for this derivation.",
   "@chooseName": {
     "description": "Deck Name Widget: Title Dialog"

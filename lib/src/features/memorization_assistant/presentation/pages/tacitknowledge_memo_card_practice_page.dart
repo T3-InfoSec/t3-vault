@@ -12,18 +12,18 @@ import 'package:t3_vault/src/features/greatwall/presentation/widgets/hashviz_wid
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 
-/// A page for practice memory card.
+/// A page for practice tacit knowledge memory card.
 ///
-/// The [MemoCardPracticePage] class is a stateless widget that displays a
+/// The [TacitKnowledgeMemoCardPracticePage] class is a stateless widget that displays a
 /// derivation options of the given card, which users can interact with to review their
 /// tacit knowledge protocol.
-class MemoCardPracticePage extends StatelessWidget {
-  static const routeName = 'practice';
+class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
+  static const routeName = 'tacit_knowledge_practice';
 
   final MemoCard memoCard;
   final String eka;
 
-  const MemoCardPracticePage({
+  const TacitKnowledgeMemoCardPracticePage({
     super.key,
     required this.memoCard,
     required this.eka,
@@ -33,7 +33,7 @@ class MemoCardPracticePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.memoCardPracticePageTitle),
+        title: Text(AppLocalizations.of(context)!.tacitKnowledgeMemoCardPracticePageTitle),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

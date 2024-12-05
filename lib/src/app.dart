@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_practice_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/tacitknowledge_memo_card_practice_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
 import 'common/settings/presentation/pages/settings_page.dart';
@@ -201,14 +201,14 @@ class T3Vault extends StatelessWidget {
                               },
                             ),
                             GoRoute(
-                              path: MemoCardPracticePage.routeName,
+                              path: TacitKnowledgeMemoCardPracticePage.routeName,
                               pageBuilder: (BuildContext context, GoRouterState state) {
                                 final args = state.extra as Map<String, dynamic>;
                                 final memoCard = args['memoCard'] as MemoCard;
                                 final eka = args['eka'] as String;
                                 return MaterialPage(
                                   restorationId: 'router.root.decks.cards.details.practice',
-                                  child: MemoCardPracticePage(
+                                  child: TacitKnowledgeMemoCardPracticePage(
                                     memoCard: memoCard,
                                     eka: eka,
                                   ),
