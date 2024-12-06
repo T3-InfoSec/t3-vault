@@ -232,11 +232,13 @@ class T3Vault extends StatelessWidget {
                                   (BuildContext context, GoRouterState state) {
                                 final args =
                                     state.extra as Map<String, dynamic>;
+                                final memoCard = args['memoCard'] as MemoCard;
                                 final pa0Seed = args['pa0Seed'] as String;
                                 return MaterialPage(
                                   restorationId:
                                       'router.root.decks.cards.details.pa0_practice',
                                   child: Pa0MemoCardPracticePage(
+                                    memoCard: memoCard,
                                     pa0Seed: pa0Seed,
                                   ),
                                 );

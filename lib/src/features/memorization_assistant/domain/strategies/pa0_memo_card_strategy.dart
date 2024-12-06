@@ -73,6 +73,7 @@ class Pa0MemoCardStrategy extends MemoCardStrategy {
         context.go(
           '${MemoCardDecksPage.routeName}/${Pa0MemoCardPracticePage.routeName}',
           extra: {
+            'memoCard': memoCard,
             'pa0Seed': pa0.seed,
           },
         );

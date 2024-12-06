@@ -8,13 +8,11 @@ abstract class Pa0MemoCardPracticeState extends Equatable {
 class Pa0PracticeInitial extends Pa0MemoCardPracticeState {}
 
 class Pa0PracticeInProgress extends Pa0MemoCardPracticeState {
-  final String currentWord;
-  final List<String> options;
 
-  Pa0PracticeInProgress(this.currentWord, this.options);
+  Pa0PracticeInProgress();
 
   @override
-  List<Object?> get props => [currentWord, options];
+  List<Object?> get props => [];
 }
 
 class Pa0PracticeFeedback extends Pa0MemoCardPracticeState {
