@@ -23,10 +23,6 @@ dependencies:
   flutter_local_notifications: ^18.0.1
   timezone: ^0.10.0
   android_intent_plus: ^5.2.0
-  t3_formosa:
-    git:
-      url: git@github.com:T3-InfoSec/t3-formosa-dart.git
-      ref: issue51_object_orient_cryptogaphic_objects_improvement
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git

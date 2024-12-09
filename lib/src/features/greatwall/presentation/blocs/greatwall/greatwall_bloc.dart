@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
-import 'package:t3_formosa/formosa.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
 
 import 'bloc.dart';

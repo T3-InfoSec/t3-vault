@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_formosa/formosa.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 class MemoCardConverter {

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
-import 'package:t3_formosa/formosa.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:great_wall/great_wall.dart';
