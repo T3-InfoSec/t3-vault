@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
+import 'package:t3_formosa/formosa.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_seed_promt_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -196,7 +198,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.sync),
                           onPressed: () async {
-                            String password = Sa0.fromRandomEntropy().formosa.mnemonic;
+                            String password = Formosa(Entropy.fromRandom(wordsNumber: 6).value, FormosaTheme.bip39).getMnemonic();
                             await showDialog<String>(
                               context: context,
                               builder: (context) =>

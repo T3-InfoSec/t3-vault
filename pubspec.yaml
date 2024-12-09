@@ -35,6 +35,10 @@ dependencies:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
       ref: issue51_object_orient_cryptogaphic_objects_improvement
+  t3_crypto_objects:
+    git:
+      url: git@github.com:T3-InfoSec/t3-crypto-objects-dart.git
+      ref: initialise_objects
 
 dev_dependencies:
   flutter_test:

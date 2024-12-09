@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
+import 'package:t3_formosa/formosa.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:great_wall/great_wall.dart';
@@ -195,14 +197,16 @@ class MemoCardDetailsPage extends StatelessWidget {
                   if (key != null && key.isNotEmpty) {
                     try {
                       final eka = Eka.fromKey(key);
-                      Sa0 sa0 = await eka.decrypt(base64Decode(sa0MemoCard.sa0)) as Sa0;
+                      var critical = await eka.decrypt(base64Decode(sa0MemoCard.sa0));
+                      Sa0 sa0 = Sa0(Formosa(critical.value, FormosaTheme.bip39));
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,
-                        builder: (context) => Sa0MnemonicPromtWidget(sa0Mnemonic: sa0.formosa.mnemonic),
+                        builder: (context) => Sa0MnemonicPromtWidget(sa0Mnemonic: sa0.formosa.getMnemonic()),
                       );
                     } catch (e) {
                       if (!context.mounted) return;
+                      debugPrint('Error decryting sa0: $e');
                       await showDialog<String>(
                         context: context,
                         builder: (context) => const InputKeyErrorPromtWidget(),
@@ -221,7 +225,7 @@ class MemoCardDetailsPage extends StatelessWidget {
   Future<bool> isValid(String key) async {
     Eka eka = Eka.fromKey(key);
     try {
-      await eka.decrypt(memoCard.knowledge['node']);
+      await eka.decrypt(base64Decode(memoCard.knowledge['node']));
       return true;
     } catch (e) {
       debugPrint('Error decryting node: $e');

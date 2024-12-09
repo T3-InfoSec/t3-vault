@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:provider/provider.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
+import 'package:t3_formosa/formosa.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
@@ -42,7 +44,7 @@ class DerivationResultPage extends StatelessWidget {
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             if (state is GreatWallFinishSuccess) {
-              final ka = KA(state.derivationHashResult);
+              final ka = KA(Formosa(state.derivationHashResult, FormosaTheme.bip39));
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -88,7 +90,7 @@ class DerivationResultPage extends StatelessWidget {
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
                       Clipboard.setData(ClipboardData(
-                          text: ka.formosa.mnemonic));
+                          text: ka.formosa.getMnemonic()));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -144,7 +146,7 @@ class DerivationResultPage extends StatelessWidget {
                                       final sa0Mnemonic = Provider.of<DerivationState>(
                                           context,
                                           listen: false).sa0Mnemonic;
-                                      final sa0 = Sa0.fromMnemonic(sa0Mnemonic);
+                                      final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic));
                                       await eka.encrypt(sa0);
 
                                       List<MemoCard> memoCards = [];
@@ -152,7 +154,7 @@ class DerivationResultPage extends StatelessWidget {
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'question', deck: deck),
                                         Sa0MemoCard(
-                                            sa0: base64Encode(sa0.secretBox.cipherText),
+                                            sa0: base64Encode(sa0.secretBox.concatenation()),
                                             deck: deck)
                                       ]);
                                       if (!context.mounted) return;
@@ -169,8 +171,8 @@ class DerivationResultPage extends StatelessWidget {
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,
-                                              'node': base64Encode(node.secretBox.cipherText),
-                                              'selectedNode': base64Encode(selectedNode.secretBox.cipherText),
+                                              'node': base64Encode(node.secretBox.concatenation()),
+                                              'selectedNode': base64Encode(selectedNode.secretBox.concatenation()),
                                               'treeArity': state.treeArity,
                                               'treeDepth': state.treeDepth,
                                               'tacitKnowledge': tacitKnowledge,

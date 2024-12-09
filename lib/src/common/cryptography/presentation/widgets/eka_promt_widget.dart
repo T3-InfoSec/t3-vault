@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EKAPromptWidget extends StatelessWidget {
@@ -34,6 +35,7 @@ class EKAPromptWidget extends StatelessWidget {
               style: TextStyle(color: textColor),
             ),
           ),
+IconButton(icon: const Icon(Icons.copy),onPressed: () {Clipboard.setData(ClipboardData(text: eka));},),
         ],
       ),
       actions: [
