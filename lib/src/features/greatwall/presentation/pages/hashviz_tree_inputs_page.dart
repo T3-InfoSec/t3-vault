@@ -197,7 +197,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.sync),
                           onPressed: () async {
-                            String password = Formosa(Entropy.fromRandom(wordsNumber: 6).value, FormosaTheme.bip39).getMnemonic();
+                            String password = Formosa(EntropyBytes.fromRandom(wordsNumber: 6).value, FormosaTheme.bip39).getMnemonic();
                             await showDialog<String>(
                               context: context,
                               builder: (context) =>
