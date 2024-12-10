@@ -8,7 +8,7 @@ class MemoCardStrategyFactory {
   static MemoCardStrategy getStrategy(MemoCard memoCard) {
     if (memoCard is TacitKnowledgeMemoCard) {
       return TacitKnowledgeStrategy();
-    } else if (memoCard is Pa0MemoCard) {
+    } else if (memoCard is Sa0MemoCard) {
       return Pa0MemoCardStrategy();
     } else if (memoCard is EkaMemoCard) {
       return EkaMemoCardStrategy();
