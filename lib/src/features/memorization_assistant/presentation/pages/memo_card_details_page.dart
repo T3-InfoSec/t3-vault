@@ -178,10 +178,10 @@ class MemoCardDetailsPage extends StatelessWidget {
                 },
                 child: Text(AppLocalizations.of(context)!.tryCard),
               )
-            else if (memoCard is Pa0MemoCard)
+            else if (memoCard is Sa0MemoCard)
               ElevatedButton(
                 onPressed: () async {
-                  Pa0MemoCard pa0MemoCard = memoCard as Pa0MemoCard;
+                  Sa0MemoCard pa0MemoCard = memoCard as Sa0MemoCard;
                   String? key = await showDialog<String>(
                     context: context,
                     builder: (context) => const PasswordPrompt(),
@@ -190,7 +190,7 @@ class MemoCardDetailsPage extends StatelessWidget {
                   if (key != null && key.isNotEmpty) {
                     try {
                       final eka = Eka(key: key);
-                      Pa0 pa0 = await eka.decryptToPa0(pa0MemoCard.pa0);
+                      Pa0 pa0 = await eka.decryptToPa0(pa0MemoCard.sa0);
                       if (!context.mounted) return;
                       await showDialog<String>(
                         context: context,

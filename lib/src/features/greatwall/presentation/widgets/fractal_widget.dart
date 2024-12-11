@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -14,37 +13,37 @@ class FractalWidget extends StatelessWidget {
   const FractalWidget({
     super.key,
     required this.imageData,
-    this.width = 1024,
-    this.height = 1024,
+    required this.width,
+    required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ui.Image>(
-      future: _generateFractal(imageData),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(
-              child: Text('Error: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          // Render the fractal image
-          return SizedBox(
-              width: 192,
-              height: 192,
-              child: CustomPaint(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return FutureBuilder<ui.Image>(
+          future: _generateFractal(imageData),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              return CustomPaint(
+                size: constraints.biggest,
                 painter: FractalPainter(fractalImage: snapshot.data!),
-              ));
-        } else {
-          return const Center(child: Text('Failed to load fractal image.'));
-        }
+              );
+            } else {
+              return const Center(child: Text('Failed to load fractal image.'));
+            }
+          },
+        );
       },
     );
   }
   
   Future<ui.Image> _generateFractal(Uint8List imageData) {
+
     // Generate the gradient color palette
     final palette = generateGradientPalette(256);
 
@@ -92,11 +91,5 @@ class FractalWidget extends StatelessWidget {
       rgbaPixels[i * 4 + 3] = color[3]; // Alpha
     }
     return rgbaPixels;
-  }
-
-  /// Maps fractal values to colors using the provided color palette.
-  int mapValueToColor(int value, List<int> palette) {
-    int index = min(value, palette.length - 1);
-    return palette[index];
   }
 }

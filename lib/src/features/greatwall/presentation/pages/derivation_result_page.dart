@@ -151,8 +151,8 @@ class DerivationResultPage extends StatelessWidget {
 
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'question', deck: deck),
-                                        Pa0MemoCard(
-                                            pa0: base64Encode(pa0.seedEncrypted),
+                                        Sa0MemoCard(
+                                            sa0: base64Encode(pa0.seedEncrypted),
                                             deck: deck)
                                       ]);
                                       if (!context.mounted) return;
