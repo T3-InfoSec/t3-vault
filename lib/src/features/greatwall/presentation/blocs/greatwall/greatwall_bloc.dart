@@ -22,7 +22,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
     on<GreatWallPracticeLevel>(_onGreatWallPracticeLevel);
     on<GreatWallPracticeStepMade>(_onGreatWallPracticeStepMade);
-    on<GreatWallPracticeLevelContinue>(_onGreatWallPracticeLevelContinue);
   }
 
   void _onDerivationStepMade(
@@ -219,14 +218,5 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         selectedNode: selectedNode,
       ),
     );
-  }
-
-  void _onGreatWallPracticeLevelContinue(
-      GreatWallPracticeLevelContinue event, Emitter<GreatWallState> emit) {
-
-    emit(
-      GreatWallPracticeLevelStarted(
-        knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
-      ));
   }
 }
