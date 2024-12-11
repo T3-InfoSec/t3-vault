@@ -150,16 +150,15 @@ class DerivationResultPage extends StatelessWidget {
                                       List<MemoCard> memoCards = [];
 
                                       memoCards.addAll([
-                                        EkaMemoCard(eka: 'question', deck: deck),
+                                        EkaMemoCard(eka: 'Can you remember where you saved eka\'s backup?', deck: deck),
                                         Sa0MemoCard(
-                                            sa0: base64Encode(sa0.secretBox.concatenation()),
+                                            encryptedSa0: base64Encode(sa0.secretBox.concatenation()),
                                             deck: deck)
                                       ]);
                                       if (!context.mounted) return;
                                       final tacitKnowledge = Provider.of<DerivationState>(
                                           context,
-                                          listen: false)
-                                      .tacitKnowledge;
+                                          listen: false).tacitKnowledge;
                                       
                                       for (int i = 1; i <= state.treeDepth; i++) {
                                         final node = Node(state.savedNodes[i - 1]);

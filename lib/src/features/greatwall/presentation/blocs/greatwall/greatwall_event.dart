@@ -106,5 +106,3 @@ final class GreatWallPracticeStepMade extends GreatWallEvent {
   @override
   List<Object> get props => [currentHash, choiceNumber];
 }
-
-final class GreatWallPracticeLevelContinue extends GreatWallEvent {}

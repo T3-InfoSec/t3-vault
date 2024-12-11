@@ -9,8 +9,8 @@ class DerivationState with ChangeNotifier {
 
   TacitKnowledge? get tacitKnowledge => _tacitKnowledge;
 
-  void updateSa0Mnemonic(String seed) {
-    _sa0Mnemonic = seed;
+  void updateSa0Mnemonic(String sa0Mnemonic) {
+    _sa0Mnemonic = sa0Mnemonic;
     notifyListeners();
   }
 
