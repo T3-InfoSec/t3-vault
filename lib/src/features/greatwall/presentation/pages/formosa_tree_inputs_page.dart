@@ -25,6 +25,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FormosaTheme? selectedTheme;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.formosaTreeInputsPageTitle),
@@ -60,7 +61,6 @@ class FormosaTreeInputsPage extends StatelessWidget {
             children: [
               BlocBuilder<FormosaBloc, FormosaState>(
                 builder: (context, state) {
-                  FormosaTheme? selectedTheme;
 
                   if (state is FormosaThemeSelectSuccess) {
                     selectedTheme = state.theme;
@@ -138,10 +138,6 @@ class FormosaTreeInputsPage extends StatelessWidget {
                             final arity = int.parse(_arityController.text);
                             final depth = int.parse(_depthController.text);
                             final timeLock = int.parse(_timeLockController.text);
-                            final theme = (context.read<FormosaBloc>().state
-                                    as FormosaThemeSelectSuccess)
-                                .theme;
-
                             Future.delayed(
                               const Duration(seconds: 1),
                               () {
@@ -152,7 +148,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                         treeDepth: depth,
                                         timeLockPuzzleParam: timeLock,
                                         tacitKnowledge: FormosaTacitKnowledge(
-                                          configs: {'formosaTheme': theme},
+                                          configs: {'formosaTheme': selectedTheme},
                                         ),
                                         sa0Mnemonic: _passwordController.text,
                                       ),
