@@ -16,3 +16,12 @@ final class FormosaThemeSelectSuccess extends FormosaState {
   @override
   List<Object> get props => [theme];
 }
+
+final class FormosaMnemonicValidation extends FormosaState {
+  final bool isValid;
+
+  FormosaMnemonicValidation({required this.isValid});
+
+  @override
+  List<Object> get props => [isValid];
+}
