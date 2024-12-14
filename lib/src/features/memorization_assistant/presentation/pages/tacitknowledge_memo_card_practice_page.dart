@@ -73,6 +73,11 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
               });
               return const CircularProgressIndicator();
             } else if (state is GreatWallPracticeLevelStarted) {
+              if (memoCard.state == CardState.newCard) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _buildCorrectOptionPromt(context, state);
+                });
+              }
               return _buildPracticeOptions(context, state);
             } else if (state is GreatWallPracticeLevelFinish) {
               return _buildFeedbackSection(context, state);
@@ -83,6 +88,51 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _buildCorrectOptionPromt(
+      BuildContext context, GreatWallPracticeLevelStarted state) async {
+    List tacitKnowledges = state.knowledgePalettes;
+    GreatWall greatwall = state.greatWall;
+    Uint8List correctNode = await getNode(isSelectedNode: true);
+    Uint8List current = await getNode();
+
+    TacitKnowledge? correctTacitKnowlege;
+
+    for (int i = 0; i < state.knowledgePalettes.length; i++) {
+      TacitKnowledge tacitKnowledge = tacitKnowledges[i];
+      Uint8List optionNode = greatwall.getSelectedNode(current, i + 1);
+      if (listEquals(optionNode, correctNode)) {
+        correctTacitKnowlege = tacitKnowledge;
+      }
+    }
+
+    if (!context.mounted) return;
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title:
+                const Text('This is the correct option. Try to remember it:'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (correctTacitKnowlege != null)
+                  _buildOptionContent(correctTacitKnowlege)
+                else
+                  const Text("No tacit knowledge found")
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(AppLocalizations.of(context)!.ok),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _buildPracticeOptions(
@@ -168,7 +218,8 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
     final ephemeralKA = Eka.fromKey(eka);
     String key = isSelectedNode ? 'selectedNode' : 'node';
 
-    var critical = await ephemeralKA.decrypt(base64Decode(memoCard.knowledge[key]));
+    var critical =
+        await ephemeralKA.decrypt(base64Decode(memoCard.knowledge[key]));
 
     int treeArity = memoCard.knowledge['treeArity'];
     int treeDepth = memoCard.knowledge['treeDepth'];

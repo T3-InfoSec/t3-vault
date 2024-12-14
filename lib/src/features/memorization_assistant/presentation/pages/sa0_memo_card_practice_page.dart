@@ -53,15 +53,53 @@ class Sa0MemoCardPracticePage extends StatelessWidget {
         body: BlocBuilder<Sa0MemoCardPracticeBloc, Sa0MemoCardPracticeState>(
           builder: (context, state) {
             if (state is Sa0PracticeInProgress) {
+              if (memoCard.state == CardState.newCard) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _buildcorrectOptionPromt(context, sa0Mnemonic);
+                });
+              }
               return _buildInputForm(context);
             } else if (state is Sa0PracticeFeedback) {
-              return FeedbackWidget(memoCard: memoCard, isCorrect: state.isCorrect);
+              return FeedbackWidget(
+                  memoCard: memoCard, isCorrect: state.isCorrect);
             }
             return const Center(child: CircularProgressIndicator());
           },
         ),
       ),
     );
+  }
+
+  void _buildcorrectOptionPromt(BuildContext context, String sa0Mnemonic) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('This is the correct option. Try to remember it:'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  sa0Mnemonic,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(AppLocalizations.of(context)!.ok),
+              ),
+            ],
+          );
+        });
   }
 
   Widget _buildInputForm(BuildContext context) {
@@ -90,7 +128,9 @@ class Sa0MemoCardPracticePage extends StatelessWidget {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              context.read<Sa0MemoCardPracticeBloc>().add(SubmitWords(controller.text));
+              context
+                  .read<Sa0MemoCardPracticeBloc>()
+                  .add(SubmitWords(controller.text));
             },
             child: const Text("Submit"),
           ),
