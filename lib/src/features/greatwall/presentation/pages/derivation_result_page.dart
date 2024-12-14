@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cryptography/cryptography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -145,16 +146,17 @@ class DerivationResultPage extends StatelessWidget {
                                           context,
                                           listen: false).sa0Mnemonic;
                                       final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic));
-                                      await eka.encrypt(sa0);
+                                      SecretBox secretSa0 = await eka.encrypt(sa0);
 
                                       List<MemoCard> memoCards = [];
 
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'Can you remember where you saved eka\'s backup?', deck: deck),
                                         Sa0MemoCard(
-                                            encryptedSa0: base64Encode(sa0.secretBox.concatenation()),
+                                            encryptedSa0: base64Encode(secretSa0.concatenation()),
                                             deck: deck)
                                       ]);
+
                                       if (!context.mounted) return;
                                       final tacitKnowledge = Provider.of<DerivationState>(
                                           context,
@@ -162,14 +164,14 @@ class DerivationResultPage extends StatelessWidget {
                                       
                                       for (int i = 1; i <= state.treeDepth; i++) {
                                         final node = Node(state.savedNodes[i - 1]);
-                                        await eka.encrypt(node);   
+                                        SecretBox secretNode = await eka.encrypt(node);   
                                         final selectedNode = Node(state.savedNodes[i]);
-                                        await eka.encrypt(selectedNode);
+                                        SecretBox ciphertextSelectedNode = await eka.encrypt(selectedNode);
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,
-                                              'node': base64Encode(node.secretBox.concatenation()),
-                                              'selectedNode': base64Encode(selectedNode.secretBox.concatenation()),
+                                              'node': base64Encode(secretNode.concatenation()),
+                                              'selectedNode': base64Encode(ciphertextSelectedNode.concatenation()),
                                               'treeArity': state.treeArity,
                                               'treeDepth': state.treeDepth,
                                               'tacitKnowledge': tacitKnowledge,
