@@ -146,14 +146,14 @@ class DerivationResultPage extends StatelessWidget {
                                           context,
                                           listen: false).sa0Mnemonic;
                                       final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic));
-                                      SecretBox secretSa0 = await eka.encrypt(sa0);
+                                      final ciphertext = await eka.encrypt(sa0);
 
                                       List<MemoCard> memoCards = [];
 
                                       memoCards.addAll([
                                         EkaMemoCard(eka: 'Can you remember where you saved eka\'s backup?', deck: deck),
                                         Sa0MemoCard(
-                                            encryptedSa0: base64Encode(secretSa0.concatenation()),
+                                            encryptedSa0: base64Encode(ciphertext.concatenation()),
                                             deck: deck)
                                       ]);
 
@@ -164,13 +164,13 @@ class DerivationResultPage extends StatelessWidget {
                                       
                                       for (int i = 1; i <= state.treeDepth; i++) {
                                         final node = Node(state.savedNodes[i - 1]);
-                                        SecretBox secretNode = await eka.encrypt(node);   
+                                        final ciphertextNode = await eka.encrypt(node);   
                                         final selectedNode = Node(state.savedNodes[i]);
-                                        SecretBox ciphertextSelectedNode = await eka.encrypt(selectedNode);
+                                        final ciphertextSelectedNode = await eka.encrypt(selectedNode);
                                         memoCards.add(TacitKnowledgeMemoCard(
                                             knowledge: {
                                               'level': i,
-                                              'node': base64Encode(secretNode.concatenation()),
+                                              'node': base64Encode(ciphertextNode.concatenation()),
                                               'selectedNode': base64Encode(ciphertextSelectedNode.concatenation()),
                                               'treeArity': state.treeArity,
                                               'treeDepth': state.treeDepth,
