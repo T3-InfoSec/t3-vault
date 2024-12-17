@@ -23,7 +23,7 @@ class Pa0MemoCardStrategy extends MemoCardStrategy {
         if (key != null && key.isNotEmpty) {
           try {
             final eka = Eka(key: key);
-            Pa0 pa0 = await eka.decryptToPa0((memoCard as Sa0MemoCard).sa0);
+            Pa0 pa0 = await eka.decryptToPa0((memoCard as Sa0MemoCard).encryptedSa0);
             if (!context.mounted) return;
             await showDialog<String>(
               context: context,
@@ -63,7 +63,7 @@ class Pa0MemoCardStrategy extends MemoCardStrategy {
         Pa0? pa0;
         try {
           final eka = Eka(key: key);
-          pa0 = await eka.decryptToPa0((memoCard as Sa0MemoCard).sa0);
+          pa0 = await eka.decryptToPa0((memoCard as Sa0MemoCard).encryptedSa0);
         } catch (e) {
           debugPrint('Error decrypting: $e');
           return;
