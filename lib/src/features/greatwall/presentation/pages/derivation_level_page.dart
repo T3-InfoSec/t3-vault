@@ -40,26 +40,35 @@ class DerivationLevelPage extends StatelessWidget {
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             if (state is GreatWallDeriveInProgress) {
-              return const SizedBox.expand(
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    Positioned(
-                      top: 4,
-                      right: 4,
-                      child: InfoButton(
-                          tooltipText:
-                              "Argon2, a memory-hard hash, is being computed now. Please wait while derivation happens."
-                              "This is a deterministic derivation that imposes a time barrier as a requirement for obtaining the final key. "
-                              "Due to technical constraints, even the world's top supercomputers would only perform "
-                              "this derivation marginally faster—about 2 to 4 times faster, not a thousandth of the time."
-                              "Such a hardly compressible time barrier ensures that a coercive attack is unfeasible. "
-                              "Because the derivation is deterministic, the protocol can be hard-reset from any device using only your explicit and tacit memories."),
-                    ),
-                  ],
-                ),
-              );
+return LayoutBuilder(
+  builder: (context, constraints) {
+    double centerX = constraints.maxWidth / 2;
+    double centerY = constraints.maxHeight / 2;
+
+    return Stack(
+      children: [
+        const Center(child: CircularProgressIndicator()),
+
+        Positioned(
+          left: centerX + 20,
+          top: centerY - 40, 
+          child: const InfoButton(
+            tooltipText: "Argon2, a memory-hard hash, is being computed now. "
+                "Please wait while derivation happens."
+                "This is a deterministic derivation that imposes a time barrier "
+                "as a requirement for obtaining the final key. Due to technical constraints, "
+                "even the world's top supercomputers would only perform this derivation "
+                "marginally faster—about 2 to 4 times faster, not a thousandth of the time. "
+                "Such a hardly compressible time barrier ensures that a coercive attack is unfeasible. "
+                "Because the derivation is deterministic, the protocol can be hard-reset from any device "
+                "using only your explicit and tacit memories.",
+          ),
+        ),
+      ],
+    );
+  },
+);
+
             } else if (state is GreatWallDeriveStepSuccess) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
