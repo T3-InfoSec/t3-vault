@@ -64,7 +64,7 @@ class Sa0MemoCardStrategy extends MemoCardStrategy {
           );
           return;
         }
-
+        
         String sa0Mnemonic = await decryptSa0Mnemonic(key, memoCard);
 
         if (!context.mounted) return;
