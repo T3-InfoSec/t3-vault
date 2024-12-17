@@ -29,7 +29,7 @@ class MemoCardConverter {
     switch (cardType) {
       case 'Pa0MemoCard':
         memoCard = Sa0MemoCard(
-          sa0: knowledge['pa0'],
+          encryptedSa0: knowledge['pa0'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),
