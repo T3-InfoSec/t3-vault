@@ -52,10 +52,9 @@ class Sa0MnemonicInputWidget extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.sync),
                             onPressed: () async {
-                              String mnemonic = Formosa(
-                                      EntropyBytes.fromRandom(wordsNumber: 6)
-                                          .value,
-                                      FormosaTheme.bip39)
+                              String mnemonic = Formosa.fromRandomWords(
+                                      wordCount: 6,
+                                      formosaTheme: FormosaTheme.bip39)
                                   .getMnemonic();
                               await showDialog<String>(
                                 context: context,
