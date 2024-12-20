@@ -87,6 +87,6 @@ class Sa0MemoCardStrategy extends MemoCardStrategy {
     var plaintextSa0 = await eka.decrypt(base64Decode(sa0MemoCard.encryptedSa0));
     Sa0 sa0 = Sa0(Formosa(plaintextSa0.value, FormosaTheme.bip39));
 
-    return sa0.formosa.getMnemonic();
+    return sa0.formosa.mnemonic;
   }
 }
