@@ -27,7 +27,7 @@ class FormosaBloc extends Bloc<FormosaEvent, FormosaState> {
         event.mnemonic,
         formosaTheme: FormosaTheme.bip39,
       );
-      emit(FormosaMnemonicValidation(isValid: candidate.isValidFormosa));
+      emit(FormosaMnemonicValidation(isValid: candidate.isValidFormosa()));
     } catch (_) {
       emit(FormosaMnemonicValidation(isValid: false));
     }

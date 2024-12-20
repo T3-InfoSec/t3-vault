@@ -55,7 +55,7 @@ class Sa0MnemonicInputWidget extends StatelessWidget {
                               String mnemonic = Formosa.fromRandomWords(
                                       wordCount: 6,
                                       formosaTheme: FormosaTheme.bip39)
-                                  .getMnemonic();
+                                  .mnemonic;
                               await showDialog<String>(
                                 context: context,
                                 builder: (context) => Sa0MnemonicPromtWidget(
