@@ -200,7 +200,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                             String password = Formosa.fromRandomWords(
                                     wordCount: 6,
                                     formosaTheme: FormosaTheme.bip39)
-                                .getMnemonic();
+                                .mnemonic;
                             await showDialog<String>(
                               context: context,
                               builder: (context) =>
