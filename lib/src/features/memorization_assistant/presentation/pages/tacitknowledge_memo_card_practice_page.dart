@@ -221,10 +221,9 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
     var critical =
         await ephemeralKA.decrypt(base64Decode(memoCard.knowledge[key]));
 
-    int treeArity = memoCard.knowledge['treeArity'];
-    int treeDepth = memoCard.knowledge['treeDepth'];
+    int nodeDepth = memoCard.knowledge['level'];
 
-    Node node = Node(critical.value, depth: treeDepth, arity: treeArity);
+    Node node = Node(critical.value, nodeDepth: nodeDepth);
     return node.value;
   }
 }
