@@ -34,7 +34,7 @@ dependencies:
   t3_crypto_objects:
     git:
       url: git@github.com:T3-InfoSec/t3-crypto-objects-dart.git
-      ref: initialise_objects
+      ref: development
 
 dev_dependencies:
   flutter_test:
