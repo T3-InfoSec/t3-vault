@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
+import 'package:mooncake/mooncake.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_promt_widget.dart';
 
@@ -166,6 +167,18 @@ class FormosaTreeInputsPage extends StatelessWidget {
                               Sa0MnemonicPromtWidget(sa0Mnemonic: password),
                         );
                         if (password.isNotEmpty) {
+                          _passwordController.text = password;
+                        }
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.circle),
+                      onPressed: () async {
+                        String? password = await showDialog<String?>(
+                          context: context,
+                          builder: (context) => const MooncakeView(),
+                        );
+                        if (password != null && password.isNotEmpty) {
                           _passwordController.text = password;
                         }
                       },
