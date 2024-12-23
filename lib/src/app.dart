@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/eka_memo_card_practice_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
-import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/pa0_memo_card_practice_page.dart';
+import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/sa0_memo_card_practice_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/tacitknowledge_memo_card_practice_page.dart';
 
 import 'common/settings/domain/usecases/settings_controller.dart';
@@ -227,19 +227,19 @@ class T3Vault extends StatelessWidget {
                               },
                             ),
                             GoRoute(
-                              path: Pa0MemoCardPracticePage.routeName,
+                              path: Sa0MemoCardPracticePage.routeName,
                               pageBuilder:
                                   (BuildContext context, GoRouterState state) {
                                 final args =
                                     state.extra as Map<String, dynamic>;
                                 final memoCard = args['memoCard'] as MemoCard;
-                                final pa0Seed = args['pa0Seed'] as String;
+                                final sa0Mnemonic = args['sa0Mnemonic'] as String;
                                 return MaterialPage(
                                   restorationId:
-                                      'router.root.decks.cards.details.pa0_practice',
-                                  child: Pa0MemoCardPracticePage(
+                                      'router.root.decks.cards.details.sa0_practice',
+                                  child: Sa0MemoCardPracticePage(
                                     memoCard: memoCard,
-                                    pa0Seed: pa0Seed,
+                                    sa0Mnemonic: sa0Mnemonic,
                                   ),
                                 );
                               },

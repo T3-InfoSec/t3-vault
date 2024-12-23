@@ -1,7 +1,7 @@
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/eka_memo_card_strategy.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/memo_card_strategy.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/pa0_memo_card_strategy.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/sa0_memo_card_strategy.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/tacit_knowledge_strategy.dart';
 
 class MemoCardStrategyFactory {
@@ -9,7 +9,7 @@ class MemoCardStrategyFactory {
     if (memoCard is TacitKnowledgeMemoCard) {
       return TacitKnowledgeStrategy();
     } else if (memoCard is Sa0MemoCard) {
-      return Pa0MemoCardStrategy();
+      return Sa0MemoCardStrategy();
     } else if (memoCard is EkaMemoCard) {
       return EkaMemoCardStrategy();
     }
