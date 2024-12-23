@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:great_wall/great_wall.dart';
-import 'package:t3_formosa/formosa.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 class MemoCardConverter {
@@ -27,9 +27,9 @@ class MemoCardConverter {
     MemoCard memoCard;
 
     switch (cardType) {
-      case 'Pa0MemoCard':
+      case 'Sa0MemoCard':
         memoCard = Sa0MemoCard(
-          encryptedSa0: knowledge['pa0'],
+          encryptedSa0: knowledge['encryptedSa0'],
           deck: Deck(json['deckId'], json['deckName']),
           due: DateTime.parse(json['due']),
           lastReview: DateTime.parse(json['lastReview']),

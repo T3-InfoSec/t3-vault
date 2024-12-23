@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
 
 import 'bloc.dart';
@@ -167,7 +168,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       tacitKnowledge: event.tacitKnowledge,
     );
 
-    _greatWall!.sa0 = Pa0(seed: event.pa0Seed);
+    _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic));
     
     emit(
       GreatWallInitialSuccess(
@@ -175,7 +176,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         treeDepth: event.treeDepth,
         timeLockPuzzleParam: event.timeLockPuzzleParam,
         tacitKnowledge: event.tacitKnowledge,
-        pa0Seed: event.pa0Seed,
+        sa0Mnemonic: event.sa0Mnemonic,
       ),
     );
   }

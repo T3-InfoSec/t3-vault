@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/settings/presentation/pages/settings_page.dart';
@@ -145,7 +148,7 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
   Widget _buildFeedbackSection(
       BuildContext context, GreatWallPracticeLevelFinish state) {
     return FutureBuilder<Uint8List>(
-      future: getStoredSelectedNode(),
+      future: getNode(isSelectedNode: true),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -161,17 +164,15 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
     );
   }
 
-  Future<Uint8List> getStoredSelectedNode() async {
-    final ephemeralKA = Eka(key: eka);
-    Node storedSelectedNode =
-        await ephemeralKA.decryptToNode(memoCard.knowledge['selectedNode']);
-    return storedSelectedNode.hash;
-  }
+  Future<Uint8List> getNode({bool isSelectedNode = false}) async {
+    final ephemeralKA = Eka.fromKey(eka);
+    String key = isSelectedNode ? 'selectedNode' : 'node';
 
-  Future<Uint8List> getNode() async {
-    final ephemeralKA = Eka(key: eka);
-    Node storedNode =
-        await ephemeralKA.decryptToNode(memoCard.knowledge['node']);
-    return storedNode.hash;
+    var critical = await ephemeralKA.decrypt(base64Decode(memoCard.knowledge[key]));
+
+    int nodeDepth = memoCard.knowledge['level'];
+
+    Node node = Node(critical.value, nodeDepth: nodeDepth);
+    return node.value;
   }
 }

@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 abstract class MemoCardStrategy {
@@ -7,9 +9,9 @@ abstract class MemoCardStrategy {
   Widget buildTryButton(BuildContext context, MemoCard memoCard);
 
   Future<bool> isValid(String key, MemoCard memoCard) async {
-    Eka eka = Eka(key: key);
+    Eka eka = Eka.fromKey(key);
     try {
-      await eka.decryptToNode(memoCard.knowledge['node']);
+      await eka.decrypt(base64Decode(memoCard.knowledge['node']));
       return true;
     } catch (e) {
       debugPrint('Error decryting node: $e');

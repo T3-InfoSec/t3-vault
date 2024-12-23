@@ -14,6 +14,8 @@ import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/tacitknowledge_memo_card_practice_page.dart';
 
 class TacitKnowledgeStrategy extends MemoCardStrategy {
+  static const _mockSa0Mnemonic = 'steak sea alien improve local clown pipe tip chase parrot unusual valve';
+
   @override
   Widget? buildRecoveryButton(BuildContext context, MemoCard memoCard) {
     return null; // Not required for Tacit Knowledge Memo Card
@@ -40,7 +42,7 @@ class TacitKnowledgeStrategy extends MemoCardStrategy {
               treeDepth: treeDepth,
               timeLockPuzzleParam: 1,
               tacitKnowledge: tacitKnowledge,
-              pa0Seed: 'not needed pa0 for practice level',
+              sa0Mnemonic: _mockSa0Mnemonic, // not needed sa0 for practice level
             ),
           );
           context.go(

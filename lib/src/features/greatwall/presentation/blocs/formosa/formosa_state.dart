@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:t3_formosa/formosa.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 
 sealed class FormosaState extends Equatable {
   @override

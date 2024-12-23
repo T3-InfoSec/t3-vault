@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
-abstract class P0MemoCardPracticeEvent extends Equatable {
+abstract class Sa0MemoCardPracticeEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class SubmitWords extends P0MemoCardPracticeEvent {
+class SubmitWords extends Sa0MemoCardPracticeEvent {
   final String words;
 
   SubmitWords(this.words);
