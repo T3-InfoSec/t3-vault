@@ -1,0 +1,314 @@
+{
+  "appTitle": "t3_vault",
+  "@appTitle": {
+    "description": "Title of the application"
+  },
+
+  "homePageTitle": "T3-Vault",
+  "@homePageTitle": {
+    "description": "Home Page: Title of the page"
+  },
+  "policyPageTitle": "Terms & Policies",
+  "@policyPageTitle": {
+    "description": "Policy Page: Title of the page"
+  },
+  "knowledgeTypesPageTitle": "Tacit Knowledge Types",
+  "@knowledgeTypesPageTitle": {
+    "description": "Knowledge Types Page: Title of the page"
+  },
+  "hashvizTreeInputsPageTitle": "Hashviz Input Parameters",
+  "@hashvizTreeInputsPageTitle": {
+    "description": "Hashviz Tree Inputs Page: Title of the page"
+  },
+  "formosaTreeInputsPageTitle": "Formosa Input Parameters",
+  "@formosaTreeInputsPageTitle": {
+    "description": "Formosa Tree Inputs Page: Title of the page"
+  },
+  "confirmationPageTitle": "Confirmation",
+  "@confirmationPageTitle": {
+    "description": "Confirmation Page: Title of the page"
+  },
+  "derivationLevelPageTitle": "GreatWall Derivation Level",
+  "@derivationLevelPageTitle": {
+    "description": "Derivation Level Page: Title of the page"
+  },
+  "derivationResultPageTitle": "GreatWall Derivation Result",
+  "@derivationResultPageTitle": {
+    "description": "Derivation Result Page: Title of the page"
+  },
+  "memoCardDecksPageTitle": "Memorization Card Decks",
+  "@memoCardDecksPageTitle": {
+    "description": "Memo Card Decks Page: Title of the page"
+  },
+  "memoCardsPageTitle": "Memorization Cards",
+  "@memoCardsPageTitle": {
+    "description": "Memo Cards Page: Title of the page"
+  },
+  "memoCardDetailsPageTitle": "Card Details",
+  "@memoCardDetailsPageTitle": {
+    "description": "Card Details Page: Title of the page"
+  },
+  "tacitKnowledgeMemoCardPracticePageTitle": "Tacit Knowledge Card Practice",
+  "@tacitKnowledgeMemoCardPracticePageTitle": {
+    "description": "TacitKnowledge Card Practice Page: Title of the page"
+  },
+  "ekaMemoCardPracticePageTitle": "Ephemeral key Card Practice",
+  "@ekaMemoCardPracticePageTitle": {
+    "description": "EKA Card Practice Page: Title of the page"
+  },
+  "sa0CardPracticePageTitle": "Sa0 Card Practice",
+  "@sa0CardPracticePageTitle": {
+    "description": "Sa0 Card Practice Page: Title of the page"
+  },
+  "chooseNameWidgetTitle": "Choose a name for this derivation.",
+  "@chooseName": {
+    "description": "Deck Name Widget: Title Dialog"
+  },
+  "ekaWidgetTitle": "This is your key:",
+  "@ekaWidgetTitle": {
+    "description": "EKA Widget: Title Dialog"
+  },
+  "sa0WidgetTitle": "This is your seed:",
+  "@sa0WidgetTitle": {
+    "description": "SA0 Widget: Title Dialog"
+  },
+  "inputKeyErrorWidgetTitle": "Key error",
+  "@inputKeyErrorWidgetTitle": {
+    "description": "Decryption Error Widget: Title Dialog"
+  },
+  "secretWidgetTitle": "Enter secret:",
+  "@secretWidgetTitle": {
+    "description": "Secret Widget: Title Dialog"
+  },
+
+  "theme": "Select Theme",
+  "@theme": {
+    "description": "Formosa Tree Inputs Page: Theme selector"
+  },
+  "tacitKnowledge": "Tacit Knowledge",
+  "@tacitKnowledge": {
+    "description": "Tacit Knowledge label"
+  },
+  "treeArity": "Tree Arity",
+  "@treeArity": {
+    "description": "Tree Arity label"
+  },
+  "treeDepth": "Tree Depth",
+  "@treeDepth": {
+    "description": "Tree Depth label"
+  },
+  "timeLockPuzzleParam": "Time Lock Puzzle Param",
+  "@timeLockPuzzleParam": {
+    "description": "Time Lock Puzzle Param label"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password label"
+  },
+
+  "agreeAndContinue": "AGREE AND CONTINUE",
+  "@agreeAndContinue": {
+    "description": "Agreement Page: Button to agree and continue"
+  },
+  "deriveKeys": "Derive Your Keys!",
+  "@deriveKeys": {
+    "description": "Home Page: Button to derive keys"
+  },
+  "memorizeKeys": "Memorize Your Keys!",
+  "@memorizeKeys": {
+    "description": "Home Page: Button to memorize keys"
+  },
+  "saveDerivationCards": "Save derivation to Memorization Assistant",
+  "@saveDerivationCards": {
+    "description": "Tree Inputs Page: Button to save memo card"
+  },
+  "startDerivation": "Start Derivation",
+  "@startDerivation": {
+    "description": "Tree Inputs Page: Button to start derivation"
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": "Confirmation Page: Button to confirm parameters"
+  },
+  "previousLevel": "Previous Level",
+  "@previousLevel": {
+    "description": "Derivation Level Page: Button to go back level"
+  },
+  "generateAndCopySeed": "Generate and copy seed",
+  "@generateAndCopySeed": {
+    "description": "Derivation Result Page: Button to generate and copy seed"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Derivation Result Page: Button to reset derivation protocol and go back home"
+  },
+  "again": "Again",
+  "@again": {
+    "description": "Card Details Page: Button to rate again"
+  },
+  "hard": "Hard",
+  "@again": {
+    "description": "Card Details Page: Button to rate hard"
+  },
+  "good": "Good",
+  "@again": {
+    "description": "Card Details Page: Button to rate good"
+  },
+  "easy": "Easy",
+  "@again": {
+    "description": "Card Details Page: Button to rate easy"
+  },
+  "deleteMemoCard": "Delete Memorization Card",
+  "@deleteMemoCard": {
+    "description": "Card Details Page: Button to delete card"
+  },
+  "tryCard": "Try card",
+  "@tryCard": {
+    "description": "Card Details Page: Button to try protocol"
+  },
+  "passwordRecovery": "Password recovery",
+  "@passwordRecovery": {
+    "description": "Card Details Page: Button to recovery password"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Button cancel"
+  },
+  "ok": "ok",
+  "@ok": {
+    "description": "Button ok"
+  },
+
+  "appWelcome": "Welcome to T3-Vault",
+  "@appWelcome": {
+    "description": "Agreement Page: Text Welcome"
+  },
+  "introducing": "Your Key, Your Vault! T3-Vault is powered by an innovative protocol for providing Kerckhoffian, 0-trust and deviceless coercion-resistance in self-custody.",
+  "@introducing": {
+    "description": "Agreement Page: Text introducing T3-Vault"
+  },
+  "readPolicy": "Read our Privacy Policy, 'AGREE AND CONTINUE' to accept the Terms of Service.",
+  "@readPolicy": {
+    "description": "Agreement Page: Text prompting the user to agree to the Privacy Policy and Terms of Service"
+  },
+  "learnMore": "Learn More...",
+  "@learnMore": {
+    "description": "Agreement Page: Text prompting the user to learn more about policy"
+  },
+  "noParameters": "No parameters available.",
+  "@noParameters": {
+    "description": "Confirmation Page: Text no parameters"
+  },
+  "noLevel": "Loading or no level data available.",
+  "@noLevel": {
+    "description": "Derivation Level Page: Text no level"
+  },
+  "kaResult": "KA Result:",
+  "@kaResult": {
+    "description": "Derivation Result Page: Text ka result"
+  },
+  "seedCopiedToClipboard": "Seed copied to clipboard",
+  "@seedCopiedToClipboard": {
+    "description": "Derivation Result Page: Text seed copied to clipboard"
+  },
+  "savingInProgress": "Cards are being storage encrypted for secure. Please wait.",
+  "@savingInProgress": {
+    "description": "Derivation Result Page: Text saving memo cards"
+  },
+  "noMemoCards": "No Memorization Cards Yet!",
+  "@noMemoCards": {
+    "description": "Memo Card Decks Page: Text no cards"
+  },
+  "noMemoCardsDeck": "No Memorization Cards in this deck!",
+  "@noMemoCardsDeck": {
+    "description": "Memo Cards Page: Text no cards in deck"
+  },
+  "hint1": "Retirement wallet",
+  "@hint1": {
+    "description": "Deck Name Widget: Text hint1"
+  },
+  "hint2": "Savings for the wedding wallet",
+  "@hint2": {
+    "description": "Deck Name Widget: Text hint2"
+  },
+  "hint3": "Car savings wallet",
+  "@hint3": {
+    "description": "Deck Name Widget: Text hint3"
+  },
+  "hint4": "House down payment wallet",
+  "@hint4": {
+    "description": "Deck Name Widget: Text hint4"
+  },
+  "hint5": "Emergency fund wallet",
+  "@hint5": {
+    "description": "Deck Name Widget: Text hint5"
+  },
+  "hint6": "Gift for my fiancée wallet",
+  "@hint6": {
+    "description": "Deck Name Widget: Text hint6"
+  },
+  "hint7": "Kids college fund wallet",
+  "@hint7": {
+    "description": "Deck Name Widget: Text hint7"
+  },
+  "hint8": "Vacation fund wallet",
+  "@hint8": {
+    "description": "Deck Name Widget: Text hint8"
+  },
+  "hint9": "Digital identity recovery key",
+  "@hint9": {
+    "description": "Deck Name Widget: Text hint9"
+  },
+  "hint10": "Personal development fund wallet",
+  "@hint10": {
+    "description": "Deck Name Widget: Text hint10"
+  },
+  "ekaDescription1": "Important, ",
+  "@ekaDescription1": {
+    "description": "Deck Name Widget: Text description1"
+  },
+  "ekaDescription2": "make a physical backup of this key by writing it down and storing it in a secure place.\n",
+  "@ekaDescription2": {
+    "description": "Deck Name Widget: Text description2"
+  },
+  "ekaDescription3": "This key cannot be recovered if lost.",
+  "@ekaDescription3": {
+    "description": "Deck Name Widget: Text description3"
+  },
+  "sa0Description1": "Write down and store your 6-word seed in a safe place.\n",
+  "@sa0Description1": {
+    "description": "SA0 Widget: Text description1"
+  },
+  "sa0Description2": "These words are used as input for the derivation protocol. ",
+  "@sa0Description2": {
+    "description": "SA0 Widget: Text description2"
+  },
+  "sa0Description3": "If lost, you won't be able to retrieve the key directly. However, you can recover your seed using this ephemeral key, which is provided as you save the protocol.\n\n",
+  "@sa0Description3": {
+    "description": "SA0 Widget: Text description3"
+  },
+  "sa0Description4": "Over time, you can memorize the seed with the help of the memorization assistant, but for now, keeping it safe is a top priority.\n\n",
+  "@sa0Description4": {
+    "description": "SA0 Widget: Text description4"
+  },
+  "sa0Description5": "While 12-word seeds (128 bits of entropy) provide higher security, a 6-word seed (64 bits) is sufficient when used with the Tacit Knowledge Base Authentication process, which adds another 64 bits of entropy for a total of 128 bits.",
+  "@sa0Description5": {
+    "description": "SA0 Widget: Text description5"
+  },
+  "inputKeyErrorDescription": "The provided key is incorrect. Please try again.",
+  "@inputKeyErrorDescription": {
+    "description": "Decryption Error Widget: Text description"
+  },
+  "secretHint": "Enter ephemeral key to decrypt memo data.",
+  "@secretHint": {
+    "description": "Secret Widget: Hint secret"
+  },
+  "correctOption": "Correct!",
+  "@correctOption": {
+    "description": "Memo Card Practice Page: Result Message correct option"
+  },
+  "incorrectOption": "Incorrect!",
+  "@incorrectOption": {
+    "description": "Memo Card Practice Page: Result Message incorrect option"
+  }
+}
