@@ -36,14 +36,26 @@ dependencies:
       url: git@github.com:T3-InfoSec/t3-crypto-objects-dart.git
       ref: development
   mooncake:
-    path: ../mooncake
+    git:
+      url: https://github.com/T3-InfoSec/mooncake
+      ref: update_refactored_with_plugin
 
+  tlp_client:
+    git:
+      url: https://github.com/T3-InfoSec/TLP-plugin.git
+      ref: initial
+  mockito: ^5.4.5
+  encrypt: ^5.0.3
+      
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
 
+dependency_overrides:
+  collection: ^1.19.0
+  
 flutter:
   uses-material-design: true
 
