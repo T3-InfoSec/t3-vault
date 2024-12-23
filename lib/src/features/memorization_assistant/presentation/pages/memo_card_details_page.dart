@@ -110,7 +110,6 @@ class MemoCardDetailsPage extends StatelessWidget {
               strategy.buildRecoveryButton(context, memoCard)!,
             const SizedBox(height: 10),
             strategy.buildTryButton(context, memoCard),
-
           ],
         ),
       ),

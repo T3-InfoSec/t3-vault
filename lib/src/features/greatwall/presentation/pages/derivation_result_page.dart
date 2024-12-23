@@ -155,6 +155,7 @@ class DerivationResultPage extends StatelessWidget {
                                             encryptedSa0: base64Encode(ciphertext.concatenation()),
                                             deck: deck)
                                       ]);
+
                                       if (!context.mounted) return;
                                       final tacitKnowledge = Provider.of<DerivationState>(
                                           context,
