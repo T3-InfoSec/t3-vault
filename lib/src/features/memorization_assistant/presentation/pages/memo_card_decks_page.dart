@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_json_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_cards_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/widgets/deck_viewer_widget.dart';
 
@@ -23,6 +28,9 @@ class MemoCardDecksPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+
+    final notificationHistory = context.watch<NotificationsState>().notificationHistory;
+    Set<String> deckIdsToReview = getNotificationDeckIds(notificationHistory);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MemoCardSetBloc>().add(MemoCardSetLoadRequested());
@@ -50,7 +58,6 @@ class MemoCardDecksPage extends StatelessWidget {
                   return Text(AppLocalizations.of(context)!.noMemoCards);
                 }
 
-                // Group MemoCards by deck
                 Map<String, List<MemoCard>> memoCardsByDeck = {};
                 for (var memoCard in memoCardSetState.memoCardSet) {
                   var deckId = memoCard.deck.id;
@@ -68,8 +75,8 @@ class MemoCardDecksPage extends StatelessWidget {
                       direction: Axis.horizontal,
                       alignment: WrapAlignment.center,
                       crossAxisAlignment: WrapCrossAlignment.center,
-                      children: memoCardsByDeck.entries.map((entry) {
-                        var cards = entry.value;
+                      children: memoCardsByDeck.entries.map((deck) {
+                        var cards = deck.value;
 
                         return GestureDetector(
                           onTap: () {
@@ -82,6 +89,7 @@ class MemoCardDecksPage extends StatelessWidget {
                             themeData: themeData,
                             name: cards[0].deck.name,
                             cardsNum: cards.length,
+                            toBeReviewed: deckIdsToReview.contains(deck.key),
                           ),
                         );
                       }).toList(),
@@ -94,5 +102,15 @@ class MemoCardDecksPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Set<String> getNotificationDeckIds(List<NotificationResponse> notificationHistory) {
+    return notificationHistory
+        .where((response) => response.payload != null)
+        .map((response) => response.payload!)
+        .map((payload) => jsonDecode(payload))
+        .map((json) => MemoCardConverter.extractDeckIdFromJson(json))
+        .whereType<String>()
+        .toSet(); 
   }
 }
