@@ -36,8 +36,9 @@ dependencies:
       url: git@github.com:T3-InfoSec/t3-crypto-objects-dart.git
       ref: development
   mooncake:
-    path: ../mooncake
-
+    git:
+      url: git@github.com:T3-InfoSec/mooncake.git
+      ref: update_refactored_with_plugin
 dev_dependencies:
   flutter_test:
     sdk: flutter
