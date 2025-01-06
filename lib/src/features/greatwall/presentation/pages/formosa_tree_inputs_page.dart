@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_input_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -25,6 +25,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FormosaTheme? selectedTheme;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.formosaTreeInputsPageTitle),
@@ -60,7 +61,6 @@ class FormosaTreeInputsPage extends StatelessWidget {
             children: [
               BlocBuilder<FormosaBloc, FormosaState>(
                 builder: (context, state) {
-                  FormosaTheme? selectedTheme;
 
                   if (state is FormosaThemeSelectSuccess) {
                     selectedTheme = state.theme;
@@ -123,90 +123,44 @@ class FormosaTreeInputsPage extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 10),
-              BlocBuilder<GreatWallBloc, GreatWallState>(
-                  builder: (context, state) {
-                bool isPasswordVisible = false;
-
-                if (state is GreatWallInputsInProgress) {
-                  isPasswordVisible = state.isPasswordVisible;
-                }
-
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: _passwordController,
-                        obscureText: !isPasswordVisible,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.password,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                            ),
-                            onPressed: () {
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(GreatWallPasswordVisibilityToggled());
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.sync),
-                      onPressed: () async {
-                        String password = Formosa.fromRandomWords(
-                                wordCount: 6, formosaTheme: FormosaTheme.bip39)
-                            .mnemonic;
-                        await showDialog<String>(
-                          context: context,
-                          builder: (context) =>
-                              Sa0MnemonicPromtWidget(sa0Mnemonic: password),
-                        );
-                        if (password.isNotEmpty) {
-                          _passwordController.text = password;
-                        }
-                      },
-                    ),
-                  ],
-                );
-              }),
+              Sa0MnemonicInputWidget(passwordController: _passwordController),
               const SizedBox(height: 10),
-              BlocBuilder<GreatWallBloc, GreatWallState>(
+              BlocBuilder<FormosaBloc, FormosaState>(
                 builder: (context, state) {
-                  return ElevatedButton(
-                    onPressed: () async {
-                      final arity = int.parse(_arityController.text);
-                      final depth = int.parse(_depthController.text);
-                      final timeLock = int.parse(_timeLockController.text);
-                      final theme = (context.read<FormosaBloc>().state
-                              as FormosaThemeSelectSuccess)
-                          .theme;
+                  bool isButtonEnabled = false;
+                  if (state is FormosaMnemonicValidation) {
+                    isButtonEnabled = state.isValid;
+                  }
 
-                      Future.delayed(
-                        const Duration(seconds: 1),
-                        () {
-                          if (!context.mounted) return;
-                          context.read<GreatWallBloc>().add(
-                                GreatWallInitialized(
-                                  treeArity: arity,
-                                  treeDepth: depth,
-                                  timeLockPuzzleParam: timeLock,
-                                  tacitKnowledge: FormosaTacitKnowledge(
-                                    configs: {'formosaTheme': theme},
-                                  ),
-                                  sa0Mnemonic: _passwordController.text,
-                                ),
-                              );
-                          context.go(
-                            '/${KnowledgeTypesPage.routeName}/$routeName/'
-                            '${ConfirmationPage.routeName}',
-                          );
-                        },
-                      );
-                    },
+                  return ElevatedButton(
+                    onPressed: isButtonEnabled
+                        ? () async {
+                            final arity = int.parse(_arityController.text);
+                            final depth = int.parse(_depthController.text);
+                            final timeLock = int.parse(_timeLockController.text);
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                              () {
+                                if (!context.mounted) return;
+                                context.read<GreatWallBloc>().add(
+                                      GreatWallInitialized(
+                                        treeArity: arity,
+                                        treeDepth: depth,
+                                        timeLockPuzzleParam: timeLock,
+                                        tacitKnowledge: FormosaTacitKnowledge(
+                                          configs: {'formosaTheme': selectedTheme},
+                                        ),
+                                        sa0Mnemonic: _passwordController.text,
+                                      ),
+                                    );
+                                context.go(
+                                  '/${KnowledgeTypesPage.routeName}/$routeName/'
+                                  '${ConfirmationPage.routeName}',
+                                );
+                              },
+                            );
+                          }
+                        : null,
                     child: Text(AppLocalizations.of(context)!.startDerivation),
                   );
                 },
