@@ -4,9 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
-import 'package:mooncake/mooncake.dart';
-import 'package:t3_crypto_objects/crypto_objects.dart';
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_input_widget.dart';
+
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -28,6 +27,8 @@ class HashvizTreeInputsPage extends StatelessWidget {
   final TextEditingController _minHueController = TextEditingController();
   final TextEditingController _maxHueController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final ValueNotifier<bool> _isSymmetricNotifier = ValueNotifier<bool>(false);
 
   HashvizTreeInputsPage({super.key});
 
@@ -141,22 +142,15 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
-                BlocBuilder<GreatWallBloc, GreatWallState>(
-                  builder: (context, state) {
-                    bool isSymmetric = false;
-
-                    if (state is GreatWallInputsInProgress) {
-                      isSymmetric = state.isSymmetric;
-                    }
-
+                ValueListenableBuilder<bool>(
+                  valueListenable: _isSymmetricNotifier,
+                  builder: (context, isSymmetric, child) {
                     return Row(
                       children: [
                         Checkbox(
                           value: isSymmetric,
                           onChanged: (bool? value) {
-                            context.read<GreatWallBloc>().add(
-                                  GreatWallSymmetricToggled(),
-                                );
+                            _isSymmetricNotifier.value = value ?? false;
                           },
                         ),
                         const Text('Symmetric'),
@@ -165,118 +159,68 @@ class HashvizTreeInputsPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
-                BlocBuilder<GreatWallBloc, GreatWallState>(
-                  builder: (context, state) {
-                    bool isPasswordVisible = false;
-
-                    if (state is GreatWallInputsInProgress) {
-                      isPasswordVisible = state.isPasswordVisible;
-                    }
-
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _passwordController,
-                            obscureText: !isPasswordVisible,
-                            decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.password,
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  isPasswordVisible
-                                      ? Icons.visibility
-                                      : Icons.visibility_off,
-                                ),
-                                onPressed: () {
-                                  context.read<GreatWallBloc>().add(
-                                      GreatWallPasswordVisibilityToggled());
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.sync),
-                          onPressed: () async {
-                            String password = Formosa.fromRandomWords(
-                                    wordCount: 6,
-                                    formosaTheme: FormosaTheme.bip39)
-                                .mnemonic;
-                            await showDialog<String>(
-                              context: context,
-                              builder: (context) =>
-                                  Sa0MnemonicPromtWidget(sa0Mnemonic: password),
-                            );
-                            if (password.isNotEmpty) {
-                              _passwordController.text = password;
-                            }
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.circle),
-                          onPressed: () async {
-                            String? password = await showDialog<String?>(
-                              context: context,
-                              builder: (context) => const MooncakeView(),
-                            );
-                            if (password != null && password.isNotEmpty) {
-                              _passwordController.text = password;
-                            }
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                Sa0MnemonicInputWidget(passwordController: _passwordController),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    final arity = int.parse(_arityController.text);
-                    final depth = int.parse(_depthController.text);
-                    final timeLock = int.parse(_timeLockController.text);
-                    final hashvizSize = int.parse(_sizeController.text);
-                    final numColors = int.parse(_colorsNumberController.text);
-                    final saturation = double.parse(_saturationController.text);
-                    final brightness = double.parse(_brightnessController.text);
-                    final minHue = int.parse(_minHueController.text);
-                    final maxHue = int.parse(_maxHueController.text);
+                BlocBuilder<FormosaBloc, FormosaState>(
+                  builder: (context, state) {
+                    final isMnemonicValid =
+                        state is FormosaMnemonicValidation && state.isValid;
 
-                    final state = context.read<GreatWallBloc>().state;
-                    final isSymmetric = state is GreatWallInputsInProgress
-                        ? state.isSymmetric
-                        : false;
+                    return ElevatedButton(
+                      onPressed: isMnemonicValid
+                          ? () {
+                              final arity = int.parse(_arityController.text);
+                              final depth = int.parse(_depthController.text);
+                              final timeLock =
+                                  int.parse(_timeLockController.text);
+                              final hashvizSize =
+                                  int.parse(_sizeController.text);
+                              final numColors =
+                                  int.parse(_colorsNumberController.text);
+                              final saturation =
+                                  double.parse(_saturationController.text);
+                              final brightness =
+                                  double.parse(_brightnessController.text);
+                              final minHue = int.parse(_minHueController.text);
+                              final maxHue = int.parse(_maxHueController.text);
 
-                    Future.delayed(
-                      const Duration(seconds: 1),
-                      () {
-                        if (!context.mounted) return;
-                        context.read<GreatWallBloc>().add(
-                              GreatWallInitialized(
-                                treeArity: arity,
-                                treeDepth: depth,
-                                timeLockPuzzleParam: timeLock,
-                                tacitKnowledge: HashVizTacitKnowledge(
-                                  configs: {
-                                    'hashvizSize': hashvizSize,
-                                    'isSymmetric': isSymmetric,
-                                    'numColors': numColors,
-                                    'saturation': saturation,
-                                    'brightness': brightness,
-                                    'minHue': minHue,
-                                    'maxHue': maxHue,
-                                  },
-                                ),
-                                sa0Mnemonic: _passwordController.text,
-                              ),
-                            );
-                        context.go(
-                          '/${KnowledgeTypesPage.routeName}/$routeName/'
-                          '${ConfirmationPage.routeName}',
-                        );
-                      },
+                              final isSymmetric = _isSymmetricNotifier.value;
+
+                              Future.delayed(
+                                const Duration(seconds: 1),
+                                () {
+                                  if (!context.mounted) return;
+                                  context.read<GreatWallBloc>().add(
+                                        GreatWallInitialized(
+                                          treeArity: arity,
+                                          treeDepth: depth,
+                                          timeLockPuzzleParam: timeLock,
+                                          tacitKnowledge: HashVizTacitKnowledge(
+                                            configs: {
+                                              'hashvizSize': hashvizSize,
+                                              'isSymmetric': isSymmetric,
+                                              'numColors': numColors,
+                                              'saturation': saturation,
+                                              'brightness': brightness,
+                                              'minHue': minHue,
+                                              'maxHue': maxHue,
+                                            },
+                                          ),
+                                          sa0Mnemonic: _passwordController.text,
+                                        ),
+                                      );
+                                  context.go(
+                                    '/${KnowledgeTypesPage.routeName}/$routeName/'
+                                    '${ConfirmationPage.routeName}',
+                                  );
+                                },
+                              );
+                            }
+                          : null,
+                      child:
+                          Text(AppLocalizations.of(context)!.startDerivation),
                     );
                   },
-                  child: Text(AppLocalizations.of(context)!.startDerivation),
                 ),
               ],
             ),

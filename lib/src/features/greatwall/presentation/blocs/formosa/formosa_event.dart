@@ -16,3 +16,12 @@ final class FormosaThemeSelected extends FormosaEvent {
   @override
   List<Object> get props => [theme];
 }
+
+final class FormosaMnemonicChanged extends FormosaEvent {
+  final String mnemonic;
+
+  FormosaMnemonicChanged({required this.mnemonic});
+
+  @override
+  List<Object> get props => [mnemonic];
+}
