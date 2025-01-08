@@ -207,6 +207,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     emit(
       GreatWallPracticeLevelStarted(
         knowledgePalettes: _greatWall!.currentLevelKnowledgePalettes,
+        greatWall: _greatWall!,
       ));
   }
 
