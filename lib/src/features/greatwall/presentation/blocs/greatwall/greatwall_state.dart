@@ -101,9 +101,11 @@ final class GreatWallFinishSuccess extends GreatWallState {
 
 final class GreatWallPracticeLevelStarted extends GreatWallState {
   final List<dynamic> knowledgePalettes;
+  final GreatWall greatWall;
   
   GreatWallPracticeLevelStarted({
     required this.knowledgePalettes,
+    required this.greatWall,
   });
 
   @override
