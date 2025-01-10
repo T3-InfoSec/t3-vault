@@ -5,25 +5,22 @@ import 'package:flutter/material.dart';
 class FractalPainter extends CustomPainter {
   final ui.Image fractalImage;
 
-  /// Constructs a [FractalPainter] with the given fractal image.
   FractalPainter({required this.fractalImage});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final scaleX = size.width / fractalImage.width;
-    final scaleY = size.height / fractalImage.height;
-
-    // Scale and draw the fractal image on the canvas
-    canvas.save();
-    canvas.scale(scaleX, scaleY);
-    canvas.drawImage(fractalImage, Offset.zero, Paint());
-    canvas.restore();
+    final paint = Paint();
+    canvas.drawImageRect(
+      fractalImage,
+      Rect.fromLTWH(
+          0, 0, fractalImage.width.toDouble(), fractalImage.height.toDouble()),
+      Rect.fromLTWH(0, 0, size.width, size.height),
+      paint,
+    );
   }
 
-  /// Always returns `true` to indicate that the painter should repaint whenever
-  /// the widget needs to update.
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(covariant FractalPainter oldDelegate) {
+    return oldDelegate.fractalImage != fractalImage;
   }
 }

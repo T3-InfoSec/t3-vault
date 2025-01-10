@@ -2,10 +2,10 @@ name: t3_vault
 description: The T3 Vault cross platform application.
 version: 1.0.0-dev
 homepage: https://t3infosecurity.com
-publish_to: 'none'
+publish_to: "none"
 
 environment:
-  sdk: '>=3.4.4 <4.0.0'
+  sdk: ">=3.4.4 <4.0.0"
 
 dependencies:
   bloc: ^8.1.4
@@ -26,7 +26,7 @@ dependencies:
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: issue47_static_fractal_integration
+      ref: issue57_animate_fractal_integration___
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git

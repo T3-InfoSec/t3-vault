@@ -13,15 +13,15 @@ import '../blocs/blocs.dart';
 import 'confirmation_page.dart';
 import 'knowledge_types_page.dart';
 
-class FractalTreeInputsPage extends StatelessWidget {
-  static const routeName = 'fractal_inputs';
+class AnimatedFractalTreeInputsPage extends StatelessWidget {
+  static const routeName = 'animated_fractal_inputs';
 
   final TextEditingController _arityController = TextEditingController();
   final TextEditingController _depthController = TextEditingController();
   final TextEditingController _timeLockController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FractalTreeInputsPage({super.key});
+  AnimatedFractalTreeInputsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -163,12 +163,13 @@ class FractalTreeInputsPage extends StatelessWidget {
                                 treeArity: arity,
                                 treeDepth: depth,
                                 timeLockPuzzleParam: timeLock,
-                                tacitKnowledge: FractalTacitKnowledge(
+                                tacitKnowledge: AnimatedFractalTacitKnowledge(
                                   configs: {
-                                    'width':
-                                        300, // this determines the resolution of the image,
-                                    'height':
-                                        300, // the better the resolution, the longer the loading time.
+                                    'n': 30,
+                                    'A': 0.25,
+                                    'B': 0.25,
+                                    'width': 300,
+                                    'height': 300,
                                   },
                                 ),
                                 sa0Mnemonic: _passwordController.text,
