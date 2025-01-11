@@ -144,7 +144,7 @@ class DerivationResultPage extends StatelessWidget {
                                       final sa0Mnemonic = Provider.of<DerivationState>(
                                           context,
                                           listen: false).sa0Mnemonic;
-                                      final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic));
+                                      final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic, formosaTheme: FormosaTheme.global));
                                       final ciphertext = await eka.encrypt(sa0);
 
                                       List<MemoCard> memoCards = [];
