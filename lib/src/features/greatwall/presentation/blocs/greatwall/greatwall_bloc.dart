@@ -32,7 +32,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     await Future<void>.delayed(
       const Duration(seconds: 1),
       () {
-        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
+        _greatWall!.makeTacitDerivation(choice: event.choiceNumber.toString());
       },
     );
     if (event.choiceNumber == 0 && _currentLevel > 1) {
@@ -167,7 +167,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       timeLockPuzzleParam: event.timeLockPuzzleParam,
       tacitKnowledge: event.tacitKnowledge,
     );
-
+print("event sa0Mnemonci: ${event.sa0Mnemonic}");
     _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global)); // TODO: Change hardcoded theme.
     
     emit(
@@ -213,7 +213,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onGreatWallPracticeStepMade(
       GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
-    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
+    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber.toString());
 
     emit(
       GreatWallPracticeLevelFinish(

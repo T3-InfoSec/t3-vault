@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:go_router/go_router.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
@@ -14,7 +15,7 @@ import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/tacitknowledge_memo_card_practice_page.dart';
 
 class TacitKnowledgeStrategy extends MemoCardStrategy {
-  static const _mockSa0Mnemonic = 'steak sea alien improve local clown pipe tip chase parrot unusual valve';
+  static final _mockSa0Mnemonic = Formosa.fromRandomWords(wordCount: 6, formosaTheme: FormosaTheme.global).mnemonic;
 
   @override
   Widget? buildRecoveryButton(BuildContext context, MemoCard memoCard) {
