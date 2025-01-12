@@ -24,6 +24,10 @@
   "@formosaTreeInputsPageTitle": {
     "description": "Formosa Tree Inputs Page: Title of the page"
   },
+  "dynamicFractalTreeInputsPageTitle": "Dynamic Fractal Input Parameters",
+    "@dynamicFractalTreeInputsPageTitle": {
+      "description": "Dynamic Fractal Tree Inputs Page: Title of the page"
+    },
   "confirmationPageTitle": "Confirmation",
   "@confirmationPageTitle": {
     "description": "Confirmation Page: Title of the page"

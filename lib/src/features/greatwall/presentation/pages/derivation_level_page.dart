@@ -53,7 +53,7 @@ class DerivationLevelPage extends StatelessWidget {
                       if (state.currentLevel > 1) {
                         context
                             .read<GreatWallBloc>()
-                            .add(GreatWallDerivationStepMade(0));
+                            .add(GreatWallDerivationStepMade("0"));
                         context.go('/${DerivationLevelPage.routeName}');
                       }
                     },
@@ -80,7 +80,7 @@ class DerivationLevelPage extends StatelessWidget {
                               () {
                                 if (!context.mounted) return;
                                 context.read<GreatWallBloc>().add(
-                                    GreatWallDerivationStepMade(index + 1));
+                                    GreatWallDerivationStepMade((index + 1).toString()));
                                 if (state.currentLevel < state.treeDepth) {
                                   context.go(
                                     '/${DerivationLevelPage.routeName}',

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
+import 'dynamic_fractal_tree_inputs_page.dart';
 import 'formosa_tree_inputs_page.dart';
 import 'hashviz_tree_inputs_page.dart';
 
@@ -20,6 +21,7 @@ class KnowledgeTypesPage extends StatelessWidget {
       "Formosa": FormosaTreeInputsPage.routeName,
       "Fractal": "/fractal_page",
       "Voice": "/voice_page",
+      "Dynamic Fractal": DynamicFractalTreeInputsPage.routeName,
     };
 
     return Scaffold(
