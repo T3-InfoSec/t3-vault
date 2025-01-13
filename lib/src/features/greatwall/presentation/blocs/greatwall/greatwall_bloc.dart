@@ -167,7 +167,6 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       timeLockPuzzleParam: event.timeLockPuzzleParam,
       tacitKnowledge: event.tacitKnowledge,
     );
-print("event sa0Mnemonci: ${event.sa0Mnemonic}");
     _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global)); // TODO: Change hardcoded theme.
     
     emit(
