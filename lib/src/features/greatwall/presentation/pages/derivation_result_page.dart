@@ -42,11 +42,7 @@ class DerivationResultPage extends StatelessWidget {
         child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             if (state is GreatWallFinishSuccess) {
-              var derivedEntropy = Argon2DerivationService()
-                  .deriveWithLowMemory(
-                      EntropyBytes(state.derivationHashResult));
-              var formosa = Formosa(derivedEntropy.value, FormosaTheme.bip39);
-              final ka = KA(formosa);
+              final ka = KA(state.derivationHashResult);
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
