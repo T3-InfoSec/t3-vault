@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mooncake/mooncake.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/blocs/blocs.dart';
 
@@ -54,7 +55,7 @@ class Sa0MnemonicInputWidget extends StatelessWidget {
                             onPressed: () async {
                               String mnemonic = Formosa.fromRandomWords(
                                       wordCount: 6,
-                                      formosaTheme: FormosaTheme.bip39)
+                                      formosaTheme: FormosaTheme.global)
                                   .mnemonic;
                               await showDialog<String>(
                                 context: context,
@@ -63,6 +64,23 @@ class Sa0MnemonicInputWidget extends StatelessWidget {
                                 ),
                               );
                               if (mnemonic.isNotEmpty) {
+                                passwordController.text = mnemonic;
+                                if (!context.mounted) return;
+                                context.read<FormosaBloc>().add(
+                                      FormosaMnemonicChanged(
+                                          mnemonic: mnemonic),
+                                    );
+                              }
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.circle),
+                            onPressed: () async {
+                              String? mnemonic = await showDialog<String?>(
+                                context: context,
+                                builder: (context) => const MooncakeView(),
+                              );
+                              if (mnemonic != null) {
                                 passwordController.text = mnemonic;
                                 if (!context.mounted) return;
                                 context.read<FormosaBloc>().add(
