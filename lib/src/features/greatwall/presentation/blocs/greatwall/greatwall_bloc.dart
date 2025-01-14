@@ -32,7 +32,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     await Future<void>.delayed(
       const Duration(seconds: 1),
       () {
-        _greatWall!.makeTacitDerivation(choice: event.choiceNumber.toString());
+        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
       },
     );
     if (event.choiceNumber == 0 && _currentLevel > 1) {
@@ -212,7 +212,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onGreatWallPracticeStepMade(
       GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
-    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber.toString());
+    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
 
     emit(
       GreatWallPracticeLevelFinish(
