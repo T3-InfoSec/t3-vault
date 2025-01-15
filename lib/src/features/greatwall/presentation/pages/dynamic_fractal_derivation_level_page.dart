@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
-
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
@@ -23,7 +22,7 @@ class DynamicFractalDerivationLevelPage extends StatefulWidget {
 
 class _DynamicFractalDerivationLevelPageState
     extends State<DynamicFractalDerivationLevelPage> {
-  final Offset exponent = const Offset(2.0, 0.0);
+  Offset exponent = const Offset(2.0, 0.0);
   FragmentShader? _shader; // Nullable until initialized
   double _zoom = 2.00000000;
   Offset _offset = const Offset(0.00000000, 0.00000000);
@@ -56,146 +55,153 @@ class _DynamicFractalDerivationLevelPageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.derivationLevelPageTitle),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.derivationLevelPageTitle),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.read<GreatWallBloc>().add(GreatWallReset());
+            Navigator.of(context).pop();
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
             onPressed: () {
-              context.read<GreatWallBloc>().add(GreatWallReset());
-              Navigator.of(context).pop();
+              context.go('/${SettingsPage.routeName}');
             },
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              onPressed: () {
-                context.go('/${SettingsPage.routeName}');
-              },
-            ),
-          ],
-        ),
-        body: Center(
-          child:  BlocBuilder<GreatWallBloc, GreatWallState>(
-              builder: (context, state) {
-                if (state is GreatWallDeriveInProgress) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is GreatWallDeriveStepSuccess) {
-           return _shader == null
-            ? const Center(
-                child: CircularProgressIndicator()) // Show a loading indicator
-            : Listener(
-                onPointerSignal: (PointerSignalEvent event) {
-                  // this just changes the zoom, do not change offset here
-                  if (event is PointerScrollEvent) {
-                    setState(() {
-                      // Adjust zoom level based on scroll delta
-                      var zoomFactor = event.scrollDelta.dy > 0 ? 1.1 : 0.9;
+        ],
+      ),
+      body: Center(
+        child: BlocBuilder<GreatWallBloc, GreatWallState>(
+            builder: (context, state) {
+          if (state is GreatWallDeriveInProgress) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is GreatWallDeriveStepSuccess) {
+            exponent = Offset((state.knowledgePalettes[0].knowledge).x, (state.knowledgePalettes[0].knowledge).y);
+            return _shader == null
+                ? const Center(
+                    child:
+                        CircularProgressIndicator()) // Show a loading indicator
+                : Listener(
+                    onPointerSignal: (PointerSignalEvent event) {
+                      // this just changes the zoom, do not change offset here
+                      if (event is PointerScrollEvent) {
+                        setState(() {
+                          // Adjust zoom level based on scroll delta
+                          var zoomFactor = event.scrollDelta.dy > 0 ? 1.1 : 0.9;
 
-                      var zoomDelta = zoomFactor *
-                          zoomFactor *
-                          (event.scrollDelta.dy > 0 ? 1 : -1);
-                      _zoom *= zoomFactor;
-                      print("position ${event.position}");
+                          var zoomDelta = zoomFactor *
+                              zoomFactor *
+                              (event.scrollDelta.dy > 0 ? 1 : -1);
+                          _zoom *= zoomFactor;
+                          print("position ${event.position}");
 
-                      print(_zoom);
-                    });
-                  }
-                },
-                child: GestureDetector(
-                  onTapDown: (details) {
-                    setState(() {
-                      var aspectRatio = MediaQuery.of(context).size.width /
-                          MediaQuery.of(context).size.height;
-                      var mouseX = details.localPosition.dx /
-                          MediaQuery.of(context).size.width;
-                      var mouseY = details.localPosition.dy /
-                          MediaQuery.of(context).size.height;
-                      var posX = mouseX * _zoom * aspectRatio +
-                          _offset.dx +
-                          0.5 * _gridSize;
-                      var posY = mouseY * _zoom + _offset.dy + 0.5 * _gridSize;
-                      posX = double.parse(posX.toStringAsFixed(5)) -
-                          0.5 * _gridSize;
-                      posY = double.parse(posY.toStringAsFixed(5)) -
-                          0.5 * _gridSize;
-                      posX = double.parse(posX.toStringAsFixed(6));
-                      posY = double.parse(posY.toStringAsFixed(6));
-                      print(details.localPosition);
-                      _selectedPosition = Offset(posX, posY);
-                      print('${_selectedPosition.dx}, ${_selectedPosition.dy}');
-                    });
-                  },
-                  onScaleUpdate: (details) {
-                    setState(() {
-                      // this changes the zoom and offset
-
-                      if (details.scale != 1.0) {
-                        var zoomFactor = details.scale < 1.0 ? 1.01 : 0.99;
-                        //
-                        _zoom *= zoomFactor * details.scale;
-                        print("scale ${details.scale.clamp(0.9999, 1.0001)}");
-                        print("zoom $_zoom");
+                          print(_zoom);
+                        });
                       }
-                      // handle pan
-
-                      _offset =
-                          _offset - details.focalPointDelta * _zoom * 0.001;
-                    });
-                  },
-                  child: Scaffold(
-                    body: CustomPaint(
-                      painter: _BurningShipAdvFractalPainter(
-                        shader: _shader!,
-                        zoom: _zoom,
-                        offset: _offset,
-                        maxIterations: _maxIterations,
-                        gridSize: _gridSize,
-                        selectedPosition: _selectedPosition,
-                        exponent: exponent,
-                      ),
-                      size: Size.infinite,
-                    ),
-                    floatingActionButton: FloatingActionButton(
-                      onPressed: () {
-                        Future.delayed(
-                          const Duration(seconds: 1),
-                              () {
-                            if (!context.mounted) return;
-                            if (state.currentLevel < state.treeDepth) {
-                              print("x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy} submitted");
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(GreatWallDerivationStepMade("x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy}"));
-                              context.go('/${DynamicFractalDerivationLevelPage.routeName}');
-                            } else {
-                              print("process completed");
-                              context
-                                  .read<GreatWallBloc>()
-                                  .add(GreatWallDerivationFinished());
-                              context.go(
-                                '/${DerivationResultPage.routeName}',
-                              );
-                            }
-                          },
-                        );
-
-                        // widget.onSubmit(_selectedPosition);
+                    },
+                    child: GestureDetector(
+                      onTapDown: (details) {
+                        setState(() {
+                          var aspectRatio = MediaQuery.of(context).size.width /
+                              MediaQuery.of(context).size.height;
+                          var mouseX = details.localPosition.dx /
+                              MediaQuery.of(context).size.width;
+                          var mouseY = details.localPosition.dy /
+                              MediaQuery.of(context).size.height;
+                          var posX = mouseX * _zoom * aspectRatio +
+                              _offset.dx +
+                              0.5 * _gridSize;
+                          var posY =
+                              mouseY * _zoom + _offset.dy + 0.5 * _gridSize;
+                          posX = double.parse(posX.toStringAsFixed(5)) -
+                              0.5 * _gridSize;
+                          posY = double.parse(posY.toStringAsFixed(5)) -
+                              0.5 * _gridSize;
+                          posX = double.parse(posX.toStringAsFixed(6));
+                          posY = double.parse(posY.toStringAsFixed(6));
+                          print(details.localPosition);
+                          _selectedPosition = Offset(posX, posY);
+                          print(
+                              '${_selectedPosition.dx}, ${_selectedPosition.dy}');
+                        });
                       },
-                      child: const Icon(Icons.check),
-                    ),
-                  ),
-                )
-           );
-  } else {
-  return Center(
-  child: Text(AppLocalizations.of(context)!.noLevel),
-  );
-  }
-  }
-        ),
-        ),
+                      onScaleUpdate: (details) {
+                        setState(() {
+                          // this changes the zoom and offset
+
+                          if (details.scale != 1.0) {
+                            var zoomFactor = details.scale < 1.0 ? 1.01 : 0.99;
+                            //
+                            _zoom *= zoomFactor * details.scale;
+                            print(
+                                "scale ${details.scale.clamp(0.9999, 1.0001)}");
+                            print("zoom $_zoom");
+                          }
+                          // handle pan
+
+                          _offset =
+                              _offset - details.focalPointDelta * _zoom * 0.001;
+                        });
+                      },
+                      child: Scaffold(
+                        body: CustomPaint(
+                          painter: _BurningShipAdvFractalPainter(
+                            shader: _shader!,
+                            zoom: _zoom,
+                            offset: _offset,
+                            maxIterations: _maxIterations,
+                            gridSize: _gridSize,
+                            selectedPosition: _selectedPosition,
+                            exponent: exponent
+                          ),
+                          size: Size.infinite,
+                        ),
+                        floatingActionButton: FloatingActionButton(
+                          onPressed: () {
+                            Future.delayed(
+                              const Duration(seconds: 1),
+                              () {
+                                if (!context.mounted) return;
+                                print(
+                                    "x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy} submitted");
+                                context.read<GreatWallBloc>().add(
+                                    GreatWallDerivationStepMade(
+                                        "x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy}"));
+                                _zoom = 2.0;
+                                _offset = const Offset(-1.0, -1.0);
+                                if (state.currentLevel < state.treeDepth) {
+                                  context.go(
+                                      '/${DynamicFractalDerivationLevelPage.routeName}');
+                                } else {
+                                  print("process completed");
+                                  context
+                                      .read<GreatWallBloc>()
+                                      .add(GreatWallDerivationFinished());
+                                  context.go(
+                                    '/${DerivationResultPage.routeName}',
+                                  );
+                                }
+                              },
+                            );
+
+                            // widget.onSubmit(_selectedPosition);
+                          },
+                          child: const Icon(Icons.check),
+                        ),
+                      ),
+                    ));
+          } else {
+            return Center(
+              child: Text(AppLocalizations.of(context)!.noLevel),
+            );
+          }
+        }),
+      ),
     );
   }
 }
