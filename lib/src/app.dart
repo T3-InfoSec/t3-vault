@@ -4,6 +4,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/dynamic_fractal_derivation_level_page.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/dynamic_fractal_tree_inputs_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/eka_memo_card_practice_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/sa0_memo_card_practice_page.dart';
@@ -334,6 +336,30 @@ class T3Vault extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            GoRoute(
+                              path: DynamicFractalTreeInputsPage.routeName,
+                              pageBuilder:
+                                  (BuildContext context, GoRouterState state) {
+                                return MaterialPage(
+                                  restorationId:
+                                  'router.root.knowledge.dynamic_fractal_inputs',
+                                  child: DynamicFractalTreeInputsPage(),
+                                );
+                              },
+                              routes: <RouteBase>[
+                                GoRoute(
+                                  path: ConfirmationPage.routeName,
+                                  pageBuilder: (BuildContext context,
+                                      GoRouterState state) {
+                                    return const MaterialPage(
+                                      restorationId: 'router.root.knowledge.'
+                                          'dynamic_fractal_inputs.confirmation',
+                                      child: ConfirmationPage(),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         GoRoute(
@@ -357,11 +383,21 @@ class T3Vault extends StatelessWidget {
                           },
                         ),
                         GoRoute(
+                          path: DynamicFractalDerivationLevelPage.routeName,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) {
+                            return const MaterialPage(
+                              restorationId: 'router.root.dynamic_fractal_derivation_level',
+                              child: DynamicFractalDerivationLevelPage(),
+                            );
+                          },
+                        ),
+                        GoRoute(
                           path: DerivationResultPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
                             return const MaterialPage(
-                              restorationId: 'router.root.derivation_result',
+                              restorationId: 'router.root.dynamic_fractal_derivation_level_page',
                               child: DerivationResultPage(),
                             );
                           },

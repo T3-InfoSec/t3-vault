@@ -32,10 +32,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     await Future<void>.delayed(
       const Duration(seconds: 1),
       () {
-        _greatWall!.makeTacitDerivation(choice: event.choiceNumber.toString());
+        _greatWall!.makeTacitDerivation(choice: event.choice);
       },
     );
-    if (event.choiceNumber == 0 && _currentLevel > 1) {
+    if (event.choice == "0" && _currentLevel > 1) {
       _currentLevel--;
     } else {
       _currentLevel++;
