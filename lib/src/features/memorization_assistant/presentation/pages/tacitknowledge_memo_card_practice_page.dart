@@ -101,7 +101,7 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
 
     for (int i = 0; i < state.knowledgePalettes.length; i++) {
       TacitKnowledge tacitKnowledge = tacitKnowledges[i];
-      Uint8List optionNode = greatwall.getSelectedNode(current, (i + 1).toString());
+      Uint8List optionNode = greatwall.getSelectedNode(current, i + 1);
       if (listEquals(optionNode, correctNode)) {
         correctTacitKnowlege = tacitKnowledge;
       }
