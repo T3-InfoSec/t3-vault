@@ -151,6 +151,7 @@ class FormosaTreeInputsPage extends StatelessWidget {
                                           configs: {'formosaTheme': selectedTheme},
                                         ),
                                         sa0Mnemonic: _passwordController.text,
+                                        intermediateDerivationStates: const [],
                                       ),
                                     );
                                 context.go(

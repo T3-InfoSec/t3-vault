@@ -1,13 +1,13 @@
 import 'package:bloc/bloc.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 
 import 'package:t3_vault/src/features/memorization_assistant/presentation/blocs/blocs.dart';
 
 class MemoCardRatingBloc
     extends Bloc<MemoCardRatingEvent, MemoCardRatingState> {
-  final MemoCardRepository memoCardRepository;
+  final ProfileRepository profileRepository;
 
-  MemoCardRatingBloc({required this.memoCardRepository})
+  MemoCardRatingBloc({required this.profileRepository})
       : super(MemoCardRatedAgain()) {
     on<MemoCardRatingPressed>(_onMemoCardRatingEvent);
   }
@@ -33,6 +33,6 @@ class MemoCardRatingBloc
       emit(MemoCardRatedEasy());
     }
 
-    memoCardRepository.updateMemoCard(event.memoCard);
+    profileRepository.updateMemoCard(event.memoCard);
   }
 }

@@ -74,12 +74,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress());
 
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-      () {
-        _greatWall!.startDerivation();
-      },
-    );
+    await _greatWall!.startDerivation();
 
     emit(
       GreatWallDeriveStepSuccess(
@@ -167,7 +162,9 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       timeLockPuzzleParam: event.timeLockPuzzleParam,
       tacitKnowledge: event.tacitKnowledge,
     );
-    _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global));
+    _greatWall!.initializeDerivation(
+      Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global)),
+      []);
     
     emit(
       GreatWallInitialSuccess(
@@ -195,7 +192,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   }
 
   void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
-    _greatWall!.initialDerivation();
+    _greatWall!.resetDerivation();
 
     emit(GreatWallInitial());
   }

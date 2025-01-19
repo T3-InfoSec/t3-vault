@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 
 sealed class GreatWallEvent extends Equatable {
   @override
@@ -41,6 +42,7 @@ final class GreatWallInitialized extends GreatWallEvent {
   final int timeLockPuzzleParam;
   final TacitKnowledge tacitKnowledge;
   final String sa0Mnemonic;
+  final List<Sa1i> intermediateDerivationStates;
 
   GreatWallInitialized({
     required this.treeArity,
@@ -48,11 +50,12 @@ final class GreatWallInitialized extends GreatWallEvent {
     required this.timeLockPuzzleParam,
     required this.tacitKnowledge,
     required this.sa0Mnemonic,
+    required this.intermediateDerivationStates,
   });
 
   @override
   List<Object> get props =>
-      [treeDepth, timeLockPuzzleParam, tacitKnowledge, sa0Mnemonic];
+      [treeDepth, timeLockPuzzleParam, tacitKnowledge, sa0Mnemonic, intermediateDerivationStates];
 }
 
 final class GreatWallReset extends GreatWallEvent {}

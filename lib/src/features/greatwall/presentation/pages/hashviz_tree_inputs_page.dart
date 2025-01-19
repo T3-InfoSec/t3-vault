@@ -207,6 +207,7 @@ class HashvizTreeInputsPage extends StatelessWidget {
                                             },
                                           ),
                                           sa0Mnemonic: _passwordController.text,
+                                          intermediateDerivationStates: const [],
                                         ),
                                       );
                                   context.go(

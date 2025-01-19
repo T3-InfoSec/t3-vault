@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:t3_memassist/memory_assistant.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/eka_memo_card_practice_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/sa0_memo_card_practice_page.dart';
@@ -23,7 +24,6 @@ import 'features/landing/presentation/pages/agreement_page.dart';
 import 'features/landing/presentation/pages/home_page.dart';
 import 'features/landing/presentation/pages/policy_page.dart';
 import 'features/landing/presentation/pages/splash_page.dart';
-import 'features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
 import 'features/memorization_assistant/presentation/blocs/blocs.dart';
 import 'features/memorization_assistant/presentation/pages/memo_card_details_page.dart';
 import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart';
@@ -31,12 +31,12 @@ import 'features/memorization_assistant/presentation/pages/memo_cards_page.dart'
 /// The Widget that configures your application.
 class T3Vault extends StatelessWidget {
   final SettingsController settingsController;
-  final MemoCardRepository memoCardRepository;
+  final ProfileRepository profileRepository;
 
   const T3Vault({
     super.key,
     required this.settingsController,
-    required this.memoCardRepository,
+    required this.profileRepository,
   });
 
   @override
@@ -60,11 +60,11 @@ class T3Vault extends StatelessWidget {
             ),
             BlocProvider<MemoCardSetBloc>(
               create: (BuildContext context) =>
-                  MemoCardSetBloc(memoCardRepository: memoCardRepository),
+                  MemoCardSetBloc(profileRepository: profileRepository),
             ),
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) =>
-                  MemoCardRatingBloc(memoCardRepository: memoCardRepository),
+                  MemoCardRatingBloc(profileRepository: profileRepository),
             ),
           ],
           child: Builder(

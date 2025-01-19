@@ -44,6 +44,7 @@ class TacitKnowledgeStrategy extends MemoCardStrategy {
               timeLockPuzzleParam: 1,
               tacitKnowledge: tacitKnowledge,
               sa0Mnemonic: _mockSa0Mnemonic, // not needed sa0 for practice level
+              intermediateDerivationStates: const [], // not needed for practice level
             ),
           );
           context.go(
