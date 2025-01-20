@@ -3,11 +3,11 @@ import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ong
 import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ongoing_derivation/ongoing_derivation_state.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 
-class IntermediateStatesBloc
+class OngoingDerivationBloc
     extends Bloc<OngoingDerivationEvent, OngoingDerivationState> {
   final ProfileRepository profileRepository;
   
-  IntermediateStatesBloc({required this.profileRepository}) : super(OngoingDerivationEmpty()) {
+  OngoingDerivationBloc({required this.profileRepository}) : super(OngoingDerivationEmpty()) {
     on<OngoingDerivationLoadRequested>(_onOngoingDerivationEvent);
     on<OngoingDerivationAdded>(_onOngoingDerivationEvent);
     on<OngoingDerivationRemoved>(_onOngoingDerivationEvent);
