@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/notifications/domain/notifications_service.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/converters/intermediate_derivation_state_converter.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/converters/ongoing_derivation_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_json_converter.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/entities/intermediate_derivation_state_entity.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/ongoing_derivation_entity.dart';
 
 class ProfileRepository {
   final String filePath;
   final Set<MemoCard> _memoCards = {};
-  final List<IntermediateDerivationStateEntity> _intermediateStates = [];
+  OngoingDerivationEntity? _ongoingDerivation;
   final NotificationService notificationService;
 
   ProfileRepository(
@@ -35,11 +35,10 @@ class ProfileRepository {
         _memoCards.add(memoCard);
       }
 
-      // Processing intermediateStates
-      final statesJson = jsonData['intermediateStates'] as List;
-      _intermediateStates
-        ..clear()
-        ..addAll(statesJson.map((json) => IntermediateDerivationStateConverter.fromJson(json)).toList());
+      // Processing ongoingDerivation
+      if (jsonData['ongoingDerivation'] != null) {
+        _ongoingDerivation = OngoingDerivationConverter.fromJson(jsonData['ongoingDerivation']);
+      }
     } catch (e) {
       debugPrint('Error reading profile: $e');
     }
@@ -54,9 +53,9 @@ class ProfileRepository {
         _scheduleMemoCardReviewNotification(card);
         return MemoCardConverter.toJson(card);
       }).toList(),
-      'intermediateStates': _intermediateStates
-          .map((state) => IntermediateDerivationStateConverter.toJson(state))
-          .toList(),
+      'ongoingDerivation': _ongoingDerivation != null
+          ? OngoingDerivationConverter.toJson(_ongoingDerivation!)
+          : null,
     };
 
     await file.writeAsString(jsonEncode(jsonData));
@@ -81,15 +80,21 @@ class ProfileRepository {
     await writeProfile();
   }
 
-  /// Adds a new intermediate State to the repository.
-  Future<void> addIntermediateState(IntermediateDerivationStateEntity state) async {
-    _intermediateStates.add(state);
+  /// Sets the ongoing derivation in the repository.
+  Future<void> setOngoingDerivation(OngoingDerivationEntity derivation) async {
+    _ongoingDerivation = derivation;
+    await writeProfile();
+  }
+
+  /// Clears the ongoing derivation.
+  Future<void> clearOngoingDerivation() async {
+    _ongoingDerivation = null;
     await writeProfile();
   }
 
   Set<MemoCard> get memoCards => Set.unmodifiable(_memoCards);
 
-  List<String> get intermediateStates => List.unmodifiable(_intermediateStates);
+   OngoingDerivationEntity? get ongoingDerivation => _ongoingDerivation;
 
   void _scheduleMemoCardReviewNotification(MemoCard card) {
     notificationService.scheduleNotification(

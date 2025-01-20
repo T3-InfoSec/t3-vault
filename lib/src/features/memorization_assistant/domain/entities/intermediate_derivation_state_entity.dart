@@ -1,11 +1,11 @@
 /// Represents an intermediate state with additional fields.
 class IntermediateDerivationStateEntity {
-  final String value;
+  final String encryptedValue;
   final int currentIteration;
   final int totalIterations;
 
   IntermediateDerivationStateEntity({
-    required this.value,
+    required this.encryptedValue,
     required this.currentIteration,
     required this.totalIterations,
   });
