@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ongoing_derivation/ongoing_derivation_bloc.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/eka_memo_card_practice_page.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
@@ -57,7 +57,7 @@ class T3Vault extends StatelessWidget {
               create: (BuildContext context) => FormosaBloc(),
             ),
             BlocProvider<GreatWallBloc>(
-              create: (BuildContext context) => GreatWallBloc(),
+              create: (BuildContext context) => GreatWallBloc(profileRepository),
             ),
             BlocProvider<MemoCardSetBloc>(
               create: (BuildContext context) =>
@@ -66,10 +66,6 @@ class T3Vault extends StatelessWidget {
             BlocProvider<MemoCardRatingBloc>(
               create: (BuildContext context) =>
                   MemoCardRatingBloc(profileRepository: profileRepository),
-            ),
-            BlocProvider<OngoingDerivationBloc>(
-              create: (BuildContext context) => 
-                  OngoingDerivationBloc(profileRepository: profileRepository),
             ),
           ],
           child: Builder(
@@ -306,10 +302,15 @@ class T3Vault extends StatelessWidget {
                                   path: ConfirmationPage.routeName,
                                   pageBuilder: (BuildContext context,
                                       GoRouterState state) {
-                                    return const MaterialPage(
+                                    final args =
+                                        state.extra as Map<String, dynamic>;
+                                    final eka = args['eka'] as Eka;
+                                    return MaterialPage(
                                       restorationId: 'router.root.knowledge.'
                                           'formosa_inputs.confirmation',
-                                      child: ConfirmationPage(),
+                                      child: ConfirmationPage(
+                                        eka: eka,
+                                      ),
                                     );
                                   },
                                 ),
@@ -330,10 +331,15 @@ class T3Vault extends StatelessWidget {
                                   path: ConfirmationPage.routeName,
                                   pageBuilder: (BuildContext context,
                                       GoRouterState state) {
-                                    return const MaterialPage(
+                                    final args =
+                                        state.extra as Map<String, dynamic>;
+                                    final eka = args['eka'] as Eka;
+                                    return MaterialPage(
                                       restorationId: 'router.root.knowledge.'
                                           'hashviz_inputs.confirmation',
-                                      child: ConfirmationPage(),
+                                      child: ConfirmationPage(
+                                        eka: eka,
+                                      ),
                                     );
                                   },
                                 ),
@@ -345,9 +351,14 @@ class T3Vault extends StatelessWidget {
                           path: ConfirmationPage.routeName,
                           pageBuilder:
                               (BuildContext context, GoRouterState state) {
-                            return const MaterialPage(
+                            final args =
+                                state.extra as Map<String, dynamic>;
+                            final eka = args['eka'] as Eka;
+                            return MaterialPage(
                               restorationId: 'router.root.confirmation',
-                              child: ConfirmationPage(),
+                              child: ConfirmationPage(
+                                eka: eka,
+                              ),
                             );
                           },
                         ),

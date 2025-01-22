@@ -76,9 +76,9 @@
   "@inputKeyErrorWidgetTitle": {
     "description": "Decryption Error Widget: Title Dialog"
   },
-  "secretWidgetTitle": "Enter secret:",
+  "secretWidgetTitle": "Enter EKA:",
   "@secretWidgetTitle": {
-    "description": "Secret Widget: Title Dialog"
+    "description": "EKA Widget: Title Dialog"
   },
 
   "theme": "Select Theme",
@@ -299,7 +299,7 @@
   "@inputKeyErrorDescription": {
     "description": "Decryption Error Widget: Text description"
   },
-  "secretHint": "Enter ephemeral key to decrypt memo data.",
+  "secretHint": "Enter ephemeral key (EKA).",
   "@secretHint": {
     "description": "Secret Widget: Hint secret"
   },

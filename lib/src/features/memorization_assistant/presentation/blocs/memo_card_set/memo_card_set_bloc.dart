@@ -23,7 +23,9 @@ class MemoCardSetBloc
   ) async {
 
     if (event is MemoCardSetLoadRequested) {
-      await _loadMemoCardsFromRepository();
+      await () async {
+          await profileRepository.readProfile();
+      }();
       return emit(MemoCardSetChangeNothing(memoCards: profileRepository.memoCards));
     }
 
@@ -48,9 +50,5 @@ class MemoCardSetBloc
         return emit(MemoCardSetRemoveSuccess(memoCards: profileRepository.memoCards));
       }
     }
-  }
-
-  Future<void> _loadMemoCardsFromRepository() async {
-      await profileRepository.readProfile();
   }
 }

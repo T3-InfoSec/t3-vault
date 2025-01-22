@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ongoing_derivation/ongoing_derivation_bloc.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ongoing_derivation/ongoing_derivation_event.dart';
-import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/ongoing_derivation/ongoing_derivation_state.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/blocs/greatwall/bloc.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/resume_derivation_widget.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
 
@@ -25,8 +23,8 @@ class HomePage extends StatelessWidget {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context
-          .read<OngoingDerivationBloc>()
-          .add(OngoingDerivationLoadRequested());
+          .read<GreatWallBloc>()
+          .add(GreatWallOngoingDerivationLoadRequested());
     });
 
     return Scaffold(
@@ -42,7 +40,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: BlocBuilder<OngoingDerivationBloc, OngoingDerivationState>(
+        child: BlocBuilder<GreatWallBloc, GreatWallState>(
           builder: (context, state) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +56,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        if (state is OngoingDerivationAddSuccess &&
+                        if (state is GreatWallOngoingDerivationLoaded &&
                             state.ongoingDerivationEntity != null) {
                           showDialog(
                             context: context,

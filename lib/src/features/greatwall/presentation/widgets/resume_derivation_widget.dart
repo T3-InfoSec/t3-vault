@@ -28,7 +28,11 @@ class ResumeDerivationWidget extends StatelessWidget {
           "There is an ongoing derivation. Would you like to resume it?"),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            // TODO: remove ongoing derivation
+            Navigator.of(context).pop();
+            context.go('/${KnowledgeTypesPage.routeName}');
+          },
           child: const Text("No"),
         ),
         TextButton(

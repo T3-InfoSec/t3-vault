@@ -6,6 +6,7 @@ import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/notifications/domain/notifications_service.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/converters/ongoing_derivation_converter.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/converters/memo_card_json_converter.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/intermediate_derivation_state_entity.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/entities/ongoing_derivation_entity.dart';
 
 class ProfileRepository {
@@ -44,7 +45,7 @@ class ProfileRepository {
     }
   }
 
-  /// Writes [_memoCards] and [_intermediateStates] to the JSON file.
+  /// Writes [_memoCards] and [_ongoingDerivation] to the JSON file.
   Future<void> writeProfile() async {
     final file = File(filePath);
 
@@ -83,6 +84,14 @@ class ProfileRepository {
   /// Sets the ongoing derivation in the repository.
   Future<void> setOngoingDerivation(OngoingDerivationEntity derivation) async {
     _ongoingDerivation = derivation;
+    await writeProfile();
+  }
+
+  /// Adds an intermediate [state] to the [_ongoingDerivation] and save it.
+  Future<void> addIntermediateStates(List<IntermediateDerivationStateEntity> states) async {
+    if (_ongoingDerivation != null) {
+      _ongoingDerivation!.intermediateDerivationStates.addAll(states);
+    }
     await writeProfile();
   }
 
