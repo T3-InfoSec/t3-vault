@@ -9,10 +9,10 @@ Future<ui.Image> generateFractal(Uint8List grayPixels, int width, int height) {
     final grayValue = grayPixels[i];
     final offset = i * 4;
 
-    rgbaPixels[offset] = grayValue; // Red
-    rgbaPixels[offset + 1] = grayValue; // Green
-    rgbaPixels[offset + 2] = grayValue; // Blue
-    rgbaPixels[offset + 3] = 255; // Alpha
+    rgbaPixels[offset] = (grayValue * 2).clamp(0, 255);
+    rgbaPixels[offset + 1] = (grayValue * 0.5).clamp(0, 255).toInt();
+    rgbaPixels[offset + 2] = (grayValue * 0.2).clamp(0, 255).toInt();
+    rgbaPixels[offset + 3] = 255;
   }
 
   final completer = Completer<ui.Image>();
