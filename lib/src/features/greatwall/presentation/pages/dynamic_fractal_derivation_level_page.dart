@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:great_wall/great_wall.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -49,9 +52,11 @@ class _DynamicFractalDerivationLevelPageState
               child: CircularProgressIndicator(),
             );
           } else if (state is GreatWallDeriveStepSuccess) {
+            final hash = Choice(context.read<GreatWallBloc>().hashes[0]);
+            final tacitKnowledge = state.knowledgePalettes[hash]!.knowledge! as Point<double>;
             Offset exponent = Offset(
-                (state.knowledgePalettes[0].knowledge).x,
-                (state.knowledgePalettes[0].knowledge).y);
+                tacitKnowledge.x,
+                tacitKnowledge.y);
             return DynamicFractalRenderer(
               exponent
             );

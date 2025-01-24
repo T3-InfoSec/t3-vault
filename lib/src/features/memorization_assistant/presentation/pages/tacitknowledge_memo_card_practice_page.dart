@@ -92,22 +92,24 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
 
   void _buildCorrectOptionPromt(
       BuildContext context, GreatWallPracticeLevelStarted state) async {
-    List tacitKnowledges = state.knowledgePalettes;
+    Map<Choice, TacitKnowledge> tacitKnowledges = state.knowledgePalettes;
     GreatWall greatwall = state.greatWall;
     Uint8List correctNode = await getNode(isSelectedNode: true);
     Uint8List current = await getNode();
 
     TacitKnowledge? correctTacitKnowlege;
 
+
+    if (!context.mounted) return;
+    var hashes = context.read<GreatWallBloc>().hashes;
     for (int i = 0; i < state.knowledgePalettes.length; i++) {
-      TacitKnowledge tacitKnowledge = tacitKnowledges[i];
+      TacitKnowledge tacitKnowledge = tacitKnowledges[Choice(hashes[i + 1])]!;
       Uint8List optionNode = greatwall.getSelectedNode(current, (i + 1).toString());
       if (listEquals(optionNode, correctNode)) {
         correctTacitKnowlege = tacitKnowledge;
       }
     }
 
-    if (!context.mounted) return;
     showDialog(
         context: context,
         builder: (context) {
@@ -154,15 +156,16 @@ class TacitKnowledgeMemoCardPracticePage extends StatelessWidget {
             ),
             itemCount: state.knowledgePalettes.length,
             itemBuilder: (context, index) {
+              Choice indexChoice = Choice(context.read<GreatWallBloc>().hashes[index + 1]);
               final TacitKnowledge tacitKnowledge =
-                  state.knowledgePalettes[index];
+                  state.knowledgePalettes[indexChoice]!;
               return ElevatedButton(
                 onPressed: () async {
                   Uint8List node = await getNode();
                   if (!context.mounted) return;
                   context.read<GreatWallBloc>().add(
                         GreatWallPracticeStepMade(
-                            currentHash: node, choiceNumber: index + 1),
+                            currentHash: node, choice: (index + 1).toString()),
                       );
                 },
                 child: _buildOptionContent(tacitKnowledge),

@@ -96,13 +96,13 @@ final class GreatWallPracticeLevel extends GreatWallEvent {
 
 final class GreatWallPracticeStepMade extends GreatWallEvent {
   final Uint8List currentHash;
-  final int choiceNumber;
+  final String choice;
 
   GreatWallPracticeStepMade({
     required this.currentHash,
-    required this.choiceNumber,
+    required this.choice,
   });
 
   @override
-  List<Object> get props => [currentHash, choiceNumber];
+  List<Object> get props => [currentHash, choice];
 }

@@ -36,6 +36,7 @@ class GreatWallInitialSuccess extends GreatWallState {
   final int timeLockPuzzleParam;
   final TacitKnowledge tacitKnowledge;
   final String sa0Mnemonic;
+  // final List<Uint8List> hashes;
 
   GreatWallInitialSuccess({
     required this.treeArity,
@@ -65,7 +66,7 @@ final class GreatWallDeriveInProgress extends GreatWallState {}
 final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int treeDepth;
   final int currentLevel;
-  final List<dynamic> knowledgePalettes;
+  final Map<Choice, TacitKnowledge> knowledgePalettes;
   final TacitKnowledge tacitKnowledge;
 
   GreatWallDeriveStepSuccess({
@@ -100,7 +101,7 @@ final class GreatWallFinishSuccess extends GreatWallState {
 }
 
 final class GreatWallPracticeLevelStarted extends GreatWallState {
-  final List<dynamic> knowledgePalettes;
+  final Map<Choice, TacitKnowledge> knowledgePalettes;
   final GreatWall greatWall;
   
   GreatWallPracticeLevelStarted({
