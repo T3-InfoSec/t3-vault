@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_input_promt_widget.dart';
 
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_promt_widget.dart';
@@ -128,7 +128,7 @@ class DerivationResultPage extends StatelessWidget {
                                   if (deckName != null) {
                                     String? enteredEKA = await showDialog<String>(
                                       context: context,
-                                      builder: (context) => const PasswordPrompt(),
+                                      builder: (context) => const EkaInputPromtWidget(),
                                     );
                                     if (!context.mounted) return;
                                     if (enteredEKA != eka.key){

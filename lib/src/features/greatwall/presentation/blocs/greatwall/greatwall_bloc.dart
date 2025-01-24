@@ -1,15 +1,19 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/features/greatwall/domain/usecases/tree_input_validator.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/intermediate_derivation_state_entity.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 
 import 'bloc.dart';
 
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
   int _currentLevel = 1;
+  final ProfileRepository profileRepository;
 
-  GreatWallBloc() : super(GreatWallInitial()) {
+  GreatWallBloc(this.profileRepository) : super(GreatWallInitial()) {
     on<GreatWallSymmetricToggled>(_onGreatWallSymmetricToggled);
     on<GreatWallPasswordVisibilityToggled>(_onPasswordVisibilityToggled);
     on<GreatWallArityChanged>(_onGreatWallArityChanged);
@@ -23,6 +27,8 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     on<GreatWallKAVisibilityToggled>(_onKAVisibilityToggled);
     on<GreatWallPracticeLevel>(_onGreatWallPracticeLevel);
     on<GreatWallPracticeStepMade>(_onGreatWallPracticeStepMade);
+    on<GreatWallOngoingDerivationLoadRequested>(_onGreatWallOngoingDerivationLoadRequested);
+    on<GreatWallOngoingDerivationAdded>(_onGreatWallOngoingDerivationAdded);
   }
 
   void _onDerivationStepMade(
@@ -74,12 +80,20 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       GreatWallDerivationStarted event, Emitter<GreatWallState> emit) async {
     emit(GreatWallDeriveInProgress());
 
-    await Future<void>.delayed(
-      const Duration(seconds: 1),
-      () {
-        _greatWall!.startDerivation();
-      },
-    );
+    _greatWall!.intermediateStatesStream.listen((List<Sa1i> sa1iList) async {
+      debugPrint("Intermediate states length: ${sa1iList.length}");
+      var intermediateStateEntities = sa1iList
+          .map((sa1i) => IntermediateDerivationStateEntity(
+                encryptedValue:
+                    sa1i.value.toString(), // TODO: pending to encrypt
+                currentIteration: sa1i.currentIteration,
+                totalIterations: sa1i.totalIterations,
+              ))
+          .toList();
+      await profileRepository.addIntermediateStates(intermediateStateEntities);
+    });
+
+    await _greatWall!.startDerivation();
 
     emit(
       GreatWallDeriveStepSuccess(
@@ -167,7 +181,9 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       timeLockPuzzleParam: event.timeLockPuzzleParam,
       tacitKnowledge: event.tacitKnowledge,
     );
-    _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global));
+    _greatWall!.initializeDerivation(
+      Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global)),
+      []);
     
     emit(
       GreatWallInitialSuccess(
@@ -195,7 +211,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   }
 
   void _onGreatWallReset(GreatWallReset event, Emitter<GreatWallState> emit) {
-    _greatWall!.initialDerivation();
+    _greatWall!.resetDerivation();
 
     emit(GreatWallInitial());
   }
@@ -219,5 +235,21 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
         selectedNode: selectedNode,
       ),
     );
+  }
+
+  Future<void> _onGreatWallOngoingDerivationLoadRequested(
+    GreatWallOngoingDerivationLoadRequested event,
+    Emitter<GreatWallState> emit,
+  ) async {
+      await profileRepository.readProfile();
+      return emit(GreatWallOngoingDerivationLoaded(ongoingDerivationEntity: profileRepository.ongoingDerivation));
+  }
+
+  Future<void> _onGreatWallOngoingDerivationAdded(
+    GreatWallOngoingDerivationAdded event,
+    Emitter<GreatWallState> emit,
+  ) async {
+    await profileRepository.setOngoingDerivation(event.ongoingDerivationEntity);
+    return emit(GreatWallOngoingDerivationAddSuccess(ongoingDerivationEntity: profileRepository.ongoingDerivation!));
   }
 }

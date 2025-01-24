@@ -26,7 +26,7 @@ dependencies:
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: development
+      ref: issue76_integrate_sa1i
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
@@ -34,11 +34,12 @@ dependencies:
   t3_crypto_objects:
     git:
       url: git@github.com:T3-InfoSec/t3-crypto-objects-dart.git
-      ref: development
+      ref: issue4_create_sa1i
   mooncake:
-    git:
-      url: git@github.com:T3-InfoSec/mooncake.git
-      ref: development
+    # git:
+    #   url: git@github.com:T3-InfoSec/mooncake.git
+    #   ref: development
+    path: ../mooncake # TODO: Delete
 dev_dependencies:
   flutter_test:
     sdk: flutter

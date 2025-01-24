@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/ongoing_derivation_entity.dart';
 
 sealed class GreatWallState extends Equatable {
   @override
@@ -121,4 +122,28 @@ final class GreatWallPracticeLevelFinish extends GreatWallState {
 
   @override
   List<Object> get props => [selectedNode];
+}
+
+final class GreatWallOngoingDerivationLoaded extends GreatWallState {
+  final OngoingDerivationEntity? ongoingDerivationEntity;
+  GreatWallOngoingDerivationLoaded({required this.ongoingDerivationEntity});
+
+  // @override
+  // List<Object> get props => [ongoingDerivationEntity];
+}
+
+final class GreatWallOngoingDerivationAddSuccess extends GreatWallState {
+  final OngoingDerivationEntity ongoingDerivationEntity;
+  GreatWallOngoingDerivationAddSuccess({required this.ongoingDerivationEntity});
+
+  @override
+  List<Object> get props => [ongoingDerivationEntity];
+}
+
+final class GreatWallOngoingDerivationRemoveSuccess extends GreatWallState {
+  final OngoingDerivationEntity ongoingDerivationEntity;
+  GreatWallOngoingDerivationRemoveSuccess({required this.ongoingDerivationEntity});
+  
+  @override
+  List<Object> get props => [ongoingDerivationEntity];
 }

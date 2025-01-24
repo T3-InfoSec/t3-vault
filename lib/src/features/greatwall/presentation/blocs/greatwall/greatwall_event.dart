@@ -2,6 +2,9 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/intermediate_derivation_state_entity.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/entities/ongoing_derivation_entity.dart';
 
 sealed class GreatWallEvent extends Equatable {
   @override
@@ -41,6 +44,7 @@ final class GreatWallInitialized extends GreatWallEvent {
   final int timeLockPuzzleParam;
   final TacitKnowledge tacitKnowledge;
   final String sa0Mnemonic;
+  final List<Sa1i> intermediateDerivationStates;
 
   GreatWallInitialized({
     required this.treeArity,
@@ -48,11 +52,12 @@ final class GreatWallInitialized extends GreatWallEvent {
     required this.timeLockPuzzleParam,
     required this.tacitKnowledge,
     required this.sa0Mnemonic,
+    required this.intermediateDerivationStates,
   });
 
   @override
   List<Object> get props =>
-      [treeDepth, timeLockPuzzleParam, tacitKnowledge, sa0Mnemonic];
+      [treeDepth, timeLockPuzzleParam, tacitKnowledge, sa0Mnemonic, intermediateDerivationStates];
 }
 
 final class GreatWallReset extends GreatWallEvent {}
@@ -105,4 +110,24 @@ final class GreatWallPracticeStepMade extends GreatWallEvent {
 
   @override
   List<Object> get props => [currentHash, choiceNumber];
+}
+
+final class GreatWallOngoingDerivationLoadRequested extends GreatWallEvent {}
+
+final class GreatWallOngoingDerivationAdded extends GreatWallEvent {
+  final OngoingDerivationEntity ongoingDerivationEntity;
+
+  GreatWallOngoingDerivationAdded(this.ongoingDerivationEntity);
+
+  @override
+  List<Object> get props => [ongoingDerivationEntity];
+}
+
+final class GreatWallOngoingDerivationRemoved extends GreatWallEvent {
+  final OngoingDerivationEntity ongoingDerivationEntity;
+
+  GreatWallOngoingDerivationRemoved(this.ongoingDerivationEntity);
+
+  @override
+  List<Object> get props => [ongoingDerivationEntity];
 }

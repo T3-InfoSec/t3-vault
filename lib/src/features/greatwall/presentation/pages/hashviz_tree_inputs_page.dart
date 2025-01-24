@@ -4,8 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_input_widget.dart';
-
+import 'package:t3_vault/src/common/cryptography/usecases/eka_flow_handler.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../../../memorization_assistant/presentation/blocs/blocs.dart';
@@ -168,53 +169,65 @@ class HashvizTreeInputsPage extends StatelessWidget {
 
                     return ElevatedButton(
                       onPressed: isMnemonicValid
-                          ? () {
-                              final arity = int.parse(_arityController.text);
-                              final depth = int.parse(_depthController.text);
-                              final timeLock =
-                                  int.parse(_timeLockController.text);
-                              final hashvizSize =
-                                  int.parse(_sizeController.text);
-                              final numColors =
-                                  int.parse(_colorsNumberController.text);
-                              final saturation =
-                                  double.parse(_saturationController.text);
-                              final brightness =
-                                  double.parse(_brightnessController.text);
-                              final minHue = int.parse(_minHueController.text);
-                              final maxHue = int.parse(_maxHueController.text);
+                          ? () async {
+                              final Eka? eka =
+                                  await EkaFlowHandler.showEkaFlow(context);
+                              if (eka != null) {
+                                final arity = int.parse(_arityController.text);
+                                final depth = int.parse(_depthController.text);
+                                final timeLock =
+                                    int.parse(_timeLockController.text);
+                                final hashvizSize =
+                                    int.parse(_sizeController.text);
+                                final numColors =
+                                    int.parse(_colorsNumberController.text);
+                                final saturation =
+                                    double.parse(_saturationController.text);
+                                final brightness =
+                                    double.parse(_brightnessController.text);
+                                final minHue =
+                                    int.parse(_minHueController.text);
+                                final maxHue =
+                                    int.parse(_maxHueController.text);
 
-                              final isSymmetric = _isSymmetricNotifier.value;
+                                final isSymmetric = _isSymmetricNotifier.value;
 
-                              Future.delayed(
-                                const Duration(seconds: 1),
-                                () {
-                                  if (!context.mounted) return;
-                                  context.read<GreatWallBloc>().add(
-                                        GreatWallInitialized(
-                                          treeArity: arity,
-                                          treeDepth: depth,
-                                          timeLockPuzzleParam: timeLock,
-                                          tacitKnowledge: HashVizTacitKnowledge(
-                                            configs: {
-                                              'hashvizSize': hashvizSize,
-                                              'isSymmetric': isSymmetric,
-                                              'numColors': numColors,
-                                              'saturation': saturation,
-                                              'brightness': brightness,
-                                              'minHue': minHue,
-                                              'maxHue': maxHue,
-                                            },
+                                Future.delayed(
+                                  const Duration(seconds: 1),
+                                  () {
+                                    if (!context.mounted) return;
+                                    context.read<GreatWallBloc>().add(
+                                          GreatWallInitialized(
+                                            treeArity: arity,
+                                            treeDepth: depth,
+                                            timeLockPuzzleParam: timeLock,
+                                            tacitKnowledge:
+                                                HashVizTacitKnowledge(
+                                              configs: {
+                                                'hashvizSize': hashvizSize,
+                                                'isSymmetric': isSymmetric,
+                                                'numColors': numColors,
+                                                'saturation': saturation,
+                                                'brightness': brightness,
+                                                'minHue': minHue,
+                                                'maxHue': maxHue,
+                                              },
+                                            ),
+                                            sa0Mnemonic:
+                                                _passwordController.text,
+                                            intermediateDerivationStates: const [],
                                           ),
-                                          sa0Mnemonic: _passwordController.text,
-                                        ),
-                                      );
-                                  context.go(
-                                    '/${KnowledgeTypesPage.routeName}/$routeName/'
-                                    '${ConfirmationPage.routeName}',
-                                  );
-                                },
-                              );
+                                        );
+                                    context.go(
+                                      '/${KnowledgeTypesPage.routeName}/$routeName/'
+                                      '${ConfirmationPage.routeName}',
+                                      extra: {
+                                        'eka': eka,
+                                      },
+                                    );
+                                  },
+                                );
+                              }
                             }
                           : null,
                       child:

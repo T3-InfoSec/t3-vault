@@ -5,7 +5,7 @@ import 'package:t3_vault/src/common/localization/timezone/timezone_helper.dart';
 import 'package:t3_vault/src/common/notifications/domain/notifications_service.dart';
 import 'package:t3_vault/src/common/notifications/state/notifications_state.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
-import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/memo_card_json_repository.dart';
+import 'package:t3_vault/src/features/memorization_assistant/domain/repositories/profile_json_repository.dart';
 
 import 'src/app.dart';
 import 'src/common/settings/domain/entities/settings_service.dart';
@@ -37,9 +37,9 @@ void main() async {
   // it is stored within the application documents directory.
   final filePath = '${directory.path}/t3-profiles.json';
 
-  // Initialize the MemoCardRepository with the specified file path, allowing
-  // the application to read and write memo card data to the JSON file.
-  final memoCardRepository = MemoCardRepository(
+  // Initialize the ProfileRepository with the specified file path, allowing
+  // the application to read and write data to the JSON file.
+  final profileRepository = ProfileRepository(
       filePath: filePath, notificationService: notificationService);
 
   // Load the user's preferred theme while the splash screen is displayed.
@@ -57,7 +57,7 @@ void main() async {
         ],
         child: T3Vault(
           settingsController: settingsController,
-          memoCardRepository: memoCardRepository,
+          profileRepository: profileRepository,
         )),
   );
 }

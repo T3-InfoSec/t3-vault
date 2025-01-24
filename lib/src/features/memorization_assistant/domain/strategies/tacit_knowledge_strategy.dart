@@ -8,7 +8,7 @@ import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_input_promt_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/blocs/blocs.dart';
 import 'package:t3_vault/src/features/memorization_assistant/domain/strategies/memo_card_strategy.dart';
 import 'package:t3_vault/src/features/memorization_assistant/presentation/pages/memo_card_decks_page.dart';
@@ -28,7 +28,7 @@ class TacitKnowledgeStrategy extends MemoCardStrategy {
       onPressed: () async {
         String? key = await showDialog<String>(
           context: context,
-          builder: (context) => const PasswordPrompt(),
+          builder: (context) => const EkaInputPromtWidget(),
         );
 
         if (key != null && key.isNotEmpty && await isValid(key, memoCard)) {
@@ -44,6 +44,7 @@ class TacitKnowledgeStrategy extends MemoCardStrategy {
               timeLockPuzzleParam: 1,
               tacitKnowledge: tacitKnowledge,
               sa0Mnemonic: _mockSa0Mnemonic, // not needed sa0 for practice level
+              intermediateDerivationStates: const [], // not needed for practice level
             ),
           );
           context.go(
