@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_memassist/memory_assistant.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/input_key_error_promt_widget.dart';
-import 'package:t3_vault/src/common/cryptography/presentation/widgets/password_promt_widget.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_input_promt_widget.dart';
 
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/deckname_promt_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_promt_widget.dart';
@@ -54,8 +54,8 @@ class DerivationResultPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextField(
-                          controller: TextEditingController(
-                              text: ka.hexadecimalValue),
+                          controller:
+                              TextEditingController(text: ka.hexadecimalValue),
                           readOnly: true,
                           obscureText: !state.isKAVisible,
                           decoration: InputDecoration(
@@ -87,8 +87,8 @@ class DerivationResultPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () async {
                       // Copy the seed to the clipboard for a limited time
-                      Clipboard.setData(ClipboardData(
-                          text: ka.formosa.mnemonic));
+                      Clipboard.setData(
+                          ClipboardData(text: ka.formosa.mnemonic));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content: Text(AppLocalizations.of(context)!
@@ -111,14 +111,10 @@ class DerivationResultPage extends StatelessWidget {
                         onPressed: (memoCardSetState is MemoCardSetAddSuccess)
                             ? null
                             : () async {
-                                Eka eka = Eka();
-                                final String? optionalEka = await showDialog<String>(
-                                  context: context,
-                                  builder: (context) =>
-                                      EKAPromptWidget(eka: eka.key),
-                                );
-                                if (!context.mounted) return;
-                                if (optionalEka != null) {
+                                Eka? eka = Provider.of<DerivationState>(context,
+                                        listen: false)
+                                    .eka;
+                                if (eka != null) {
                                   final deckName = await showDialog<String>(
                                     context: context,
                                     builder: (context) =>
@@ -126,63 +122,68 @@ class DerivationResultPage extends StatelessWidget {
                                   );
                                   if (!context.mounted) return;
                                   if (deckName != null) {
-                                    String? enteredEKA = await showDialog<String>(
-                                      context: context,
-                                      builder: (context) => const PasswordPrompt(),
-                                    );
+                                    context
+                                        .read<MemoCardSetBloc>()
+                                        .add(MemoCardSetCardsAdding());
+                                    final deckId = const Uuid().v4();
+                                    final deck = Deck(deckId, deckName);
+
+                                    final sa0Mnemonic =
+                                        Provider.of<DerivationState>(context,
+                                                listen: false)
+                                            .sa0Mnemonic;
+                                    final sa0 = Sa0(Formosa.fromMnemonic(
+                                        sa0Mnemonic,
+                                        formosaTheme: FormosaTheme.global));
+                                    final ciphertext = await eka.encrypt(sa0);
+
+                                    List<MemoCard> memoCards = [];
+
+                                    memoCards.addAll([
+                                      EkaMemoCard(
+                                          eka:
+                                              'Can you remember where you saved eka\'s backup?',
+                                          deck: deck),
+                                      Sa0MemoCard(
+                                          encryptedSa0: base64Encode(
+                                              ciphertext.concatenation()),
+                                          deck: deck)
+                                    ]);
+
                                     if (!context.mounted) return;
-                                    if (enteredEKA != eka.key){
-                                      await showDialog<String>(
-                                        context: context,
-                                        builder: (context) => const InputKeyErrorPromtWidget(),
-                                      );
-                                    } else {
-                                      context.read<MemoCardSetBloc>().add(MemoCardSetCardsAdding());
-                                      final deckId = const Uuid().v4();
-                                      final deck = Deck(deckId, deckName);
+                                    final tacitKnowledge =
+                                        Provider.of<DerivationState>(context,
+                                                listen: false)
+                                            .tacitKnowledge;
 
-                                      final sa0Mnemonic = Provider.of<DerivationState>(
-                                          context,
-                                          listen: false).sa0Mnemonic;
-                                      final sa0 = Sa0(Formosa.fromMnemonic(sa0Mnemonic, formosaTheme: FormosaTheme.global));
-                                      final ciphertext = await eka.encrypt(sa0);
-
-                                      List<MemoCard> memoCards = [];
-
-                                      memoCards.addAll([
-                                        EkaMemoCard(eka: 'Can you remember where you saved eka\'s backup?', deck: deck),
-                                        Sa0MemoCard(
-                                            encryptedSa0: base64Encode(ciphertext.concatenation()),
-                                            deck: deck)
-                                      ]);
-
-                                      if (!context.mounted) return;
-                                      final tacitKnowledge = Provider.of<DerivationState>(
-                                          context,
-                                          listen: false).tacitKnowledge;
-                                      
-                                      for (int i = 1; i <= state.treeDepth; i++) {
-                                        final node = Node(state.savedNodes[i - 1]);
-                                        final ciphertextNode = await eka.encrypt(node);   
-                                        final selectedNode = Node(state.savedNodes[i]);
-                                        final ciphertextSelectedNode = await eka.encrypt(selectedNode);
-                                        memoCards.add(TacitKnowledgeMemoCard(
-                                            knowledge: {
-                                              'level': i,
-                                              'node': base64Encode(ciphertextNode.concatenation()),
-                                              'selectedNode': base64Encode(ciphertextSelectedNode.concatenation()),
-                                              'treeArity': state.treeArity,
-                                              'treeDepth': state.treeDepth,
-                                              'tacitKnowledge': tacitKnowledge,
-                                            },
-                                            deck: deck,
-                                            title: 'Derivation Level $i Card'));
-                                      }
-                                      if (!context.mounted) return;
-                                      context.read<MemoCardSetBloc>().add(
-                                          MemoCardSetCardsAdded(
-                                              memoCards: memoCards));
+                                    for (int i = 1; i <= state.treeDepth; i++) {
+                                      final node =
+                                          Node(state.savedNodes[i - 1]);
+                                      final ciphertextNode =
+                                          await eka.encrypt(node);
+                                      final selectedNode =
+                                          Node(state.savedNodes[i]);
+                                      final ciphertextSelectedNode =
+                                          await eka.encrypt(selectedNode);
+                                      memoCards.add(TacitKnowledgeMemoCard(
+                                          knowledge: {
+                                            'level': i,
+                                            'node': base64Encode(
+                                                ciphertextNode.concatenation()),
+                                            'selectedNode': base64Encode(
+                                                ciphertextSelectedNode
+                                                    .concatenation()),
+                                            'treeArity': state.treeArity,
+                                            'treeDepth': state.treeDepth,
+                                            'tacitKnowledge': tacitKnowledge,
+                                          },
+                                          deck: deck,
+                                          title: 'Derivation Level $i Card'));
                                     }
+                                    if (!context.mounted) return;
+                                    context.read<MemoCardSetBloc>().add(
+                                        MemoCardSetCardsAdded(
+                                            memoCards: memoCards));
                                   }
                                 }
                               },
@@ -195,23 +196,28 @@ class DerivationResultPage extends StatelessWidget {
                   BlocBuilder<MemoCardSetBloc, MemoCardSetState>(
                     builder: (context, memoCardSetState) {
                       return ElevatedButton(
-                        onPressed: (memoCardSetState is MemoCardSetAdding) 
-                        ? () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(AppLocalizations.of(context)!.savingInProgress),
-                              duration: const Duration(seconds: 10),
-                            ),
-                          );
-                        }
-                        : () {
-                          context.read<MemoCardSetBloc>().add(MemoCardSetUnchanged());
-                          context.read<GreatWallBloc>().add(GreatWallReset());
-                          context.pop();
-                        },
+                        onPressed: (memoCardSetState is MemoCardSetAdding)
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(AppLocalizations.of(context)!
+                                        .savingInProgress),
+                                    duration: const Duration(seconds: 10),
+                                  ),
+                                );
+                              }
+                            : () {
+                                context
+                                    .read<MemoCardSetBloc>()
+                                    .add(MemoCardSetUnchanged());
+                                context
+                                    .read<GreatWallBloc>()
+                                    .add(GreatWallReset());
+                                context.pop();
+                              },
                         child: (memoCardSetState is MemoCardSetAdding)
-                          ? const CircularProgressIndicator()
-                          : Text(AppLocalizations.of(context)!.reset),
+                            ? const CircularProgressIndicator()
+                            : Text(AppLocalizations.of(context)!.reset),
                       );
                     },
                   ),
