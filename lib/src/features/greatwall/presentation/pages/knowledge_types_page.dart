@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/fractal_tree_inputs_page.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import 'formosa_tree_inputs_page.dart';
@@ -18,7 +19,7 @@ class KnowledgeTypesPage extends StatelessWidget {
     final Map<String, String> knowledgeTypeRoutes = {
       "Hashviz": HashvizTreeInputsPage.routeName,
       "Formosa": FormosaTreeInputsPage.routeName,
-      "Fractal": "/fractal_page",
+      "Fractal": FractalTreeInputsPage.routeName,
       "Voice": "/voice_page",
     };
 
