@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/widgets/animated_fractal_widget.dart';
 import 'package:t3_vault/src/features/greatwall/presentation/widgets/fractal_widget.dart';
 import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
@@ -73,7 +74,8 @@ class DerivationLevelPage extends StatelessWidget {
                       ),
                       itemCount: state.knowledgePalettes.length,
                       itemBuilder: (context, index) {
-                        final TacitKnowledge tacitKnowledge = state.knowledgePalettes[index];
+                        final TacitKnowledge tacitKnowledge =
+                            state.knowledgePalettes[index];
                         return ElevatedButton(
                           onPressed: () {
                             Future.delayed(
@@ -100,22 +102,35 @@ class DerivationLevelPage extends StatelessWidget {
                           child: Builder(builder: (context) {
                             if (tacitKnowledge is FormosaTacitKnowledge) {
                               return Text(tacitKnowledge.knowledge!);
-                            } else if (tacitKnowledge is HashVizTacitKnowledge) {
+                            } else if (tacitKnowledge
+                                is HashVizTacitKnowledge) {
                               return HashvizWidget(
                                 imageData: tacitKnowledge.knowledge!,
-                                size: state.tacitKnowledge.configs['hashvizSize'],
-                                numColors: state.tacitKnowledge.configs['numColors'],
-                                saturation: state.tacitKnowledge.configs['saturation'],
-                                brightness: state.tacitKnowledge.configs['brightness'],
+                                size:
+                                    state.tacitKnowledge.configs['hashvizSize'],
+                                numColors:
+                                    state.tacitKnowledge.configs['numColors'],
+                                saturation:
+                                    state.tacitKnowledge.configs['saturation'],
+                                brightness:
+                                    state.tacitKnowledge.configs['brightness'],
                                 minHue: state.tacitKnowledge.configs['minHue'],
                                 maxHue: state.tacitKnowledge.configs['maxHue'],
                               );
-                            } else if (tacitKnowledge is FractalTacitKnowledge) {
+                            } else if (tacitKnowledge
+                                is FractalTacitKnowledge) {
                               return FractalWidget(
-                                imageData: tacitKnowledge.knowledge!,
+                                imageData: tacitKnowledge.knowledge,
                                 width: state.tacitKnowledge.configs['width'],
                                 height: state.tacitKnowledge.configs['height'],
                               );
+                            } else if (tacitKnowledge
+                                is AnimatedFractalTacitKnowledge) {
+                              return AnimatedFractalWidget(
+                                  frameDataFuture: tacitKnowledge.knowledge,
+                                  width: state.tacitKnowledge.configs['width'],
+                                  height:
+                                      state.tacitKnowledge.configs['height']);
                             } else {
                               return const Text('Unknown type');
                             }
