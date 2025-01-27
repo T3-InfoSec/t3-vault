@@ -26,7 +26,7 @@ dependencies:
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: issue57_animate_fractal_integration___
+      ref: issue57_static_and_animated_fractal_integration_final
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git

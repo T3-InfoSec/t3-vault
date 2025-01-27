@@ -165,10 +165,8 @@ class FractalTreeInputsPage extends StatelessWidget {
                                 timeLockPuzzleParam: timeLock,
                                 tacitKnowledge: FractalTacitKnowledge(
                                   configs: {
-                                    'width':
-                                        300, // this determines the resolution of the image,
-                                    'height':
-                                        300, // the better the resolution, the longer the loading time.
+                                    'width': 300,
+                                    'height': 300,
                                   },
                                 ),
                                 sa0Mnemonic: _passwordController.text,
