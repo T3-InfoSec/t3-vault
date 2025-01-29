@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -11,7 +12,12 @@ import 'derivation_level_page.dart';
 class ConfirmationPage extends StatelessWidget {
   static const routeName = 'confirmation';
 
-  const ConfirmationPage({super.key});
+  final Eka eka;
+
+  const ConfirmationPage({
+    super.key,
+    required this.eka,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +88,13 @@ class ConfirmationPage extends StatelessWidget {
                           const Duration(seconds: 1),
                           () {
                             if (!context.mounted) return;
-                            context.read<DerivationState>().updateSa0Mnemonic(state.sa0Mnemonic);
-                            context.read<DerivationState>().updateTacitKnowledge(state.tacitKnowledge);
+                            context
+                                .read<DerivationState>()
+                                .updateSa0Mnemonic(state.sa0Mnemonic);
+                            context
+                                .read<DerivationState>()
+                                .updateTacitKnowledge(state.tacitKnowledge);
+                            context.read<DerivationState>().updateEka(eka);
                             context
                                 .read<GreatWallBloc>()
                                 .add(GreatWallDerivationStarted());
@@ -98,7 +109,8 @@ class ConfirmationPage extends StatelessWidget {
               ),
             );
           } else {
-            return Center(child: Text(AppLocalizations.of(context)!.noParameters));
+            return Center(
+                child: Text(AppLocalizations.of(context)!.noParameters));
           }
         },
       ),

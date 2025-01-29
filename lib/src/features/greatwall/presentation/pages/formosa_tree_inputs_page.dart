@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
+import 'package:t3_vault/src/common/cryptography/presentation/widgets/eka_flow_handler_widget.dart';
 import 'package:t3_vault/src/common/cryptography/presentation/widgets/sa0_mnemonic_input_widget.dart';
 
 import '../../../../common/settings/presentation/pages/settings_page.dart';
@@ -135,30 +136,41 @@ class FormosaTreeInputsPage extends StatelessWidget {
                   return ElevatedButton(
                     onPressed: isButtonEnabled
                         ? () async {
-                            final arity = int.parse(_arityController.text);
-                            final depth = int.parse(_depthController.text);
-                            final timeLock = int.parse(_timeLockController.text);
-                            Future.delayed(
-                              const Duration(seconds: 1),
-                              () {
-                                if (!context.mounted) return;
-                                context.read<GreatWallBloc>().add(
-                                      GreatWallInitialized(
-                                        treeArity: arity,
-                                        treeDepth: depth,
-                                        timeLockPuzzleParam: timeLock,
-                                        tacitKnowledge: FormosaTacitKnowledge(
-                                          configs: {'formosaTheme': selectedTheme},
+                            final Eka? eka =
+                                await EkaFlowHandler.showEkaFlow(context);
+                            if (eka != null) {
+                              final arity = int.parse(_arityController.text);
+                              final depth = int.parse(_depthController.text);
+                              final timeLock =
+                                  int.parse(_timeLockController.text);
+
+                              Future.delayed(
+                                const Duration(seconds: 1),
+                                () {
+                                  if (!context.mounted) return;
+                                  context.read<GreatWallBloc>().add(
+                                        GreatWallInitialized(
+                                          treeArity: arity,
+                                          treeDepth: depth,
+                                          timeLockPuzzleParam: timeLock,
+                                          tacitKnowledge: FormosaTacitKnowledge(
+                                            configs: {
+                                              'formosaTheme': selectedTheme
+                                            },
+                                          ),
+                                          sa0Mnemonic: _passwordController.text,
                                         ),
-                                        sa0Mnemonic: _passwordController.text,
-                                      ),
-                                    );
-                                context.go(
-                                  '/${KnowledgeTypesPage.routeName}/$routeName/'
-                                  '${ConfirmationPage.routeName}',
-                                );
-                              },
-                            );
+                                      );
+                                  context.go(
+                                    '/${KnowledgeTypesPage.routeName}/$routeName/'
+                                    '${ConfirmationPage.routeName}',
+                                    extra: {
+                                      'eka': eka,
+                                    },
+                                  );
+                                },
+                              );
+                            }
                           }
                         : null,
                     child: Text(AppLocalizations.of(context)!.startDerivation),
