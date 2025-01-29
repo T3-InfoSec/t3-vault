@@ -53,13 +53,28 @@ class _DynamicFractalDerivationLevelPageState
             );
           } else if (state is GreatWallDeriveStepSuccess) {
             final hash = Choice(context.read<GreatWallBloc>().hashes[0]);
-            final tacitKnowledge = state.knowledgePalettes[hash]!.knowledge! as Point<double>;
-            Offset exponent = Offset(
-                tacitKnowledge.x,
-                tacitKnowledge.y);
-            return DynamicFractalRenderer(
-              exponent
-            );
+            final tacitKnowledge =
+                state.knowledgePalettes[hash]!.knowledge! as Point<double>;
+            Offset exponent = Offset(tacitKnowledge.x, tacitKnowledge.y);
+            return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Level ${state.currentLevel} of ${state.treeDepth}:'),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (state.currentLevel > 1) {
+                        context
+                            .read<GreatWallBloc>()
+                            .add(GreatWallDerivationStepMade("0"));
+                        context.go(
+                            '/${DynamicFractalDerivationLevelPage.routeName}');
+                      }
+                    },
+                    child: Text(AppLocalizations.of(context)!.previousLevel),
+                  ),
+                  Expanded(child: DynamicFractalRenderer(exponent))
+                ]);
           } else {
             return Center(
               child: Text(AppLocalizations.of(context)!.noLevel),

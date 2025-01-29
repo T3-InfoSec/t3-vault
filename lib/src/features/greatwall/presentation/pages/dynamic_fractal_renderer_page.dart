@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../common/settings/presentation/pages/settings_page.dart';
 import '../blocs/blocs.dart';
 import 'derivation_result_page.dart';
 import 'dynamic_fractal_derivation_level_page.dart';
@@ -22,12 +20,11 @@ class DynamicFractalRenderer extends StatefulWidget {
 }
 
 class _DynamicFractalRendererState extends State<DynamicFractalRenderer> {
-  FragmentShader? _shader; // Nullable until initialized
+  FragmentShader? _shader;
   double _zoom = 2.00000000;
   Offset _offset = const Offset(0.00000000, 0.00000000);
   Offset _selectedPosition = const Offset(0.00000000, 0.00000000);
   final double _gridSize = 0.00001;
-
   final int _maxIterations = 100;
 
   @override
@@ -44,7 +41,7 @@ class _DynamicFractalRendererState extends State<DynamicFractalRenderer> {
       final program =
           await FragmentProgram.fromAsset('shaders/burningShipShader.frag');
       setState(() {
-        _shader = program.fragmentShader(); // Initialize the shader
+        _shader = program.fragmentShader();
       });
     } catch (e) {
       print('Failed to load shader: $e');
@@ -63,20 +60,12 @@ class _DynamicFractalRendererState extends State<DynamicFractalRenderer> {
             );
           } else if (state is GreatWallDeriveStepSuccess) {
             return _shader == null
-                ? const Center(
-                    child:
-                        CircularProgressIndicator()) // Show a loading indicator
+                ? const Center(child: CircularProgressIndicator())
                 : Listener(
                     onPointerSignal: (PointerSignalEvent event) {
-                      // this just changes the zoom, do not change offset here
                       if (event is PointerScrollEvent) {
                         setState(() {
-                          // Adjust zoom level based on scroll delta
                           var zoomFactor = event.scrollDelta.dy > 0 ? 1.1 : 0.9;
-
-                          var zoomDelta = zoomFactor *
-                              zoomFactor *
-                              (event.scrollDelta.dy > 0 ? 1 : -1);
                           _zoom *= zoomFactor;
                         });
                       }
@@ -102,37 +91,80 @@ class _DynamicFractalRendererState extends State<DynamicFractalRenderer> {
                           posX = double.parse(posX.toStringAsFixed(6));
                           posY = double.parse(posY.toStringAsFixed(6));
                           _selectedPosition = Offset(posX, posY);
+                          print(
+                              "x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy}");
                         });
                       },
                       onScaleUpdate: (details) {
                         setState(() {
-                          // this changes the zoom and offset
-
                           if (details.scale != 1.0) {
                             var zoomFactor = details.scale < 1.0 ? 1.01 : 0.99;
-                            //
                             _zoom *= zoomFactor * details.scale;
                           }
-                          // handle pan
-
                           _offset =
                               _offset - details.focalPointDelta * _zoom * 0.001;
                         });
                       },
                       child: Scaffold(
-                        body: CustomPaint(
-                          painter: _BurningShipAdvFractalPainter(
-                              shader: _shader!,
-                              zoom: _zoom,
-                              offset: _offset,
-                              maxIterations: _maxIterations,
-                              gridSize: _gridSize,
-                              selectedPosition: _selectedPosition,
-                              exponent: widget.exponent),
-                          size: Size.infinite,
+                        body: Stack(
+                          children: [
+                            CustomPaint(
+                              painter: _BurningShipAdvFractalPainter(
+                                  shader: _shader!,
+                                  zoom: _zoom,
+                                  offset: _offset,
+                                  maxIterations: _maxIterations,
+                                  gridSize: _gridSize,
+                                  selectedPosition: _selectedPosition,
+                                  exponent: widget.exponent),
+                              size: Size.infinite,
+                            ),
+                            Positioned(
+                              top: 20,
+                              left: 20,
+                              child: GestureDetector(
+                                onTap: () {}, // Blocks click-through
+                                child: Container(
+                                  color: Colors.transparent, // Makes sure the surrounding area is invisible but still captures touches
+                                  padding: const EdgeInsets.all(8),
+                                  child: FloatingActionButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _zoom *= 1.1; // Increase zoom
+                                      });
+                                    },
+                                    elevation: 4,
+                                    child: const Icon(Icons.remove, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: 20,
+                              right: 20,
+                              child: GestureDetector(
+                                onTap: () {}, // Blocks click-through
+                                child: Container(
+                                  color: Colors.transparent,
+                                  padding: const EdgeInsets.all(8),
+                                  child: FloatingActionButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _zoom *= 0.9; // Decrease zoom
+                                      });
+                                    },
+                                    elevation: 4,
+                                    child: const Icon(Icons.add, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         floatingActionButton: FloatingActionButton(
                           onPressed: () {
+                            print(
+                                "x: ${_selectedPosition.dx}, y: ${_selectedPosition.dy}");
                             Future.delayed(
                               const Duration(seconds: 1),
                               () {
@@ -155,8 +187,6 @@ class _DynamicFractalRendererState extends State<DynamicFractalRenderer> {
                                 }
                               },
                             );
-
-                            // widget.onSubmit(_selectedPosition);
                           },
                           child: const Icon(Icons.check),
                         ),
