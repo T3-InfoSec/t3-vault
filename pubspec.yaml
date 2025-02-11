@@ -26,7 +26,7 @@ dependencies:
   great_wall:
     git:
       url: git@github.com:T3-InfoSec/great-wall-dart.git
-      ref: development
+      ref: dynamic_fractal_fix
   t3_memassist:
     git:
       url: git@github.com:T3-InfoSec/t3-memassist.git
@@ -54,3 +54,6 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+  shaders:
+    - shaders/burningShipShader.frag
+

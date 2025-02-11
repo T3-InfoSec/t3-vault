@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:great_wall/great_wall.dart';
+import 'package:t3_vault/src/features/greatwall/presentation/pages/dynamic_fractal_derivation_level_page.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
 import 'package:t3_vault/src/features/greatwall/states/derivation_state.dart';
 
@@ -98,7 +100,11 @@ class ConfirmationPage extends StatelessWidget {
                             context
                                 .read<GreatWallBloc>()
                                 .add(GreatWallDerivationStarted());
-                            context.go('/${DerivationLevelPage.routeName}');
+                            if((state.tacitKnowledge) is DynamicFractalTacitKnowledge) {
+                              context.go('/${DynamicFractalDerivationLevelPage.routeName}');
+                            } else {
+                              context.go('/${DerivationLevelPage.routeName}');
+                            }
                           },
                         );
                       },

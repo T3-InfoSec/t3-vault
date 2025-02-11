@@ -53,7 +53,7 @@ class DerivationLevelPage extends StatelessWidget {
                       if (state.currentLevel > 1) {
                         context
                             .read<GreatWallBloc>()
-                            .add(GreatWallDerivationStepMade(0));
+                            .add(GreatWallDerivationStepMade("0"));
                         context.go('/${DerivationLevelPage.routeName}');
                       }
                     },
@@ -71,25 +71,26 @@ class DerivationLevelPage extends StatelessWidget {
                         childAspectRatio: 1, // Aspect ratio for cells 1:1
                       ),
                       itemCount: state.knowledgePalettes.length,
-                      itemBuilder: (context, index) {
-                        final TacitKnowledge tacitKnowledge = state.knowledgePalettes[index];
+                      itemBuilder: (listContext, index) {
+                        final indexHash = Choice(context.read<GreatWallBloc>().hashes[index+1]);
+                        final TacitKnowledge tacitKnowledge = state.knowledgePalettes[indexHash]!;
                         return ElevatedButton(
                           onPressed: () {
                             Future.delayed(
                               const Duration(seconds: 1),
                               () {
-                                if (!context.mounted) return;
-                                context.read<GreatWallBloc>().add(
-                                    GreatWallDerivationStepMade(index + 1));
+                                if (!listContext.mounted) return;
+                                listContext.read<GreatWallBloc>().add(
+                                    GreatWallDerivationStepMade((index + 1).toString()));
                                 if (state.currentLevel < state.treeDepth) {
-                                  context.go(
+                                  listContext.go(
                                     '/${DerivationLevelPage.routeName}',
                                   );
                                 } else {
-                                  context
+                                  listContext
                                       .read<GreatWallBloc>()
                                       .add(GreatWallDerivationFinished());
-                                  context.go(
+                                  listContext.go(
                                     '/${DerivationResultPage.routeName}',
                                   );
                                 }
