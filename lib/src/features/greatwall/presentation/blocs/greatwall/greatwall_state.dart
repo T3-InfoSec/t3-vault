@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:equatable/equatable.dart';
 import 'package:great_wall/great_wall.dart';
 
@@ -65,7 +64,7 @@ final class GreatWallDeriveInProgress extends GreatWallState {}
 final class GreatWallDeriveStepSuccess extends GreatWallState {
   final int treeDepth;
   final int currentLevel;
-  final List<dynamic> knowledgePalettes;
+  final Map<Choice, TacitKnowledge> knowledgePalettes;
   final TacitKnowledge tacitKnowledge;
 
   GreatWallDeriveStepSuccess({
@@ -100,7 +99,7 @@ final class GreatWallFinishSuccess extends GreatWallState {
 }
 
 final class GreatWallPracticeLevelStarted extends GreatWallState {
-  final List<dynamic> knowledgePalettes;
+  final Map<Choice, TacitKnowledge> knowledgePalettes;
   final GreatWall greatWall;
   
   GreatWallPracticeLevelStarted({

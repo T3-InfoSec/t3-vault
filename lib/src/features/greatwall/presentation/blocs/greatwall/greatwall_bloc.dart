@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:great_wall/great_wall.dart';
 import 'package:t3_crypto_objects/crypto_objects.dart';
@@ -8,6 +9,7 @@ import 'bloc.dart';
 class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
   GreatWall? _greatWall;
   int _currentLevel = 1;
+  List<Uint8List> hashes = [];
 
   GreatWallBloc() : super(GreatWallInitial()) {
     on<GreatWallSymmetricToggled>(_onGreatWallSymmetricToggled);
@@ -32,10 +34,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
     await Future<void>.delayed(
       const Duration(seconds: 1),
       () {
-        _greatWall!.makeTacitDerivation(choiceNumber: event.choiceNumber);
+        _greatWall!.makeTacitDerivation(choice: event.choice);
       },
     );
-    if (event.choiceNumber == 0 && _currentLevel > 1) {
+    if (event.choice == "0" && _currentLevel > 1) {
       _currentLevel--;
     } else {
       _currentLevel++;
@@ -167,6 +169,10 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
       timeLockPuzzleParam: event.timeLockPuzzleParam,
       tacitKnowledge: event.tacitKnowledge,
     );
+    var till = _greatWall!.treeArity == -1? 0: _greatWall!.treeArity;// needed for dynamic fractal
+    for(int i = 0;i<=till; i++){
+      hashes.add(_greatWall!.computeHash(i.toString()));
+    }
     _greatWall!.sa0 = Sa0(Formosa.fromMnemonic(event.sa0Mnemonic, formosaTheme: FormosaTheme.global));
     
     emit(
@@ -212,7 +218,7 @@ class GreatWallBloc extends Bloc<GreatWallEvent, GreatWallState> {
 
   void _onGreatWallPracticeStepMade(
       GreatWallPracticeStepMade event, Emitter<GreatWallState> emit) {
-    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choiceNumber);
+    var selectedNode = _greatWall!.getSelectedNode(event.currentHash, event.choice);
 
     emit(
       GreatWallPracticeLevelFinish(
